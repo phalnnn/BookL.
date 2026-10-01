@@ -201,7 +201,7 @@
         </div>
     </main>
 
-    <!-- Modal Thêm Acc (Responsive ngang desktop, dọc mobile) -->
+    <!-- Modal Thêm Acc -->
     <div id="addAccModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden my-auto max-h-[94vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-red-950/80 bg-zinc-950/95 relative">
@@ -260,7 +260,7 @@
                         </div>
                     </div>
 
-                    <!-- Khung chọn chế độ 1 Ảnh / 2 Ảnh / 3 Ảnh -->
+                    <!-- Khung chọn chế độ ảnh -->
                     <div class="pt-3 border-t border-zinc-800">
                         <div class="flex items-center justify-between mb-2.5">
                             <label class="text-sm font-bold text-zinc-100 flex items-center">
@@ -337,7 +337,7 @@
                     </div>
                 </div>
 
-                <!-- Cột phải: Live Canvas & Nhấn để Phóng to Căn Chỉnh -->
+                <!-- Cột phải: Live Canvas -->
                 <div class="lg:col-span-7 flex flex-col space-y-3.5">
                     <div id="collageEmptyRightState" class="h-64 lg:h-full min-h-[300px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-6">
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-4xl mb-4"></i>
@@ -356,7 +356,6 @@
                             </button>
                         </div>
 
-                        <!-- Khung chạm trực tiếp trên Mobile/PC để mở bộ căn chỉnh -->
                         <div onclick="openExpandedTouchEditor()"
                             class="relative w-full h-64 sm:h-80 bg-black rounded-2xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_35px_rgba(255,0,60,0.4)] cursor-pointer select-none group/preview">
                             <img id="mergedPreviewImg" src="" alt="Khung ghép" class="w-full h-full object-contain pointer-events-none">
@@ -368,7 +367,7 @@
                             </div>
 
                             <div class="absolute bottom-2.5 right-2.5 bg-black/90 text-[10px] sm:text-xs font-bold text-cyan-300 px-2 py-1 rounded border border-cyan-500/60 pointer-events-none">
-                                <i class="fa-solid fa-hand mr-1 text-red-400"></i>TOUCH READY
+                                <i class="fa-solid fa-hand mr-1 text-red-400"></i>PINCH / TOUCH
                             </div>
                         </div>
                     </div>
@@ -377,9 +376,8 @@
         </div>
     </div>
 
-    <!-- MODAL PHÓNG TO VÀ CĂN CHỈNH BẰNG TAY (HỖ TRỢ MOBILE CẢM ỨNG CỰC NHẠY & PC) -->
+    <!-- Modal Phóng To Căn Chỉnh Hỗ Trợ 1 Ngón Kéo Vuốt + 2 Ngón Pinch-to-Zoom -->
     <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
-        <!-- Top Bar HUD -->
         <div class="flex items-center justify-between pb-2.5 border-b border-red-900/60 mb-2">
             <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_8px_#00f0ff]"></span>
@@ -394,10 +392,9 @@
             </button>
         </div>
 
-        <!-- Controls Bar -->
         <div class="flex items-center justify-between text-xs text-zinc-300 px-1 py-1 font-semibold">
             <span class="text-cyan-300 truncate mr-2 flex items-center text-[11px] sm:text-xs">
-                <i class="fa-solid fa-hand-pointer mr-1.5 text-red-500 text-sm"></i> Kéo vuốt để căn vị trí
+                <i class="fa-solid fa-up-down-left-right mr-1.5 text-red-500 text-sm"></i> 1 ngón di chuyển • 2 ngón phóng to/nhỏ
             </span>
             <div class="flex items-center space-x-1.5 flex-shrink-0">
                 <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold" title="Thu nhỏ">
@@ -413,7 +410,6 @@
             </div>
         </div>
 
-        <!-- Vùng Canvas Phóng To Cực Đại Để Vuốt Bằng Tay Trên Mobile -->
         <div class="flex-1 w-full relative flex items-center justify-center overflow-hidden my-2 bg-[#050508] rounded-xl border border-red-900/60 shadow-inner">
             <div id="expandedCanvasWrapper" 
                 class="relative w-full h-full max-h-[85vh] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none">
@@ -421,12 +417,21 @@
             </div>
         </div>
 
-        <!-- Chọn Slot Nhanh Ở Chân Modal -->
         <div id="expSlotButtonsContainer" class="flex items-center justify-center space-x-2 pt-1 border-t border-red-950 font-bold">
             <span class="text-[11px] uppercase text-zinc-500 mr-1">CHỌN Ô:</span>
             <button type="button" id="expSlotBtn0" onclick="switchExpandedSlot(0)" class="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]">ẢNH 1</button>
             <button type="button" id="expSlotBtn1" onclick="switchExpandedSlot(1)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 2</button>
             <button type="button" id="expSlotBtn2" onclick="switchExpandedSlot(2)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 3</button>
+        </div>
+    </div>
+
+    <!-- Modal Xem Ảnh Chi Tiết -->
+    <div id="imgModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-3 sm:p-4 hidden" onclick="closeImgViewer()">
+        <div class="relative max-w-4xl max-h-[92vh] bg-black p-2 rounded-xl border-2 border-red-600 shadow-[0_0_40px_rgba(255,0,60,0.6)]" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeImgViewer()" class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-600 text-black font-black flex items-center justify-center hover:scale-110 transition shadow-[0_0_15px_#ff003c]">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="modalViewerImage" src="" alt="Ảnh Chi Tiết" class="max-w-full max-h-[86vh] object-contain rounded">
         </div>
     </div>
 
@@ -473,12 +478,11 @@
         let accounts = [];
         let pendingDeleteId = null;
         let isAudioEnabled = true;
-        let currentCollageMode = 2; // 1, 2 hoặc 3
+        let currentCollageMode = 2;
         let collageSlots = [null, null, null];
         let currentUploadedImage = "";
         let currentTweakSlot = 0;
 
-        // Cấu hình Zoom & Pan riêng cho từng slot ảnh
         let collageConfig = {
             slots: [
                 { zoom: 1, panX: 0, panY: 0 },
@@ -487,13 +491,24 @@
             ]
         };
 
-        // Biến phục vụ cảm ứng kéo vuốt (Touch / Mouse Drag)
+        // Biến điều khiển thao tác kéo vuốt và Pinch Zoom 2 ngón
         let isDragging = false;
         let dragStartX = 0;
         let dragStartY = 0;
         let initialPanX = 0;
         let initialPanY = 0;
         let dragSlotIndex = 0;
+
+        let isPinching = false;
+        let initialPinchDistance = 0;
+        let initialPinchZoom = 1;
+
+        // Tính khoảng cách giữa 2 điểm chạm (Pinch Distance)
+        function getTouchDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
 
         // Web Audio Synthesizer
         let audioContext = null;
@@ -681,7 +696,26 @@
             }
         };
 
-        // --- CÁC HÀM CĂN CHỈNH VUỐT CHẠM PHÓNG TO TRÊN MOBILE & PC ---
+        window.downloadAccountImage = function(imageUrl, accTitle, event) {
+            if (event) event.stopPropagation();
+            if (!imageUrl) {
+                showToast('Tài khoản này chưa có dữ liệu ảnh!', true);
+                return;
+            }
+            playCyberSound('click');
+            const cleanTitle = (accTitle || 'CYBER_ACC').replace(/#/g, '').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const filename = `VAULT_${cleanTitle}_${Date.now()}.jpg`;
+
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`Đã tải ảnh tài khoản ${accTitle} về máy!`);
+        };
+
+        // --- CĂN CHỈNH VUỐT CHẠM & 2 NGÓN PINCH-TO-ZOOM ---
 
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
@@ -766,7 +800,6 @@
             const zoomEl = document.getElementById('expandedZoomIndicator');
             if (zoomEl) zoomEl.textContent = zoomVal + 'x';
 
-            // Ẩn/Hiện nút chọn slot phù hợp chế độ
             for (let i = 0; i < 3; i++) {
                 const b = document.getElementById(`expSlotBtn${i}`);
                 if (!b) continue;
@@ -808,10 +841,10 @@
             showToast('Đã đặt lại căn chỉnh ảnh!');
         };
 
-        // Đăng ký sự kiện Touch & Mouse cho bộ vuốt chạm
+        // ĐĂNG KÝ SỰ KIỆN TOUCH: 1 NGÓN VUỐT & 2 NGÓN PINCH-TO-ZOOM
         const expCanvasWrapper = document.getElementById('expandedCanvasWrapper');
         if (expCanvasWrapper) {
-            // Chuột (PC)
+            // Sự kiện Chuột PC
             expCanvasWrapper.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 handleDragStart(e.clientX, e.clientY, expCanvasWrapper);
@@ -823,26 +856,63 @@
                 if (isDragging) handleDragEnd();
             });
 
-            // Cảm ứng ngón tay (Mobile)
+            // Sự kiện Chạm Mobile (Touch Events)
             expCanvasWrapper.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
+                    // 1 ngón: Di chuyển vị trí (Pan)
+                    isPinching = false;
+                    const t = e.touches[0];
+                    handleDragStart(t.clientX, t.clientY, expCanvasWrapper);
+                } else if (e.touches.length === 2) {
+                    // 2 ngón: Khởi động chế độ Pinch-to-Zoom
+                    isDragging = false;
+                    isPinching = true;
+                    initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+                    initialPinchZoom = collageConfig.slots[currentTweakSlot].zoom;
+                }
+            }, { passive: false });
+
+            expCanvasWrapper.addEventListener('touchmove', (e) => {
+                // Ngăn trình duyệt cuộn trang khi đang thao tác trên ảnh
+                e.preventDefault();
+
+                if (e.touches.length === 1 && isDragging && !isPinching) {
+                    // 1 ngón đang kéo
+                    const t = e.touches[0];
+                    handleDragMove(t.clientX, t.clientY);
+                } else if (e.touches.length === 2 && isPinching) {
+                    // 2 ngón đang chụm/giãn để phóng to/thu nhỏ
+                    const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
+                    if (initialPinchDistance > 0) {
+                        const ratio = currentDist / initialPinchDistance;
+                        let newZoom = initialPinchZoom * ratio;
+                        newZoom = Math.min(Math.max(newZoom, 0.5), 3.0);
+                        newZoom = parseFloat(newZoom.toFixed(2));
+
+                        collageConfig.slots[currentTweakSlot].zoom = newZoom;
+                        
+                        const zoomEl = document.getElementById('expandedZoomIndicator');
+                        if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
+                        
+                        processMergedCanvas();
+                    }
+                }
+            }, { passive: false });
+
+            expCanvasWrapper.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) {
+                    isPinching = false;
+                }
+                if (e.touches.length === 0) {
+                    handleDragEnd();
+                } else if (e.touches.length === 1) {
+                    // Nếu còn 1 ngón, thiết lập lại điểm bắt đầu kéo
                     const t = e.touches[0];
                     handleDragStart(t.clientX, t.clientY, expCanvasWrapper);
                 }
-            }, { passive: true });
-
-            expCanvasWrapper.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1 && isDragging) {
-                    const t = e.touches[0];
-                    handleDragMove(t.clientX, t.clientY);
-                }
-            }, { passive: true });
-
-            expCanvasWrapper.addEventListener('touchend', () => {
-                handleDragEnd();
             });
 
-            // Lăn chuột phóng to trên PC
+            // Lăn chuột PC
             expCanvasWrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const slotToZoom = getSlotAtCoords(e.clientX, e.clientY, expCanvasWrapper);
@@ -852,7 +922,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH & CANVAS GHÉP ẢNH ---
+        // --- RENDER DANH SÁCH & CANVAS ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -874,11 +944,27 @@
 
             listToRender.forEach(acc => {
                 const card = document.createElement('div');
-                card.className = "relative bg-[#0d0d16] border border-red-950/90 hover:border-red-500 rounded-2xl cyber-panel-glow flex flex-col justify-between transition-all duration-300";
+                card.className = "relative bg-[#0d0d16] border border-red-950/90 hover:border-red-500 rounded-2xl cyber-panel-glow flex flex-col justify-between transition-all duration-300 group";
                 
                 const imgSection = acc.image 
-                    ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl">
-                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover">
+                    ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
+                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-xs sm:text-sm cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-red-500 shadow-[0_0_15px_#ff003c]">
+                                <i class="fa-solid fa-magnifying-glass-plus mr-1.5 text-cyan-400"></i> XEM ẢNH
+                            </span>
+                        </div>
+
+                        <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)" 
+                            class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-lg bg-black/85 border border-cyan-400/80 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center justify-center shadow-[0_0_10px_rgba(0,240,255,0.6)] transition active:scale-90"
+                            title="Tải ảnh về máy">
+                            <i class="fa-solid fa-download text-xs"></i>
+                        </button>
+
+                        <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold text-cyan-300 px-2 py-0.5 rounded border border-cyan-500/50 shadow">
+                            VERIFIED // HUD
+                        </div>
                        </div>`
                     : `<div class="w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
                         <i class="fa-solid fa-microchip text-4xl mb-2 text-red-500/30"></i>
@@ -888,33 +974,47 @@
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
 
                 card.innerHTML = `
-                    <button type="button" onclick="promptDeleteAccount('${acc.id}', '${acc.title}')" 
+                    <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
                     </button>
                     ${imgSection}
                     <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
-                            <span class="cyber-font text-lg font-black text-red-400">${acc.title}</span>
+                            <span class="cyber-font text-base sm:text-lg font-black text-red-400 tracking-wider">${escapeHtml(acc.title)}</span>
                             <span class="text-xs text-zinc-400">${dateStr}</span>
                         </div>
                         <div class="space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800">
-                                <span class="text-zinc-100 font-semibold text-sm truncate mr-2">${acc.username}</span>
-                                <button type="button" onclick="copyToClipboard('${acc.username}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300">
+                                <span class="text-zinc-100 font-semibold text-sm truncate mr-2">${escapeHtml(acc.username)}</span>
+                                <button type="button" onclick="copyToClipboard('${escapeHtml(acc.username)}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1">
                                     <i class="fa-regular fa-copy text-sm"></i>
                                 </button>
                             </div>
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800">
                                 <span id="passText_${acc.id}" class="text-zinc-100 font-bold mono-font text-sm">••••••••</span>
                                 <div class="flex items-center space-x-2">
-                                    <button type="button" onclick="toggleCardPassword('${acc.id}', '${acc.password}')" class="text-zinc-400 hover:text-yellow-400">
+                                    <button type="button" onclick="toggleCardPassword('${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1">
                                         <i id="passIcon_${acc.id}" class="fa-solid fa-eye text-sm"></i>
                                     </button>
-                                    <button type="button" onclick="copyToClipboard('${acc.password}', 'mật khẩu')" class="text-zinc-400 hover:text-cyan-300">
+                                    <button type="button" onclick="copyToClipboard('${escapeHtml(acc.password)}', 'mật khẩu')" class="text-zinc-400 hover:text-cyan-300 p-1">
                                         <i class="fa-regular fa-copy text-sm"></i>
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
+                            <span class="tracking-widest font-mono text-[11px]">SEC // ${acc.id.slice(-6)}</span>
+                            
+                            <div class="flex items-center space-x-2">
+                                ${acc.image ? `
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
+                                        class="px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
+                                        <i class="fa-solid fa-download text-xs text-cyan-400"></i>
+                                        <span>Tải ảnh</span>
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
@@ -979,13 +1079,11 @@
             const panX = slotCfg.panX;
             const panY = slotCfg.panY;
 
-            // Nền mờ nghệ thuật
             ctx.save();
             ctx.filter = 'blur(16px) brightness(0.35)';
             ctx.drawImage(img, x - 10, y - 10, w + 20, h + 20);
             ctx.restore();
 
-            // Ảnh chính hỗ trợ Pan & Zoom
             const scale = Math.min(w / img.width, h / img.height) * zoom;
             const drawW = img.width * scale;
             const drawH = img.height * scale;
@@ -1055,7 +1153,6 @@
                 ctx.stroke();
             }
 
-            // Watermark mã tài khoản
             const code = document.getElementById('accTitle').value.trim() || '#CYBER';
             ctx.fillStyle = 'rgba(4, 4, 7, 0.9)';
             ctx.fillRect(16, H - 46, 180, 32);
@@ -1091,6 +1188,18 @@
         window.closeAddModal = function() {
             document.getElementById('addAccModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
+        };
+
+        window.openImgViewer = function(src) {
+            playCyberSound('click');
+            const modal = document.getElementById('imgModal');
+            const img = document.getElementById('modalViewerImage');
+            img.src = src;
+            modal.classList.remove('hidden');
+        };
+
+        window.closeImgViewer = function() {
+            document.getElementById('imgModal').classList.add('hidden');
         };
 
         window.promptDeleteAccount = function(id, title) {
@@ -1145,6 +1254,15 @@
             document.getElementById('toastMsg').textContent = msg;
             toast.className = `fixed bottom-5 right-5 z-[80] translate-y-0 opacity-100 transition-all duration-300 px-5 py-3 rounded-xl border-2 text-sm flex items-center space-x-3 ${isErr ? 'bg-black/95 border-yellow-500 text-yellow-300' : 'bg-[#0c0c16]/95 border-red-500 text-white'}`;
             setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#039;');
         }
 
         window.addEventListener('DOMContentLoaded', fetchAccountsFromSupabase);
