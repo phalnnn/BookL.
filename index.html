@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho acc của Chía - Vault Management System</title>
+    <title>Kho acc của Chía </title>
     
-    <!-- PWA -->
+    <!-- Cấu hình Icon & PWA sang icon.jpg -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="icon.jpg">
+    <link rel="apple-touch-icon" href="icon.jpg">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ff003c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
 
     <!-- Tailwind CSS & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -941,7 +943,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (ĐÃ LOẠI BỎ CHỮ ĐÃ BÁN Ở KHO HIỆN CÓ) ---
+        // --- RENDER DANH SÁCH ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -977,7 +979,6 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
-                // Khung ảnh
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -988,7 +989,6 @@
                             </span>
                         </div>
 
-                        <!-- Nút Tải Nhanh Trên Ảnh -->
                         <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)" 
                             class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-lg bg-black/85 border border-cyan-400/80 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center justify-center shadow-[0_0_10px_rgba(0,240,255,0.6)] transition active:scale-90"
                             title="Tải ảnh về máy">
@@ -1007,7 +1007,6 @@
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
                 const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
 
-                // Chỉ hiển thị nút KHÔI PHỤC khi ở tab đã bán, còn ở kho hiện có thì bỏ nút ĐÃ BÁN
                 let actionBtnHtml = '';
                 if (isSold) {
                     actionBtnHtml = `
