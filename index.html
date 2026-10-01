@@ -2,7 +2,7 @@
 <html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cyber Account Vault - Trung Tâm Quản Lý Kho Acc Tương Lai</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,6 +55,7 @@
             font-size: 15px;
             letter-spacing: 0.01em;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
         .cyber-font {
             font-family: 'Orbitron', monospace;
@@ -72,9 +73,6 @@
                 linear-gradient(rgba(255, 0, 60, 0.06) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 0, 60, 0.06) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-        }
-        .cyber-cut-corner {
-            clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
         }
         .cyber-cut-btn {
             clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
@@ -203,7 +201,7 @@
         </div>
     </main>
 
-    <!-- Modal Thêm Acc -->
+    <!-- Modal Thêm Acc (Responsive ngang desktop, dọc mobile) -->
     <div id="addAccModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden my-auto max-h-[94vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-4 border-b border-red-950/80 bg-zinc-950/95 relative">
@@ -219,8 +217,8 @@
                 </button>
             </div>
 
-            <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Cột trái: Form nhập -->
+            <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Cột trái: Nhập thông tin & chọn slot ảnh -->
                 <div class="lg:col-span-5 flex flex-col space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -262,7 +260,7 @@
                         </div>
                     </div>
 
-                    <!-- Khung chọn chế độ ảnh (1 Ảnh, 2 Ảnh, 3 Ảnh) -->
+                    <!-- Khung chọn chế độ 1 Ảnh / 2 Ảnh / 3 Ảnh -->
                     <div class="pt-3 border-t border-zinc-800">
                         <div class="flex items-center justify-between mb-2.5">
                             <label class="text-sm font-bold text-zinc-100 flex items-center">
@@ -275,10 +273,10 @@
                             </div>
                         </div>
 
-                        <!-- Chế độ 1 Ảnh -->
+                        <!-- 1 Ảnh -->
                         <div id="slotsMode1" class="hidden space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
-                                <span class="text-sm font-semibold text-zinc-200">Ảnh Bìa / Minh Họa</span>
+                                <span class="text-sm font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
                                 <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
                                     <i class="fa-solid fa-upload mr-1.5"></i> Chọn
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
@@ -286,7 +284,7 @@
                             </div>
                         </div>
 
-                        <!-- Chế độ 2 Ảnh -->
+                        <!-- 2 Ảnh -->
                         <div id="slotsMode2" class="space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
@@ -304,7 +302,7 @@
                             </div>
                         </div>
 
-                        <!-- Chế độ 3 Ảnh -->
+                        <!-- 3 Ảnh -->
                         <div id="slotsMode3" class="hidden space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
@@ -339,21 +337,96 @@
                     </div>
                 </div>
 
-                <!-- Cột phải: Live Canvas -->
+                <!-- Cột phải: Live Canvas & Nhấn để Phóng to Căn Chỉnh -->
                 <div class="lg:col-span-7 flex flex-col space-y-3.5">
-                    <div id="collageEmptyRightState" class="h-64 lg:h-full min-h-[320px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-6">
+                    <div id="collageEmptyRightState" class="h-64 lg:h-full min-h-[300px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-6">
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-4xl mb-4"></i>
                         <h4 class="cyber-font text-base text-zinc-100 font-black mb-2">CYBER COLLAGE ENGINE</h4>
-                        <p class="text-sm text-zinc-400 max-w-sm">Chọn 1, 2 hoặc 3 ảnh ở cột bên trái để hiển thị thẻ kho trực quan.</p>
+                        <p class="text-sm text-zinc-400 max-w-sm">Chọn 1, 2 hoặc 3 ảnh ở cột bên trái để hiển thị khung ảnh.</p>
                     </div>
 
-                    <div id="collageTweakPanel" class="hidden flex flex-col space-y-3.5">
-                        <div id="mergedResultContainer" class="relative w-full h-64 sm:h-80 bg-black rounded-2xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_35px_rgba(255,0,60,0.4)]">
-                            <img id="mergedPreviewImg" src="" alt="Khung ghép" class="w-full h-full object-contain">
+                    <div id="collageTweakPanel" class="hidden flex flex-col space-y-2.5">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-cyan-300 flex items-center font-bold text-xs sm:text-sm">
+                                <i class="fa-solid fa-hand-pointer mr-2 animate-pulse text-red-500"></i>
+                                Nhấn vào ảnh để phóng to căn chỉnh:
+                            </span>
+                            <button type="button" onclick="openExpandedTouchEditor()" class="text-xs font-bold bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-black border border-red-500/60 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 active:scale-95">
+                                <i class="fa-solid fa-expand"></i> Phóng to
+                            </button>
+                        </div>
+
+                        <!-- Khung chạm trực tiếp trên Mobile/PC để mở bộ căn chỉnh -->
+                        <div onclick="openExpandedTouchEditor()"
+                            class="relative w-full h-64 sm:h-80 bg-black rounded-2xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_35px_rgba(255,0,60,0.4)] cursor-pointer select-none group/preview">
+                            <img id="mergedPreviewImg" src="" alt="Khung ghép" class="w-full h-full object-contain pointer-events-none">
+                            
+                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                <span class="text-xs sm:text-sm cyber-font font-black bg-black/95 text-red-400 border border-red-500 px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(255,0,60,0.8)]">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center mr-2 text-cyan-400"></i>CHẠM ĐỂ CĂN CHỈNH
+                                </span>
+                            </div>
+
+                            <div class="absolute bottom-2.5 right-2.5 bg-black/90 text-[10px] sm:text-xs font-bold text-cyan-300 px-2 py-1 rounded border border-cyan-500/60 pointer-events-none">
+                                <i class="fa-solid fa-hand mr-1 text-red-400"></i>TOUCH READY
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL PHÓNG TO VÀ CĂN CHỈNH BẰNG TAY (HỖ TRỢ MOBILE CẢM ỨNG CỰC NHẠY & PC) -->
+    <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
+        <!-- Top Bar HUD -->
+        <div class="flex items-center justify-between pb-2.5 border-b border-red-900/60 mb-2">
+            <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_8px_#00f0ff]"></span>
+                <h3 class="cyber-font text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-400 truncate">
+                    CĂN CHỈNH // <span id="expandedSlotTitle" class="text-white">ẢNH 1</span>
+                </h3>
+            </div>
+            
+            <button type="button" onclick="closeExpandedTouchEditor()" 
+                class="cyber-cut-btn px-4 py-1.5 bg-red-600 hover:bg-red-500 text-black font-black cyber-font text-xs rounded transition uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,60,0.8)] active:scale-95">
+                <i class="fa-solid fa-check mr-1"></i> XONG
+            </button>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="flex items-center justify-between text-xs text-zinc-300 px-1 py-1 font-semibold">
+            <span class="text-cyan-300 truncate mr-2 flex items-center text-[11px] sm:text-xs">
+                <i class="fa-solid fa-hand-pointer mr-1.5 text-red-500 text-sm"></i> Kéo vuốt để căn vị trí
+            </span>
+            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold" title="Thu nhỏ">
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+                <span id="expandedZoomIndicator" class="text-xs text-yellow-300 px-1 cyber-font font-bold">1.0x</span>
+                <button type="button" onclick="adjustActiveZoom(0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold" title="Phóng to">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button type="button" onclick="resetSlotAdjustments()" class="ml-1 px-2.5 h-8 bg-zinc-900 border border-zinc-700 text-xs rounded-lg text-zinc-300 hover:text-red-400 active:scale-95 flex items-center gap-1 font-bold">
+                    <i class="fa-solid fa-rotate-left"></i> Đặt lại
+                </button>
+            </div>
+        </div>
+
+        <!-- Vùng Canvas Phóng To Cực Đại Để Vuốt Bằng Tay Trên Mobile -->
+        <div class="flex-1 w-full relative flex items-center justify-center overflow-hidden my-2 bg-[#050508] rounded-xl border border-red-900/60 shadow-inner">
+            <div id="expandedCanvasWrapper" 
+                class="relative w-full h-full max-h-[85vh] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none">
+                <img id="expandedPreviewImg" src="" alt="Căn chỉnh lớn" class="max-w-full max-h-full object-contain pointer-events-none rounded-xl border border-red-500/50 shadow-[0_0_40px_rgba(255,0,60,0.3)]">
+            </div>
+        </div>
+
+        <!-- Chọn Slot Nhanh Ở Chân Modal -->
+        <div id="expSlotButtonsContainer" class="flex items-center justify-center space-x-2 pt-1 border-t border-red-950 font-bold">
+            <span class="text-[11px] uppercase text-zinc-500 mr-1">CHỌN Ô:</span>
+            <button type="button" id="expSlotBtn0" onclick="switchExpandedSlot(0)" class="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]">ẢNH 1</button>
+            <button type="button" id="expSlotBtn1" onclick="switchExpandedSlot(1)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 2</button>
+            <button type="button" id="expSlotBtn2" onclick="switchExpandedSlot(2)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 3</button>
         </div>
     </div>
 
@@ -385,7 +458,7 @@
     <canvas id="collageCanvas" class="hidden"></canvas>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-[70] translate-y-24 opacity-0 transition-all duration-300 pointer-events-none px-4 py-3 rounded-xl border mono-font text-xs flex items-center space-x-3 shadow-2xl backdrop-blur-md">
+    <div id="toast" class="fixed bottom-5 right-5 z-[80] translate-y-24 opacity-0 transition-all duration-300 pointer-events-none px-4 py-3 rounded-xl border mono-font text-xs flex items-center space-x-3 shadow-2xl backdrop-blur-md">
         <i id="toastIcon" class="fa-solid fa-check text-sm"></i>
         <span id="toastMsg" class="font-bold">Ready</span>
     </div>
@@ -403,6 +476,24 @@
         let currentCollageMode = 2; // 1, 2 hoặc 3
         let collageSlots = [null, null, null];
         let currentUploadedImage = "";
+        let currentTweakSlot = 0;
+
+        // Cấu hình Zoom & Pan riêng cho từng slot ảnh
+        let collageConfig = {
+            slots: [
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 }
+            ]
+        };
+
+        // Biến phục vụ cảm ứng kéo vuốt (Touch / Mouse Drag)
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let initialPanX = 0;
+        let initialPanY = 0;
+        let dragSlotIndex = 0;
 
         // Web Audio Synthesizer
         let audioContext = null;
@@ -461,13 +552,12 @@
             icon.className = isAudioEnabled ? "fa-solid fa-volume-high text-xs text-cyan-400" : "fa-solid fa-volume-xmark text-xs text-zinc-500";
         };
 
-        // Đồng hồ ICT
         setInterval(() => {
             const clockEl = document.getElementById('cyberClock');
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
-        // --- CÁC HÀM SUPABASE DATABASE ---
+        // --- CÁC HÀM XỬ LÝ SUPABASE DATABASE ---
 
         async function fetchAccountsFromSupabase() {
             try {
@@ -530,7 +620,6 @@
             }
 
             const formattedTitle = codeInput.startsWith('#') ? codeInput : '#' + codeInput;
-
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LƯU...`;
 
@@ -592,7 +681,178 @@
             }
         };
 
-        // --- RENDER VÀ CANVAS GHÉP ẢNH ---
+        // --- CÁC HÀM CĂN CHỈNH VUỐT CHẠM PHÓNG TO TRÊN MOBILE & PC ---
+
+        function getSlotAtCoords(clientX, clientY, targetEl) {
+            if (currentCollageMode === 1) return 0;
+
+            const rect = targetEl.getBoundingClientRect();
+            const relX = (clientX - rect.left) / rect.width;
+            const relY = (clientY - rect.top) / rect.height;
+
+            if (currentCollageMode === 2) {
+                return relY < 0.5 ? 0 : 1;
+            } else {
+                if (relY < 0.52) return 0;
+                return relX < 0.5 ? 1 : 2;
+            }
+        }
+
+        function handleDragStart(clientX, clientY, targetEl) {
+            const targetSlot = getSlotAtCoords(clientX, clientY, targetEl);
+            if (targetSlot !== undefined) {
+                dragSlotIndex = targetSlot;
+                switchExpandedSlot(dragSlotIndex);
+                
+                isDragging = true;
+                dragStartX = clientX;
+                dragStartY = clientY;
+                initialPanX = collageConfig.slots[dragSlotIndex].panX;
+                initialPanY = collageConfig.slots[dragSlotIndex].panY;
+            }
+        }
+
+        function handleDragMove(clientX, clientY) {
+            if (!isDragging) return;
+            const deltaX = (clientX - dragStartX) * 1.5;
+            const deltaY = (clientY - dragStartY) * 1.5;
+
+            collageConfig.slots[dragSlotIndex].panX = Math.round(initialPanX + deltaX);
+            collageConfig.slots[dragSlotIndex].panY = Math.round(initialPanY + deltaY);
+
+            processMergedCanvas();
+        }
+
+        function handleDragEnd() {
+            isDragging = false;
+        }
+
+        window.openExpandedTouchEditor = function() {
+            let activeSlots = [];
+            if (currentCollageMode === 1) activeSlots = [collageSlots[0]];
+            else if (currentCollageMode === 2) activeSlots = [collageSlots[0], collageSlots[1]];
+            else activeSlots = collageSlots;
+
+            if (!activeSlots.some(img => img !== null)) {
+                showToast('Vui lòng chọn ít nhất 1 ảnh trước khi căn chỉnh!', true);
+                return;
+            }
+
+            playCyberSound('click');
+            const modal = document.getElementById('expandedTouchModal');
+            modal.classList.remove('hidden');
+            switchExpandedSlot(currentTweakSlot || 0);
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeExpandedTouchEditor = function() {
+            playCyberSound('click');
+            document.getElementById('expandedTouchModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        window.switchExpandedSlot = function(index) {
+            currentTweakSlot = index;
+            const slotNames = [
+                currentCollageMode === 1 ? "Ảnh Đơn" : "Ảnh 1 (Phía Trên)",
+                currentCollageMode === 2 ? "Ảnh 2 (Phía Dưới)" : "Ảnh 2 (Dưới Trái)",
+                "Ảnh 3 (Dưới Phải)"
+            ];
+
+            const titleEl = document.getElementById('expandedSlotTitle');
+            if (titleEl) titleEl.textContent = slotNames[index] || `Ảnh ${index + 1}`;
+
+            const zoomVal = (collageConfig.slots[index]?.zoom || 1).toFixed(1);
+            const zoomEl = document.getElementById('expandedZoomIndicator');
+            if (zoomEl) zoomEl.textContent = zoomVal + 'x';
+
+            // Ẩn/Hiện nút chọn slot phù hợp chế độ
+            for (let i = 0; i < 3; i++) {
+                const b = document.getElementById(`expSlotBtn${i}`);
+                if (!b) continue;
+
+                if (i >= currentCollageMode) {
+                    b.classList.add('hidden');
+                } else {
+                    b.classList.remove('hidden');
+                    if (i === index) {
+                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]";
+                    } else {
+                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800";
+                    }
+                }
+            }
+        };
+
+        window.adjustActiveZoom = function(delta) {
+            playCyberSound('click');
+            const currentZoom = collageConfig.slots[currentTweakSlot].zoom;
+            let newZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3.0);
+            newZoom = parseFloat(newZoom.toFixed(2));
+            collageConfig.slots[currentTweakSlot].zoom = newZoom;
+
+            const zoomEl = document.getElementById('expandedZoomIndicator');
+            if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
+            processMergedCanvas();
+        };
+
+        window.resetSlotAdjustments = function() {
+            playCyberSound('click');
+            collageConfig.slots = [
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 }
+            ];
+            switchExpandedSlot(currentTweakSlot);
+            processMergedCanvas();
+            showToast('Đã đặt lại căn chỉnh ảnh!');
+        };
+
+        // Đăng ký sự kiện Touch & Mouse cho bộ vuốt chạm
+        const expCanvasWrapper = document.getElementById('expandedCanvasWrapper');
+        if (expCanvasWrapper) {
+            // Chuột (PC)
+            expCanvasWrapper.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                handleDragStart(e.clientX, e.clientY, expCanvasWrapper);
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging) handleDragMove(e.clientX, e.clientY);
+            });
+            window.addEventListener('mouseup', () => {
+                if (isDragging) handleDragEnd();
+            });
+
+            // Cảm ứng ngón tay (Mobile)
+            expCanvasWrapper.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    const t = e.touches[0];
+                    handleDragStart(t.clientX, t.clientY, expCanvasWrapper);
+                }
+            }, { passive: true });
+
+            expCanvasWrapper.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1 && isDragging) {
+                    const t = e.touches[0];
+                    handleDragMove(t.clientX, t.clientY);
+                }
+            }, { passive: true });
+
+            expCanvasWrapper.addEventListener('touchend', () => {
+                handleDragEnd();
+            });
+
+            // Lăn chuột phóng to trên PC
+            expCanvasWrapper.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const slotToZoom = getSlotAtCoords(e.clientX, e.clientY, expCanvasWrapper);
+                switchExpandedSlot(slotToZoom);
+                const zoomFactor = e.deltaY < 0 ? 0.08 : -0.08;
+                adjustActiveZoom(zoomFactor);
+            }, { passive: false });
+        }
+
+        // --- RENDER DANH SÁCH & CANVAS GHÉP ẢNH ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -666,7 +926,6 @@
         window.setCollageMode = function(mode) {
             currentCollageMode = mode;
             
-            // Cập nhật giao diện nút bấm
             const btn1 = document.getElementById('modeBtn1');
             const btn2 = document.getElementById('modeBtn2');
             const btn3 = document.getElementById('modeBtn3');
@@ -675,11 +934,11 @@
             btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded-lg text-zinc-300 hover:text-white";
             btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded-lg text-zinc-300 hover:text-white";
 
-            // Ẩn/Hiện các vùng chọn ảnh tương ứng
             document.getElementById('slotsMode1').classList.toggle('hidden', mode !== 1);
             document.getElementById('slotsMode2').classList.toggle('hidden', mode !== 2);
             document.getElementById('slotsMode3').classList.toggle('hidden', mode !== 3);
 
+            if (currentTweakSlot >= mode) switchExpandedSlot(0);
             processMergedCanvas();
         };
 
@@ -702,6 +961,41 @@
             processMergedCanvas();
         };
 
+        function drawImageToSlot(ctx, img, x, y, w, h, slotIndex) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+
+            if (!img) {
+                ctx.fillStyle = '#0a0a10';
+                ctx.fillRect(x, y, w, h);
+                ctx.restore();
+                return;
+            }
+
+            const slotCfg = collageConfig.slots[slotIndex] || { zoom: 1, panX: 0, panY: 0 };
+            const zoom = slotCfg.zoom;
+            const panX = slotCfg.panX;
+            const panY = slotCfg.panY;
+
+            // Nền mờ nghệ thuật
+            ctx.save();
+            ctx.filter = 'blur(16px) brightness(0.35)';
+            ctx.drawImage(img, x - 10, y - 10, w + 20, h + 20);
+            ctx.restore();
+
+            // Ảnh chính hỗ trợ Pan & Zoom
+            const scale = Math.min(w / img.width, h / img.height) * zoom;
+            const drawW = img.width * scale;
+            const drawH = img.height * scale;
+            const drawX = x + (w - drawW) / 2 + panX;
+            const drawY = y + (h - drawH) / 2 + panY;
+
+            ctx.drawImage(img, drawX, drawY, drawW, drawH);
+            ctx.restore();
+        }
+
         function processMergedCanvas() {
             let activeSlots = [];
             if (currentCollageMode === 1) activeSlots = [collageSlots[0]];
@@ -712,6 +1006,7 @@
             const emptyState = document.getElementById('collageEmptyRightState');
             const tweakPanel = document.getElementById('collageTweakPanel');
             const previewImg = document.getElementById('mergedPreviewImg');
+            const expandedImg = document.getElementById('expandedPreviewImg');
 
             if (!hasImg) {
                 emptyState.classList.remove('hidden');
@@ -732,48 +1027,28 @@
             ctx.fillRect(0, 0, W, H);
 
             if (currentCollageMode === 1) {
-                // Chế độ 1 ảnh: Canh giữa toàn bộ khung, giữ đúng tỷ lệ và làm mờ nền
-                if (collageSlots[0]) {
-                    const img = collageSlots[0];
-                    // Nền mờ nghệ thuật
-                    ctx.save();
-                    ctx.filter = 'blur(20px) brightness(0.35)';
-                    ctx.drawImage(img, -10, -10, W + 20, H + 20);
-                    ctx.restore();
-
-                    // Ảnh chính
-                    const scale = Math.min(W / img.width, H / img.height);
-                    const dw = img.width * scale;
-                    const dh = img.height * scale;
-                    const dx = (W - dw) / 2;
-                    const dy = (H - dh) / 2;
-                    ctx.drawImage(img, dx, dy, dw, dh);
-                }
+                drawImageToSlot(ctx, collageSlots[0], 0, 0, W, H, 0);
             } else if (currentCollageMode === 2) {
-                // Chế độ 2 ảnh: Trên - Dưới
                 const halfH = Math.round(H / 2);
-                if (collageSlots[0]) ctx.drawImage(collageSlots[0], 0, 0, W, halfH);
-                if (collageSlots[1]) ctx.drawImage(collageSlots[1], 0, halfH, W, halfH);
+                drawImageToSlot(ctx, collageSlots[0], 0, 0, W, halfH, 0);
+                drawImageToSlot(ctx, collageSlots[1], 0, halfH, W, halfH, 1);
                 
-                // Viền ngăn cách neon
                 ctx.strokeStyle = '#ff003c';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 2.5;
                 ctx.beginPath();
-                ctx.moveTo(0, halfH);
-                ctx.lineTo(W, halfH);
+                ctx.moveTo(0, halfH); ctx.lineTo(W, halfH);
                 ctx.stroke();
             } else {
-                // Chế độ 3 ảnh: 1 Trên - 2 Dưới
                 const topH = Math.round(H * 0.52);
                 const botH = H - topH;
                 const halfW = Math.round(W / 2);
-                if (collageSlots[0]) ctx.drawImage(collageSlots[0], 0, 0, W, topH);
-                if (collageSlots[1]) ctx.drawImage(collageSlots[1], 0, topH, halfW, botH);
-                if (collageSlots[2]) ctx.drawImage(collageSlots[2], halfW, topH, halfW, botH);
 
-                // Đường chia ngang & dọc
+                drawImageToSlot(ctx, collageSlots[0], 0, 0, W, topH, 0);
+                drawImageToSlot(ctx, collageSlots[1], 0, topH, halfW, botH, 1);
+                drawImageToSlot(ctx, collageSlots[2], halfW, topH, halfW, botH, 2);
+
                 ctx.strokeStyle = '#ff003c';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 2.5;
                 ctx.beginPath();
                 ctx.moveTo(0, topH); ctx.lineTo(W, topH);
                 ctx.moveTo(halfW, topH); ctx.lineTo(halfW, H);
@@ -791,8 +1066,9 @@
             ctx.fillStyle = '#ffffff';
             ctx.fillText(code, 30, H - 24);
 
-            currentUploadedImage = canvas.toDataURL('image/jpeg', 0.85);
-            previewImg.src = currentUploadedImage;
+            currentUploadedImage = canvas.toDataURL('image/jpeg', 0.88);
+            if (previewImg) previewImg.src = currentUploadedImage;
+            if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
         // Helper UI
@@ -800,14 +1076,21 @@
             document.getElementById('addAccForm').reset();
             collageSlots = [null, null, null];
             currentUploadedImage = "";
-            setCollageMode(1); // Mặc định mở ở chế độ 1 ảnh tiện lợi
+            collageConfig.slots = [
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 }
+            ];
+            setCollageMode(1);
             processMergedCanvas();
             generateUniqueAccCode();
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+            document.body.style.overflow = 'hidden';
         };
 
         window.closeAddModal = function() {
             document.getElementById('addAccModal').classList.replace('flex', 'hidden');
+            document.body.style.overflow = '';
         };
 
         window.promptDeleteAccount = function(id, title) {
@@ -860,11 +1143,10 @@
         function showToast(msg, isErr = false) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').textContent = msg;
-            toast.className = `fixed bottom-5 right-5 z-[70] translate-y-0 opacity-100 transition-all duration-300 px-5 py-3 rounded-xl border-2 text-sm flex items-center space-x-3 ${isErr ? 'bg-black/95 border-yellow-500 text-yellow-300' : 'bg-[#0c0c16]/95 border-red-500 text-white'}`;
+            toast.className = `fixed bottom-5 right-5 z-[80] translate-y-0 opacity-100 transition-all duration-300 px-5 py-3 rounded-xl border-2 text-sm flex items-center space-x-3 ${isErr ? 'bg-black/95 border-yellow-500 text-yellow-300' : 'bg-[#0c0c16]/95 border-red-500 text-white'}`;
             setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 3000);
         }
 
-        // Khởi chạy khi load trang
         window.addEventListener('DOMContentLoaded', fetchAccountsFromSupabase);
     </script>
 </body>
