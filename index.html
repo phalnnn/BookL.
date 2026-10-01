@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho acc của Chía </title>
+    <title>Kho acc của Chía 💗</title>
     
     <!-- Cấu hình Icon & PWA sang icon.jpg -->
     <link rel="icon" type="image/jpeg" href="icon.jpg">
@@ -746,6 +746,7 @@
             }
         };
 
+        // ĐỔI TÊN FILE KHI TẢI VỀ THÀNH ĐÚNG "MÃ TÀI KHOẢN.jpg"
         window.downloadAccountImage = function(imageUrl, accTitle, event) {
             if (event) event.stopPropagation();
             if (!imageUrl) {
@@ -753,8 +754,10 @@
                 return;
             }
             playCyberSound('click');
-            const cleanTitle = (accTitle || 'CYBER_ACC').replace(/#/g, '').replace(/[^a-zA-Z0-9_-]/g, '_');
-            const filename = `VAULT_${cleanTitle}_${Date.now()}.jpg`;
+            
+            // Lấy trực tiếp mã tài khoản, chỉ loại bỏ các ký tự hệ thống cấm đặt tên file
+            const safeTitle = (accTitle || 'TAI_KHOAN').trim().replace(/[/\\?%*:|"<>]/g, '');
+            const filename = `${safeTitle}.jpg`;
 
             const link = document.createElement('a');
             link.href = imageUrl;
@@ -762,7 +765,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast(`Đã tải ảnh tài khoản ${accTitle} về máy!`);
+            showToast(`Đã tải ảnh ${filename} về máy!`);
         };
 
         // --- CĂN CHỈNH VUỐT CHẠM & PINCH-TO-ZOOM ---
@@ -943,7 +946,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH ---
+        // --- RENDER DANH SÁCH (ĐÃ BỎ NÚT TẢI GÓC ẢNH) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -979,6 +982,7 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
+                // Khung ảnh: ĐÃ BỎ NÚT TẢI Ở GÓC TRÊN BÊN PHẢI THEO YÊU CẦU
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -988,12 +992,6 @@
                                 <i class="fa-solid fa-magnifying-glass-plus mr-1.5 text-cyan-400"></i> XEM ẢNH
                             </span>
                         </div>
-
-                        <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)" 
-                            class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-lg bg-black/85 border border-cyan-400/80 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center justify-center shadow-[0_0_10px_rgba(0,240,255,0.6)] transition active:scale-90"
-                            title="Tải ảnh về máy">
-                            <i class="fa-solid fa-download text-xs"></i>
-                        </button>
 
                         <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold ${isSold ? 'text-yellow-400 border-yellow-500/50' : 'text-cyan-300 border-cyan-500/50'} px-2 py-0.5 rounded border shadow">
                             ${isSold ? 'TRẠNG THÁI: ĐÃ BÁN' : 'KHO SẴN SÀNG'}
@@ -1049,7 +1047,7 @@
                             </div>
                         </div>
 
-                        <!-- Chân Thẻ -->
+                        <!-- Chân Thẻ: Tải ảnh với tên file "Mã tài khoản.jpg" -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
                             ${acc.image ? `
                                 <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
