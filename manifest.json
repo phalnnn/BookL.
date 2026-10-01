@@ -1,0 +1,23 @@
+{
+  "name": "Kho acc của Chía",
+  "short_name": "Kho Chía",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#040407",
+  "theme_color": "#ff003c",
+  "description": "Trung tâm quản lý kho tài khoản Cyber Vault",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1055/1055687.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1055/1055687.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
