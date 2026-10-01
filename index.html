@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho acc của Chía 💗</title>
+    <title>Kho acc của Chía💗</title>
     
     <!-- Cấu hình Icon & PWA sang icon.jpg -->
     <link rel="icon" type="image/jpeg" href="icon.jpg">
@@ -147,17 +147,21 @@
                     </div>
                 </div>
 
+                <!-- Nút Cài App (Luôn hiện trên máy tính/điện thoại) -->
                 <button type="button" id="installAppBtn" onclick="installPWAApp()" 
-                    class="hidden h-9 px-3 rounded-lg bg-zinc-900 border border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center text-xs font-bold gap-1.5 transition active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.4)]">
+                    class="h-9 px-3 rounded-lg bg-zinc-900 border border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center text-xs font-bold gap-1.5 transition active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.4)]"
+                    title="Cài đặt và ghim thành App vào màn hình / Taskbar">
                     <i class="fa-solid fa-laptop-arrow-down text-sm"></i>
-                    <span class="hidden sm:inline">CÀI APP</span>
+                    <span>CÀI APP</span>
                 </button>
 
+                <!-- Nút Âm Thanh -->
                 <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" 
                     class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95">
                     <i id="soundIcon" class="fa-solid fa-volume-high text-sm text-cyan-400"></i>
                 </button>
 
+                <!-- Nút Thêm Acc -->
                 <button type="button" onclick="openAddModal()" 
                     class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95 group">
                     <i class="fa-solid fa-plus mr-1.5 text-black transition-transform group-hover:rotate-90"></i>
@@ -196,7 +200,7 @@
         <!-- Lưới danh sách tài khoản -->
         <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <!-- Trạng thái trống (Empty State) -->
+        <!-- Empty State -->
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
                 <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
@@ -227,9 +231,10 @@
 
             <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Cột trái: Form nhập -->
-                <div class="lg:col-span-5 flex flex-col space-y-4">
+                <div class="lg:col-span-5 flex flex-col space-y-3.5">
+                    <!-- 1. Mã tài khoản -->
                     <div>
-                        <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center justify-between mb-1.5">
                             <label for="accTitle" class="text-sm font-bold text-zinc-100 flex items-center">
                                 <i class="fa-solid fa-fingerprint text-red-500 mr-2 text-base"></i> MÃ TÀI KHOẢN:
                             </label>
@@ -239,36 +244,51 @@
                         </div>
                         <div class="relative">
                             <input type="text" id="accTitle" required placeholder="#12345" oninput="syncWatermarkFromCode(this.value)"
-                                class="w-full px-4 py-2.5 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
+                                class="w-full px-4 py-2 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
                             <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">TAG</span>
                         </div>
-                        <span class="text-xs text-zinc-400 font-medium block mt-1.5">Mã duy nhất, tự động kiểm tra trùng lặp trên Supabase.</span>
                     </div>
 
+                    <!-- 2. Tên Đăng Nhập / Email -->
                     <div>
-                        <label for="accUsername" class="block text-sm font-bold text-zinc-100 mb-2">
+                        <label for="accUsername" class="block text-sm font-bold text-zinc-100 mb-1.5">
                             <i class="fa-solid fa-user-astronaut text-red-500 mr-2 text-base"></i> TÀI KHOẢN / EMAIL:
                         </label>
                         <input type="text" id="accUsername" required placeholder="Nhập tên đăng nhập hoặc email..."
-                            class="w-full px-4 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-base text-zinc-100 font-semibold focus:outline-none transition">
+                            class="w-full px-4 py-2 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-base text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
+                    <!-- 3. Mật Khẩu Tài Khoản Game -->
                     <div>
-                        <label for="accPassword" class="block text-sm font-bold text-zinc-100 mb-2">
-                            <i class="fa-solid fa-key text-red-500 mr-2 text-base"></i> MẬT KHẨU:
+                        <label for="accPassword" class="block text-sm font-bold text-zinc-100 mb-1.5">
+                            <i class="fa-solid fa-key text-red-500 mr-2 text-base"></i> MẬT KHẨU TÀI KHOẢN:
                         </label>
                         <div class="relative">
                             <input type="text" id="accPassword" required placeholder="Nhập mật khẩu..."
-                                class="w-full px-4 py-2.5 pr-12 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-base text-zinc-100 font-semibold focus:outline-none transition">
-                            <button type="button" onclick="toggleFormPassVisibility()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1">
+                                class="w-full px-4 py-2 pr-12 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-base text-zinc-100 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accPassword', 'formPassEyeIcon')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1">
                                 <i id="formPassEyeIcon" class="fa-solid fa-eye text-sm"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Khung chọn chế độ ảnh -->
-                    <div class="pt-3 border-t border-zinc-800">
-                        <div class="flex items-center justify-between mb-2.5">
+                    <!-- 4. MẬT KHẨU HOTMAIL (MỚI BỔ SUNG) -->
+                    <div>
+                        <label for="accHotmailPassword" class="block text-sm font-bold text-zinc-100 mb-1.5">
+                            <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-2 text-base"></i> MẬT KHẨU HOTMAIL:
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="accHotmailPassword" placeholder="Nhập pass hotmail (nếu có)..."
+                                class="w-full px-4 py-2 pr-12 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-base text-cyan-200 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accHotmailPassword', 'formHotmailPassEyeIcon')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1">
+                                <i id="formHotmailPassEyeIcon" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Khung chọn chế độ ảnh -->
+                    <div class="pt-2 border-t border-zinc-800">
+                        <div class="flex items-center justify-between mb-2">
                             <label class="text-sm font-bold text-zinc-100 flex items-center">
                                 <i class="fa-solid fa-layer-group text-red-500 mr-2 text-base"></i> KHUNG ẢNH:
                             </label>
@@ -279,7 +299,7 @@
                             </div>
                         </div>
 
-                        <div id="slotsMode1" class="hidden space-y-2.5">
+                        <div id="slotsMode1" class="hidden space-y-2">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
                                 <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
@@ -289,7 +309,7 @@
                             </div>
                         </div>
 
-                        <div id="slotsMode2" class="space-y-2.5">
+                        <div id="slotsMode2" class="space-y-2">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
                                 <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
@@ -306,7 +326,7 @@
                             </div>
                         </div>
 
-                        <div id="slotsMode3" class="hidden space-y-2.5">
+                        <div id="slotsMode3" class="hidden space-y-2">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
                                 <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
@@ -331,7 +351,7 @@
                         </div>
                     </div>
 
-                    <div class="pt-3">
+                    <div class="pt-2">
                         <button type="submit" id="submitBtn"
                             class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 text-black font-black cyber-font text-sm uppercase tracking-widest transition shadow-[0_0_25px_rgba(255,0,60,0.6)] flex items-center justify-center gap-2">
                             <i class="fa-solid fa-cloud-arrow-up text-base"></i>
@@ -576,6 +596,7 @@
                     title: row.title,
                     username: row.username,
                     password: row.password,
+                    hotmail_password: row.hotmail_password || '',
                     image: row.image,
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
@@ -676,6 +697,7 @@
             const codeInput = document.getElementById('accTitle').value.trim();
             const username = document.getElementById('accUsername').value.trim();
             const password = document.getElementById('accPassword').value.trim();
+            const hotmailPassword = document.getElementById('accHotmailPassword').value.trim();
 
             if (!codeInput || !username || !password) {
                 playCyberSound('warn');
@@ -708,6 +730,7 @@
                     title: formattedTitle,
                     username: username,
                     password: password,
+                    hotmail_password: hotmailPassword || null,
                     image: currentUploadedImage || null,
                     is_sold: false,
                     sold_at: null
@@ -746,7 +769,6 @@
             }
         };
 
-        // ĐỔI TÊN FILE KHI TẢI VỀ THÀNH ĐÚNG "MÃ TÀI KHOẢN.jpg"
         window.downloadAccountImage = function(imageUrl, accTitle, event) {
             if (event) event.stopPropagation();
             if (!imageUrl) {
@@ -755,7 +777,6 @@
             }
             playCyberSound('click');
             
-            // Lấy trực tiếp mã tài khoản, chỉ loại bỏ các ký tự hệ thống cấm đặt tên file
             const safeTitle = (accTitle || 'TAI_KHOAN').trim().replace(/[/\\?%*:|"<>]/g, '');
             const filename = `${safeTitle}.jpg`;
 
@@ -946,7 +967,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (ĐÃ BỎ NÚT TẢI GÓC ẢNH) ---
+        // --- RENDER DANH SÁCH TÀI KHOẢN (CÓ MẬT KHẨU HOTMAIL) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -982,7 +1003,6 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
-                // Khung ảnh: ĐÃ BỎ NÚT TẢI Ở GÓC TRÊN BÊN PHẢI THEO YÊU CẦU
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -1016,28 +1036,53 @@
                     `;
                 }
 
+                // Render thêm dòng Hotmail nếu có dữ liệu
+                const hotmailRowHtml = acc.hotmail_password ? `
+                    <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
+                        <div class="flex items-center space-x-2 truncate mr-2">
+                            <i class="fa-solid fa-envelope text-cyan-400 text-xs"></i>
+                            <span class="text-[11px] text-zinc-400 font-bold uppercase">Hotmail:</span>
+                            <span id="hotmailPassText_${acc.id}" class="text-cyan-200 font-bold mono-font text-sm">••••••••</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" onclick="toggleCardPassword('hotmailPassText_${acc.id}', 'hotmailPassIcon_${acc.id}', '${escapeHtml(acc.hotmail_password)}')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                                <i id="hotmailPassIcon_${acc.id}" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                            <button type="button" onclick="copyToClipboard('${escapeHtml(acc.hotmail_password)}', 'mật khẩu hotmail')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                ` : '';
+
                 card.innerHTML = `
                     <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
                     </button>
                     ${imgSection}
-                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
-                        <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
+                        <div class="flex items-center justify-between pb-2.5 border-b border-zinc-800">
                             <span class="cyber-font text-base sm:text-lg font-black ${isSold ? 'text-yellow-400 line-through' : 'text-red-400'} tracking-wider">${escapeHtml(acc.title)}</span>
                             <span class="text-xs text-zinc-400">${isSold ? `Bán: ${soldDateStr}` : `Tạo: ${dateStr}`}</span>
                         </div>
-                        <div class="space-y-2.5">
-                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800">
+                        <div class="space-y-2">
+                            <!-- Tài khoản -->
+                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
                                 <span class="text-zinc-100 font-semibold text-sm truncate mr-2">${escapeHtml(acc.username)}</span>
                                 <button type="button" onclick="copyToClipboard('${escapeHtml(acc.username)}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1">
                                     <i class="fa-regular fa-copy text-sm"></i>
                                 </button>
                             </div>
-                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800">
-                                <span id="passText_${acc.id}" class="text-zinc-100 font-bold mono-font text-sm">••••••••</span>
+
+                            <!-- Mật khẩu Game -->
+                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
+                                <div class="flex items-center space-x-2 truncate mr-2">
+                                    <i class="fa-solid fa-lock text-red-500 text-xs"></i>
+                                    <span id="passText_${acc.id}" class="text-zinc-100 font-bold mono-font text-sm">••••••••</span>
+                                </div>
                                 <div class="flex items-center space-x-2">
-                                    <button type="button" onclick="toggleCardPassword('${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1">
+                                    <button type="button" onclick="toggleCardPassword('passText_${acc.id}', 'passIcon_${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1">
                                         <i id="passIcon_${acc.id}" class="fa-solid fa-eye text-sm"></i>
                                     </button>
                                     <button type="button" onclick="copyToClipboard('${escapeHtml(acc.password)}', 'mật khẩu')" class="text-zinc-400 hover:text-cyan-300 p-1">
@@ -1045,9 +1090,12 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Mật khẩu Hotmail (Nếu có) -->
+                            ${hotmailRowHtml}
                         </div>
 
-                        <!-- Chân Thẻ: Tải ảnh với tên file "Mã tài khoản.jpg" -->
+                        <!-- Chân Thẻ -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
                             ${acc.image ? `
                                 <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
@@ -1249,9 +1297,11 @@
             document.getElementById('deleteConfirmModal').classList.replace('flex', 'hidden');
         };
 
-        window.toggleCardPassword = function(id, raw) {
-            const el = document.getElementById(`passText_${id}`);
-            const icon = document.getElementById(`passIcon_${id}`);
+        window.toggleCardPassword = function(textId, iconId, raw) {
+            const el = document.getElementById(textId);
+            const icon = document.getElementById(iconId);
+            if (!el || !icon) return;
+
             if (el.textContent === '••••••••') {
                 el.textContent = raw;
                 icon.className = 'fa-solid fa-eye-slash text-sm text-yellow-400';
@@ -1261,11 +1311,12 @@
             }
         };
 
-        window.toggleFormPassVisibility = function() {
-            const pass = document.getElementById('accPassword');
-            const icon = document.getElementById('formPassEyeIcon');
+        window.toggleFormPassVisibility = function(inputId, iconId) {
+            const pass = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (!pass || !icon) return;
             pass.type = pass.type === 'password' ? 'text' : 'password';
-            icon.className = pass.type === 'password' ? 'fa-solid fa-eye text-sm' : 'fa-solid fa-eye-slash text-sm text-red-400';
+            icon.className = pass.type === 'password' ? 'fa-solid fa-eye text-sm' : 'fa-solid fa-eye-slash text-sm text-cyan-400';
         };
 
         window.copyToClipboard = function(txt, label) {
@@ -1299,10 +1350,8 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        // PWA App Install
+        // PWA App Install Logic
         let deferredPrompt = null;
-        const installAppBtn = document.getElementById('installAppBtn');
-
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
@@ -1312,26 +1361,24 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (installAppBtn) installAppBtn.classList.remove('hidden');
         });
 
         window.installPWAApp = async function() {
-            if (!deferredPrompt) {
-                showToast("Mở Menu trình duyệt (dấu 3 chấm) -> Chọn 'Cài đặt ứng dụng' hoặc 'Thêm vào màn hình chính'.");
-                return;
-            }
             playCyberSound('click');
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                showToast("Đang cài đặt Kho acc của Chía thành App...");
-                if (installAppBtn) installAppBtn.classList.add('hidden');
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast("Đang cài đặt Kho acc của Chía thành App...");
+                }
+                deferredPrompt = null;
+            } else {
+                // Hướng dẫn nếu trình duyệt chặn prompt trực tiếp (ví dụ đang mở qua localhost/file)
+                showToast("Nhấn vào biểu tượng Cài Đặt trên thanh địa chỉ URL hoặc chọn Menu 3 chấm -> 'Cài đặt ứng dụng'!");
             }
-            deferredPrompt = null;
         };
 
         window.addEventListener('appinstalled', () => {
-            if (installAppBtn) installAppBtn.classList.add('hidden');
             showToast("Đã cài đặt App thành công! Bạn có thể ghim vào Taskbar.");
         });
 
