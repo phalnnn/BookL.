@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho acc của Chía </title>
+    <title>Kho acc của Chía - Vault Management System</title>
     
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -134,7 +134,6 @@
                     <span id="cyberClock">00:00:00 ICT</span>
                 </div>
 
-                <!-- Thống kê sẵn sàng / Đã bán -->
                 <div class="flex items-center space-x-2">
                     <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
                         <span class="text-zinc-400 mr-1.5">SẴN:</span>
@@ -146,20 +145,17 @@
                     </div>
                 </div>
 
-                <!-- Nút PWA Install App -->
                 <button type="button" id="installAppBtn" onclick="installPWAApp()" 
                     class="hidden h-9 px-3 rounded-lg bg-zinc-900 border border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center text-xs font-bold gap-1.5 transition active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.4)]">
                     <i class="fa-solid fa-laptop-arrow-down text-sm"></i>
                     <span class="hidden sm:inline">CÀI APP</span>
                 </button>
 
-                <!-- Nút Âm Thanh -->
                 <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" 
                     class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95">
                     <i id="soundIcon" class="fa-solid fa-volume-high text-sm text-cyan-400"></i>
                 </button>
 
-                <!-- Nút Thêm Acc -->
                 <button type="button" onclick="openAddModal()" 
                     class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95 group">
                     <i class="fa-solid fa-plus mr-1.5 text-black transition-transform group-hover:rotate-90"></i>
@@ -170,9 +166,8 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        <!-- Search Bar & Tab Navigation (Chuyển giữa Kho Có Sẵn và Lịch Sử Đã Bán) -->
+        <!-- Search Bar & Tab Navigation -->
         <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
-            <!-- Ô tìm kiếm -->
             <div class="relative w-full md:w-2/3 flex items-center">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
                 <input type="text" id="searchInput" oninput="handleSearch()" placeholder="TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME..."
@@ -182,7 +177,6 @@
                 </button>
             </div>
 
-            <!-- Tabs Bộ Lọc -->
             <div class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
                 <button type="button" id="tabAvailableBtn" onclick="switchViewTab('available')" 
                     class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
@@ -200,7 +194,7 @@
         <!-- Lưới danh sách tài khoản -->
         <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <!-- Empty State -->
+        <!-- Trạng thái trống (Empty State) -->
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
                 <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
@@ -417,7 +411,7 @@
             </div>
         </div>
 
-        <div id="expSlotButtonsContainer" class="flex items-center justify-center space-x-2 pt-1 border-t border-red-950 font-bold">
+        <div id="expSlotButtonsContainer" class="flex items-center justify-center space-x-2 pt-1 border-red-950 font-bold">
             <span class="text-[11px] uppercase text-zinc-500 mr-1">CHỌN Ô:</span>
             <button type="button" id="expSlotBtn0" onclick="switchExpandedSlot(0)" class="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]">ẢNH 1</button>
             <button type="button" id="expSlotBtn1" onclick="switchExpandedSlot(1)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 2</button>
@@ -469,7 +463,6 @@
     </div>
 
     <script>
-        // Cấu hình Supabase
         const SUPABASE_URL = 'https://llijmkoztqthovvklamm.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWpta296dHF0aG92dmtsYW1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4NDQ1NzksImV4cCI6MjEwNjQyMDU3OX0.6ZyBSLuXhQNC-nm1nCBTEZMs5Y3FDE83xD8lvL0HRUk';
         
@@ -605,28 +598,6 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
-        // Đánh dấu đã bán
-        window.markAccountAsSold = async function(id, title) {
-            playCyberSound('click');
-            try {
-                const { error } = await _supabase
-                    .from('accounts')
-                    .update({ 
-                        is_sold: true, 
-                        sold_at: new Date().toISOString() 
-                    })
-                    .eq('id', id);
-
-                if (error) throw error;
-                await fetchAccountsFromSupabase();
-                showToast(`Đã chuyển tài khoản ${title} sang LỊCH SỬ ĐÃ BÁN!`);
-            } catch (err) {
-                console.error("Lỗi cập nhật bán:", err);
-                showToast("Không thể cập nhật trạng thái đã bán!", true);
-            }
-        };
-
-        // Khôi phục lại kho
         window.restoreAccountToVault = async function(id, title) {
             playCyberSound('click');
             try {
@@ -970,7 +941,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH TÀI KHOẢN (HỖ TRỢ THẺ ĐÃ BÁN & KHO CÓ SẴN) ---
+        // --- RENDER DANH SÁCH (ĐÃ LOẠI BỎ CHỮ ĐÃ BÁN Ở KHO HIỆN CÓ) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -988,7 +959,7 @@
                 if (currentTab === 'sold') {
                     emptyIcon.className = "fa-solid fa-receipt text-yellow-500";
                     emptyTitle.textContent = "CHƯA CÓ LỊCH SỬ BÁN";
-                    emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán. Khi bán xong acc trong kho, hãy nhấn 'ĐÃ BÁN' để lưu vào đây!";
+                    emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán.";
                 } else {
                     emptyIcon.className = "fa-solid fa-shield-virus text-red-500";
                     emptyTitle.textContent = "KHO DỮ LIỆU ĐANG TRỐNG";
@@ -1036,6 +1007,18 @@
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
                 const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
 
+                // Chỉ hiển thị nút KHÔI PHỤC khi ở tab đã bán, còn ở kho hiện có thì bỏ nút ĐÃ BÁN
+                let actionBtnHtml = '';
+                if (isSold) {
+                    actionBtnHtml = `
+                        <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
+                            class="px-3 py-1 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
+                            <i class="fa-solid fa-rotate-left text-xs"></i>
+                            <span>KHÔI PHỤC</span>
+                        </button>
+                    `;
+                }
+
                 card.innerHTML = `
                     <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
@@ -1067,7 +1050,7 @@
                             </div>
                         </div>
 
-                        <!-- Chân Thẻ: Nút Tải Ảnh + Nút Chuyển Trạng Thái Đã Bán / Khôi Phục -->
+                        <!-- Chân Thẻ -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
                             ${acc.image ? `
                                 <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
@@ -1077,19 +1060,7 @@
                                 </button>
                             ` : '<span></span>'}
 
-                            ${!isSold ? `
-                                <button type="button" onclick="markAccountAsSold('${acc.id}', '${escapeHtml(acc.title)}')"
-                                    class="px-3 py-1 rounded-md bg-yellow-950/50 hover:bg-yellow-400 border border-yellow-500/70 text-yellow-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(252,238,10,0.3)]">
-                                    <i class="fa-solid fa-check text-xs"></i>
-                                    <span>ĐÃ BÁN</span>
-                                </button>
-                            ` : `
-                                <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
-                                    class="px-3 py-1 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
-                                    <i class="fa-solid fa-rotate-left text-xs"></i>
-                                    <span>KHÔI PHỤC</span>
-                                </button>
-                            `}
+                            ${actionBtnHtml}
                         </div>
                     </div>
                 `;
