@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cyber Account Vault - Trung Tâm Quản Lý Kho Acc Tương Lai</title>
-    <!-- Tailwind CSS -->
+    <title>Kho acc của Chía - Vault Management System</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff003c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+
+    <!-- Tailwind CSS & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +54,6 @@
         :root {
             --cyber-red: #ff003c;
             --cyber-cyan: #00f0ff;
-            --cyber-glow: rgba(255, 0, 60, 0.45);
         }
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -57,14 +64,8 @@
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
-        .cyber-font {
-            font-family: 'Orbitron', monospace;
-            letter-spacing: 0.06em;
-        }
-        .mono-font {
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: -0.01em;
-        }
+        .cyber-font { font-family: 'Orbitron', monospace; letter-spacing: 0.06em; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.01em; }
         .cyber-ambient-bg {
             background-color: #040407;
             background-image: 
@@ -74,9 +75,7 @@
                 linear-gradient(90deg, rgba(255, 0, 60, 0.06) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
         }
-        .cyber-cut-btn {
-            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-        }
+        .cyber-cut-btn { clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); }
         .cyber-panel-glow {
             border: 1px solid rgba(255, 0, 60, 0.4);
             box-shadow: 0 0 25px rgba(255, 0, 60, 0.12), inset 0 0 15px rgba(255, 0, 60, 0.04);
@@ -86,24 +85,27 @@
             border-color: rgba(255, 0, 60, 0.85);
             box-shadow: 0 0 35px rgba(255, 0, 60, 0.25), inset 0 0 20px rgba(255, 0, 60, 0.08);
         }
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+        .sold-panel-glow {
+            border: 1px solid rgba(113, 113, 122, 0.4);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
         }
-        ::-webkit-scrollbar-track {
-            background: #040407;
+        .sold-panel-glow:hover {
+            border-color: rgba(234, 179, 8, 0.7);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #ff003c;
-            border-radius: 2px;
-            box-shadow: 0 0 10px #ff003c;
-        }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #040407; }
+        ::-webkit-scrollbar-thumb { background: #ff003c; border-radius: 2px; }
     </style>
 </head>
 <body class="cyber-ambient-bg min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-black">
 
+    <!-- Header HUD -->
     <header class="sticky top-0 z-40 bg-[#06060a]/90 backdrop-blur-xl border-b border-red-500/30 px-3 sm:px-6 lg:px-8 py-3">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            
+            <!-- Brand -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3.5">
                     <div class="relative w-12 h-12 bg-red-950/50 border border-red-500/80 rounded-xl flex items-center justify-center text-red-500 shadow-[0_0_20px_rgba(255,0,60,0.6)] flex-shrink-0">
@@ -111,19 +113,9 @@
                         <span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f0ff]"></span>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2.5">
-                            <h1 class="cyber-font text-lg sm:text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-300 to-cyan-300">
-                                CYBER VAULT
-                            </h1>
-                            <span class="text-xs cyber-font font-extrabold px-2 py-0.5 rounded-md bg-red-950/90 border border-red-500 text-red-300 shadow-[0_0_10px_rgba(255,0,60,0.4)]">
-                                SUPABASE LIVE
-                            </span>
-                        </div>
-                        <p class="text-xs text-zinc-300 flex items-center gap-2 mt-0.5 font-medium">
-                            <span class="text-zinc-200"><i class="fa-solid fa-terminal text-red-400 mr-1.5"></i>KHO TÀI KHOẢN MÃ HÓA</span>
-                            <span class="hidden sm:inline text-zinc-500">|</span>
-                            <span class="hidden sm:inline text-emerald-400 font-semibold"><i class="fa-solid fa-cloud text-xs mr-1"></i>POSTGRES CLOUD</span>
-                        </p>
+                        <h1 class="cyber-font text-lg sm:text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-300 to-cyan-300">
+                            Kho acc của Chía
+                        </h1>
                     </div>
                 </div>
 
@@ -135,29 +127,42 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between md:justify-end space-x-3 border-t md:border-t-0 border-red-950/60 pt-2.5 md:pt-0">
-                <div class="hidden sm:flex items-center space-x-3 px-3.5 py-1.5 rounded-lg bg-[#0e0e18] border border-zinc-700/80 text-xs mono-font text-zinc-300 font-medium">
-                    <div class="flex items-center text-cyan-300">
-                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping mr-2"></span>
-                        <span id="cyberClock">00:00:00 ICT</span>
+            <!-- Controls -->
+            <div class="flex items-center justify-between md:justify-end space-x-2.5 border-t md:border-t-0 border-red-950/60 pt-2.5 md:pt-0">
+                <div class="hidden sm:flex items-center space-x-2.5 px-3 py-1.5 rounded-lg bg-[#0e0e18] border border-zinc-700/80 text-xs mono-font text-zinc-300">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    <span id="cyberClock">00:00:00 ICT</span>
+                </div>
+
+                <!-- Thống kê sẵn sàng / Đã bán -->
+                <div class="flex items-center space-x-2">
+                    <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
+                        <span class="text-zinc-400 mr-1.5">SẴN:</span>
+                        <span id="headerAvailableCount" class="text-red-400 font-black cyber-font text-sm sm:text-base">0</span>
+                    </div>
+                    <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-yellow-500/50 text-xs font-semibold" title="Acc đã bán">
+                        <span class="text-zinc-400 mr-1.5">ĐÃ BÁN:</span>
+                        <span id="headerSoldCount" class="text-yellow-400 font-black cyber-font text-sm sm:text-base">0</span>
                     </div>
                 </div>
 
-                <div class="flex items-center px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs">
-                    <span class="text-zinc-300 mr-2 font-semibold">TỔNG KHO:</span>
-                    <span id="headerTotalCount" class="text-red-400 font-black cyber-font text-base">0</span>
-                    <span class="text-xs text-zinc-400 ml-1.5 font-bold">ACC</span>
-                </div>
+                <!-- Nút PWA Install App -->
+                <button type="button" id="installAppBtn" onclick="installPWAApp()" 
+                    class="hidden h-9 px-3 rounded-lg bg-zinc-900 border border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center text-xs font-bold gap-1.5 transition active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.4)]">
+                    <i class="fa-solid fa-laptop-arrow-down text-sm"></i>
+                    <span class="hidden sm:inline">CÀI APP</span>
+                </button>
 
+                <!-- Nút Âm Thanh -->
                 <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" 
-                    class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95" 
-                    title="Bật/Tắt hiệu ứng âm thanh">
+                    class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95">
                     <i id="soundIcon" class="fa-solid fa-volume-high text-sm text-cyan-400"></i>
                 </button>
 
+                <!-- Nút Thêm Acc -->
                 <button type="button" onclick="openAddModal()" 
-                    class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-6 py-2.5 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition-all duration-300 shadow-[0_0_25px_rgba(255,0,60,0.7)] active:scale-95 group">
-                    <i class="fa-solid fa-plus mr-2 text-black transition-transform group-hover:rotate-90"></i>
+                    class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95 group">
+                    <i class="fa-solid fa-plus mr-1.5 text-black transition-transform group-hover:rotate-90"></i>
                     <span>THÊM ACC</span>
                 </button>
             </div>
@@ -165,39 +170,47 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        <!-- Search HUD -->
-        <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] relative overflow-hidden">
-            <div class="relative w-full flex items-center">
+        <!-- Search Bar & Tab Navigation (Chuyển giữa Kho Có Sẵn và Lịch Sử Đã Bán) -->
+        <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
+            <!-- Ô tìm kiếm -->
+            <div class="relative w-full md:w-2/3 flex items-center">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
                 <input type="text" id="searchInput" oninput="handleSearch()" placeholder="TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME..."
-                    class="w-full pl-12 pr-12 py-3 bg-black/80 border border-zinc-700/80 focus:border-red-500 rounded-xl text-sm sm:text-base text-zinc-100 placeholder-zinc-500 font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/40 transition">
+                    class="w-full pl-12 pr-12 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-red-500 rounded-xl text-sm sm:text-base text-zinc-100 placeholder-zinc-500 font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/40 transition">
                 <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
+
+            <!-- Tabs Bộ Lọc -->
+            <div class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
+                <button type="button" id="tabAvailableBtn" onclick="switchViewTab('available')" 
+                    class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <span>KHO HIỆN CÓ</span>
+                </button>
+                <button type="button" id="tabSoldBtn" onclick="switchViewTab('sold')" 
+                    class="flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>LỊCH SỬ ĐÃ BÁN</span>
+                </button>
+            </div>
         </div>
 
-        <!-- Grid Cards -->
+        <!-- Lưới danh sách tài khoản -->
         <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
         <!-- Empty State -->
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
-                <i class="fa-solid fa-shield-virus"></i>
-                <div class="absolute -bottom-2 px-3 py-0.5 rounded bg-red-950 border border-red-600 text-xs cyber-font font-bold text-red-300">
-                    EMPTY
-                </div>
+                <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
             </div>
-            <h3 class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2 tracking-wider">
+            <h3 id="emptyTitle" class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2 tracking-wider">
                 KHO DỮ LIỆU ĐANG TRỐNG
             </h3>
-            <p class="text-sm text-zinc-400 max-w-md mx-auto mb-6 leading-relaxed">
-                Chưa có tài khoản nào được lưu trên Cloud Supabase. Nhấn nút <strong class="text-red-400">"THÊM ACC"</strong> để bắt đầu lưu trữ.
+            <p id="emptyDesc" class="text-sm text-zinc-400 max-w-md mx-auto mb-6 leading-relaxed">
+                Chưa có tài khoản nào được lưu trên Cloud Supabase. Nhấn nút <strong class="text-red-400">"THÊM ACC"</strong> để bắt đầu lưu trữ ngay bây giờ!
             </p>
-            <button type="button" onclick="openAddModal()" 
-                class="cyber-cut-btn px-7 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-black font-black cyber-font text-sm rounded-lg transition uppercase tracking-widest shadow-[0_0_25px_rgba(255,0,60,0.7)] active:scale-95">
-                <i class="fa-solid fa-plus mr-2"></i> KHỞI TẠO TÀI KHOẢN MỚI
-            </button>
         </div>
     </main>
 
@@ -211,28 +224,25 @@
                         KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE VAULT</span>
                     </h2>
                 </div>
-                <button type="button" onclick="closeAddModal()" 
-                    class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-base">
+                <button type="button" onclick="closeAddModal()" class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-base">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Cột trái: Nhập thông tin & chọn slot ảnh -->
+                <!-- Cột trái: Form nhập -->
                 <div class="lg:col-span-5 flex flex-col space-y-4">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <label for="accTitle" class="text-sm font-bold text-zinc-100 flex items-center">
                                 <i class="fa-solid fa-fingerprint text-red-500 mr-2 text-base"></i> MÃ TÀI KHOẢN:
                             </label>
-                            <button type="button" onclick="generateUniqueAccCode()" 
-                                class="text-xs mono-font font-bold text-cyan-300 hover:text-cyan-200 bg-cyan-950/60 border border-cyan-500/50 px-2.5 py-1 rounded-md flex items-center gap-1.5 active:scale-95 transition">
+                            <button type="button" onclick="generateUniqueAccCode()" class="text-xs mono-font font-bold text-cyan-300 hover:text-cyan-200 bg-cyan-950/60 border border-cyan-500/50 px-2.5 py-1 rounded-md flex items-center gap-1.5 active:scale-95 transition">
                                 <i class="fa-solid fa-dice text-sm"></i> Sinh Mã (#xxxxx)
                             </button>
                         </div>
                         <div class="relative">
-                            <input type="text" id="accTitle" required placeholder="#12345"
-                                oninput="syncWatermarkFromCode(this.value)"
+                            <input type="text" id="accTitle" required placeholder="#12345" oninput="syncWatermarkFromCode(this.value)"
                                 class="w-full px-4 py-2.5 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
                             <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">TAG</span>
                         </div>
@@ -273,7 +283,6 @@
                             </div>
                         </div>
 
-                        <!-- 1 Ảnh -->
                         <div id="slotsMode1" class="hidden space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
@@ -284,7 +293,6 @@
                             </div>
                         </div>
 
-                        <!-- 2 Ảnh -->
                         <div id="slotsMode2" class="space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
@@ -302,7 +310,6 @@
                             </div>
                         </div>
 
-                        <!-- 3 Ảnh -->
                         <div id="slotsMode3" class="hidden space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
                                 <span class="text-sm font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
@@ -359,15 +366,10 @@
                         <div onclick="openExpandedTouchEditor()"
                             class="relative w-full h-64 sm:h-80 bg-black rounded-2xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_35px_rgba(255,0,60,0.4)] cursor-pointer select-none group/preview">
                             <img id="mergedPreviewImg" src="" alt="Khung ghép" class="w-full h-full object-contain pointer-events-none">
-                            
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                                 <span class="text-xs sm:text-sm cyber-font font-black bg-black/95 text-red-400 border border-red-500 px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(255,0,60,0.8)]">
                                     <i class="fa-solid fa-up-right-and-down-left-from-center mr-2 text-cyan-400"></i>CHẠM ĐỂ CĂN CHỈNH
                                 </span>
-                            </div>
-
-                            <div class="absolute bottom-2.5 right-2.5 bg-black/90 text-[10px] sm:text-xs font-bold text-cyan-300 px-2 py-1 rounded border border-cyan-500/60 pointer-events-none">
-                                <i class="fa-solid fa-hand mr-1 text-red-400"></i>PINCH / TOUCH
                             </div>
                         </div>
                     </div>
@@ -376,7 +378,7 @@
         </div>
     </div>
 
-    <!-- Modal Phóng To Căn Chỉnh Hỗ Trợ 1 Ngón Kéo Vuốt + 2 Ngón Pinch-to-Zoom -->
+    <!-- Modal Phóng To Căn Chỉnh Mobile/PC -->
     <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
         <div class="flex items-center justify-between pb-2.5 border-b border-red-900/60 mb-2">
             <div class="flex items-center space-x-2">
@@ -385,7 +387,6 @@
                     CĂN CHỈNH // <span id="expandedSlotTitle" class="text-white">ẢNH 1</span>
                 </h3>
             </div>
-            
             <button type="button" onclick="closeExpandedTouchEditor()" 
                 class="cyber-cut-btn px-4 py-1.5 bg-red-600 hover:bg-red-500 text-black font-black cyber-font text-xs rounded transition uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,60,0.8)] active:scale-95">
                 <i class="fa-solid fa-check mr-1"></i> XONG
@@ -397,11 +398,11 @@
                 <i class="fa-solid fa-up-down-left-right mr-1.5 text-red-500 text-sm"></i> 1 ngón di chuyển • 2 ngón phóng to/nhỏ
             </span>
             <div class="flex items-center space-x-1.5 flex-shrink-0">
-                <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold" title="Thu nhỏ">
+                <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold">
                     <i class="fa-solid fa-minus"></i>
                 </button>
                 <span id="expandedZoomIndicator" class="text-xs text-yellow-300 px-1 cyber-font font-bold">1.0x</span>
-                <button type="button" onclick="adjustActiveZoom(0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold" title="Phóng to">
+                <button type="button" onclick="adjustActiveZoom(0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold">
                     <i class="fa-solid fa-plus"></i>
                 </button>
                 <button type="button" onclick="resetSlotAdjustments()" class="ml-1 px-2.5 h-8 bg-zinc-900 border border-zinc-700 text-xs rounded-lg text-zinc-300 hover:text-red-400 active:scale-95 flex items-center gap-1 font-bold">
@@ -411,8 +412,7 @@
         </div>
 
         <div class="flex-1 w-full relative flex items-center justify-center overflow-hidden my-2 bg-[#050508] rounded-xl border border-red-900/60 shadow-inner">
-            <div id="expandedCanvasWrapper" 
-                class="relative w-full h-full max-h-[85vh] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none">
+            <div id="expandedCanvasWrapper" class="relative w-full h-full max-h-[85vh] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none">
                 <img id="expandedPreviewImg" src="" alt="Căn chỉnh lớn" class="max-w-full max-h-full object-contain pointer-events-none rounded-xl border border-red-500/50 shadow-[0_0_40px_rgba(255,0,60,0.3)]">
             </div>
         </div>
@@ -425,7 +425,7 @@
         </div>
     </div>
 
-    <!-- Modal Xem Ảnh Chi Tiết -->
+    <!-- Modal Xem Chi Tiết Ảnh Lớn -->
     <div id="imgModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-3 sm:p-4 hidden" onclick="closeImgViewer()">
         <div class="relative max-w-4xl max-h-[92vh] bg-black p-2 rounded-xl border-2 border-red-600 shadow-[0_0_40px_rgba(255,0,60,0.6)]" onclick="event.stopPropagation()">
             <button type="button" onclick="closeImgViewer()" class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-600 text-black font-black flex items-center justify-center hover:scale-110 transition shadow-[0_0_15px_#ff003c]">
@@ -459,7 +459,7 @@
         </div>
     </div>
 
-    <!-- Canvas Xử Lý Đồ Họa Ẩn -->
+    <!-- Canvas ẩn để xử lý đồ họa -->
     <canvas id="collageCanvas" class="hidden"></canvas>
 
     <!-- Toast Notification -->
@@ -469,6 +469,7 @@
     </div>
 
     <script>
+        // Cấu hình Supabase
         const SUPABASE_URL = 'https://llijmkoztqthovvklamm.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsaWpta296dHF0aG92dmtsYW1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4NDQ1NzksImV4cCI6MjEwNjQyMDU3OX0.6ZyBSLuXhQNC-nm1nCBTEZMs5Y3FDE83xD8lvL0HRUk';
         
@@ -476,6 +477,7 @@
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let accounts = [];
+        let currentTab = 'available'; // 'available' hoặc 'sold'
         let pendingDeleteId = null;
         let isAudioEnabled = true;
         let currentCollageMode = 2;
@@ -491,19 +493,15 @@
             ]
         };
 
-        // Biến điều khiển thao tác kéo vuốt và Pinch Zoom 2 ngón
+        // Kéo vuốt & Pinch Zoom
         let isDragging = false;
-        let dragStartX = 0;
-        let dragStartY = 0;
-        let initialPanX = 0;
-        let initialPanY = 0;
+        let dragStartX = 0, dragStartY = 0;
+        let initialPanX = 0, initialPanY = 0;
         let dragSlotIndex = 0;
-
         let isPinching = false;
         let initialPinchDistance = 0;
         let initialPinchZoom = 1;
 
-        // Tính khoảng cách giữa 2 điểm chạm (Pinch Distance)
         function getTouchDistance(touch1, touch2) {
             const dx = touch1.clientX - touch2.clientX;
             const dy = touch1.clientY - touch2.clientY;
@@ -517,9 +515,7 @@
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (AudioCtx) audioContext = new AudioCtx();
             }
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
+            if (audioContext && audioContext.state === 'suspended') audioContext.resume();
         }
 
         function playCyberSound(type) {
@@ -539,24 +535,21 @@
                     osc.frequency.exponentialRampToValueAtTime(1400, now + 0.05);
                     gain.gain.setValueAtTime(0.08, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now);
-                    osc.stop(now + 0.05);
+                    osc.start(now); osc.stop(now + 0.05);
                 } else if (type === 'save') {
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(440, now);
                     osc.frequency.setValueAtTime(880, now + 0.1);
                     gain.gain.setValueAtTime(0.12, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                    osc.start(now);
-                    osc.stop(now + 0.25);
+                    osc.start(now); osc.stop(now + 0.25);
                 } else if (type === 'warn') {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(320, now);
                     osc.frequency.exponentialRampToValueAtTime(160, now + 0.15);
                     gain.gain.setValueAtTime(0.12, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-                    osc.start(now);
-                    osc.stop(now + 0.15);
+                    osc.start(now); osc.stop(now + 0.15);
                 }
             } catch (e) {}
         }
@@ -572,7 +565,7 @@
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
-        // --- CÁC HÀM XỬ LÝ SUPABASE DATABASE ---
+        // --- CÁC HÀM SUPABASE DATABASE ---
 
         async function fetchAccountsFromSupabase() {
             try {
@@ -589,14 +582,97 @@
                     username: row.username,
                     password: row.password,
                     image: row.image,
+                    is_sold: Boolean(row.is_sold),
+                    sold_at: row.sold_at,
                     createdAt: row.created_at
                 }));
 
-                renderAccountsList(accounts);
+                updateHeaderCounts();
+                filterAndRender();
             } catch (err) {
                 console.error("Lỗi Supabase:", err);
                 showToast("Lỗi kết nối cơ sở dữ liệu Supabase!", true);
             }
+        }
+
+        function updateHeaderCounts() {
+            const availCount = accounts.filter(a => !a.is_sold).length;
+            const soldCount = accounts.filter(a => a.is_sold).length;
+
+            const headerAvail = document.getElementById('headerAvailableCount');
+            const headerSold = document.getElementById('headerSoldCount');
+            if (headerAvail) headerAvail.textContent = availCount;
+            if (headerSold) headerSold.textContent = soldCount;
+        }
+
+        // Đánh dấu đã bán
+        window.markAccountAsSold = async function(id, title) {
+            playCyberSound('click');
+            try {
+                const { error } = await _supabase
+                    .from('accounts')
+                    .update({ 
+                        is_sold: true, 
+                        sold_at: new Date().toISOString() 
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                await fetchAccountsFromSupabase();
+                showToast(`Đã chuyển tài khoản ${title} sang LỊCH SỬ ĐÃ BÁN!`);
+            } catch (err) {
+                console.error("Lỗi cập nhật bán:", err);
+                showToast("Không thể cập nhật trạng thái đã bán!", true);
+            }
+        };
+
+        // Khôi phục lại kho
+        window.restoreAccountToVault = async function(id, title) {
+            playCyberSound('click');
+            try {
+                const { error } = await _supabase
+                    .from('accounts')
+                    .update({ 
+                        is_sold: false, 
+                        sold_at: null 
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                await fetchAccountsFromSupabase();
+                showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
+            } catch (err) {
+                console.error("Lỗi khôi phục:", err);
+                showToast("Không thể khôi phục tài khoản!", true);
+            }
+        };
+
+        window.switchViewTab = function(tab) {
+            playCyberSound('click');
+            currentTab = tab;
+            const btnAvail = document.getElementById('tabAvailableBtn');
+            const btnSold = document.getElementById('tabSoldBtn');
+
+            if (tab === 'available') {
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5";
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            } else {
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-yellow-400 text-black shadow-[0_0_12px_#fcee0a] transition flex items-center justify-center gap-1.5";
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            }
+
+            filterAndRender();
+        };
+
+        function filterAndRender() {
+            const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            let filtered = accounts.filter(a => currentTab === 'available' ? !a.is_sold : a.is_sold);
+
+            if (query) {
+                filtered = filtered.filter(a => a.title.toLowerCase().includes(query) || a.username.toLowerCase().includes(query));
+            }
+
+            renderAccountsList(filtered);
         }
 
         window.generateUniqueAccCode = function() {
@@ -630,7 +706,7 @@
 
             if (!codeInput || !username || !password) {
                 playCyberSound('warn');
-                showToast('Vui lòng điền đủ mã, tài khoản và mật khẩu!', true);
+                showToast('Vui lòng điền đủ thông tin!', true);
                 return;
             }
 
@@ -646,7 +722,6 @@
                     .maybeSingle();
 
                 if (checkErr) throw checkErr;
-
                 if (existing) {
                     playCyberSound('warn');
                     showToast(`Mã ${formattedTitle} đã tồn tại! Vui lòng sinh mã khác.`, true);
@@ -660,7 +735,9 @@
                     title: formattedTitle,
                     username: username,
                     password: password,
-                    image: currentUploadedImage || null
+                    image: currentUploadedImage || null,
+                    is_sold: false,
+                    sold_at: null
                 };
 
                 const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
@@ -699,7 +776,7 @@
         window.downloadAccountImage = function(imageUrl, accTitle, event) {
             if (event) event.stopPropagation();
             if (!imageUrl) {
-                showToast('Tài khoản này chưa có dữ liệu ảnh!', true);
+                showToast('Tài khoản này chưa có ảnh!', true);
                 return;
             }
             playCyberSound('click');
@@ -715,11 +792,10 @@
             showToast(`Đã tải ảnh tài khoản ${accTitle} về máy!`);
         };
 
-        // --- CĂN CHỈNH VUỐT CHẠM & 2 NGÓN PINCH-TO-ZOOM ---
+        // --- CĂN CHỈNH VUỐT CHẠM & PINCH-TO-ZOOM ---
 
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
-
             const rect = targetEl.getBoundingClientRect();
             const relX = (clientX - rect.left) / rect.width;
             const relY = (clientY - rect.top) / rect.height;
@@ -737,7 +813,6 @@
             if (targetSlot !== undefined) {
                 dragSlotIndex = targetSlot;
                 switchExpandedSlot(dragSlotIndex);
-                
                 isDragging = true;
                 dragStartX = clientX;
                 dragStartY = clientY;
@@ -753,13 +828,10 @@
 
             collageConfig.slots[dragSlotIndex].panX = Math.round(initialPanX + deltaX);
             collageConfig.slots[dragSlotIndex].panY = Math.round(initialPanY + deltaY);
-
             processMergedCanvas();
         }
 
-        function handleDragEnd() {
-            isDragging = false;
-        }
+        function handleDragEnd() { isDragging = false; }
 
         window.openExpandedTouchEditor = function() {
             let activeSlots = [];
@@ -841,10 +913,8 @@
             showToast('Đã đặt lại căn chỉnh ảnh!');
         };
 
-        // ĐĂNG KÝ SỰ KIỆN TOUCH: 1 NGÓN VUỐT & 2 NGÓN PINCH-TO-ZOOM
         const expCanvasWrapper = document.getElementById('expandedCanvasWrapper');
         if (expCanvasWrapper) {
-            // Sự kiện Chuột PC
             expCanvasWrapper.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 handleDragStart(e.clientX, e.clientY, expCanvasWrapper);
@@ -852,19 +922,13 @@
             window.addEventListener('mousemove', (e) => {
                 if (isDragging) handleDragMove(e.clientX, e.clientY);
             });
-            window.addEventListener('mouseup', () => {
-                if (isDragging) handleDragEnd();
-            });
+            window.addEventListener('mouseup', () => { if (isDragging) handleDragEnd(); });
 
-            // Sự kiện Chạm Mobile (Touch Events)
             expCanvasWrapper.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
-                    // 1 ngón: Di chuyển vị trí (Pan)
                     isPinching = false;
-                    const t = e.touches[0];
-                    handleDragStart(t.clientX, t.clientY, expCanvasWrapper);
+                    handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
                 } else if (e.touches.length === 2) {
-                    // 2 ngón: Khởi động chế độ Pinch-to-Zoom
                     isDragging = false;
                     isPinching = true;
                     initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
@@ -873,46 +937,30 @@
             }, { passive: false });
 
             expCanvasWrapper.addEventListener('touchmove', (e) => {
-                // Ngăn trình duyệt cuộn trang khi đang thao tác trên ảnh
                 e.preventDefault();
-
                 if (e.touches.length === 1 && isDragging && !isPinching) {
-                    // 1 ngón đang kéo
-                    const t = e.touches[0];
-                    handleDragMove(t.clientX, t.clientY);
+                    handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
                 } else if (e.touches.length === 2 && isPinching) {
-                    // 2 ngón đang chụm/giãn để phóng to/thu nhỏ
                     const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
                     if (initialPinchDistance > 0) {
                         const ratio = currentDist / initialPinchDistance;
                         let newZoom = initialPinchZoom * ratio;
                         newZoom = Math.min(Math.max(newZoom, 0.5), 3.0);
                         newZoom = parseFloat(newZoom.toFixed(2));
-
                         collageConfig.slots[currentTweakSlot].zoom = newZoom;
-                        
                         const zoomEl = document.getElementById('expandedZoomIndicator');
                         if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
-                        
                         processMergedCanvas();
                     }
                 }
             }, { passive: false });
 
             expCanvasWrapper.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) {
-                    isPinching = false;
-                }
-                if (e.touches.length === 0) {
-                    handleDragEnd();
-                } else if (e.touches.length === 1) {
-                    // Nếu còn 1 ngón, thiết lập lại điểm bắt đầu kéo
-                    const t = e.touches[0];
-                    handleDragStart(t.clientX, t.clientY, expCanvasWrapper);
-                }
+                if (e.touches.length < 2) isPinching = false;
+                if (e.touches.length === 0) handleDragEnd();
+                else if (e.touches.length === 1) handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
             });
 
-            // Lăn chuột PC
             expCanvasWrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const slotToZoom = getSlotAtCoords(e.clientX, e.clientY, expCanvasWrapper);
@@ -922,20 +970,30 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH & CANVAS ---
+        // --- RENDER DANH SÁCH TÀI KHOẢN (HỖ TRỢ THẺ ĐÃ BÁN & KHO CÓ SẴN) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
-            const totalCount = document.getElementById('headerTotalCount');
             const emptyState = document.getElementById('emptyVaultState');
+            const emptyTitle = document.getElementById('emptyTitle');
+            const emptyDesc = document.getElementById('emptyDesc');
+            const emptyIcon = document.getElementById('emptyIcon');
             if (!grid) return;
 
             grid.innerHTML = '';
-            totalCount.textContent = accounts.length;
 
             if (listToRender.length === 0) {
                 emptyState.classList.remove('hidden');
                 grid.classList.add('hidden');
+                if (currentTab === 'sold') {
+                    emptyIcon.className = "fa-solid fa-receipt text-yellow-500";
+                    emptyTitle.textContent = "CHƯA CÓ LỊCH SỬ BÁN";
+                    emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán. Khi bán xong acc trong kho, hãy nhấn 'ĐÃ BÁN' để lưu vào đây!";
+                } else {
+                    emptyIcon.className = "fa-solid fa-shield-virus text-red-500";
+                    emptyTitle.textContent = "KHO DỮ LIỆU ĐANG TRỐNG";
+                    emptyDesc.textContent = "Chưa có tài khoản nào có sẵn trong kho. Nhấn 'THÊM ACC' để khởi tạo tài khoản mới!";
+                }
                 return;
             }
 
@@ -944,11 +1002,14 @@
 
             listToRender.forEach(acc => {
                 const card = document.createElement('div');
-                card.className = "relative bg-[#0d0d16] border border-red-950/90 hover:border-red-500 rounded-2xl cyber-panel-glow flex flex-col justify-between transition-all duration-300 group";
+                const isSold = acc.is_sold;
+
+                card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
+                // Khung ảnh
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
-                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
                         
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="text-xs sm:text-sm cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-red-500 shadow-[0_0_15px_#ff003c]">
@@ -956,14 +1017,15 @@
                             </span>
                         </div>
 
+                        <!-- Nút Tải Nhanh Trên Ảnh -->
                         <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)" 
                             class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-lg bg-black/85 border border-cyan-400/80 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center justify-center shadow-[0_0_10px_rgba(0,240,255,0.6)] transition active:scale-90"
                             title="Tải ảnh về máy">
                             <i class="fa-solid fa-download text-xs"></i>
                         </button>
 
-                        <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold text-cyan-300 px-2 py-0.5 rounded border border-cyan-500/50 shadow">
-                            VERIFIED // HUD
+                        <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold ${isSold ? 'text-yellow-400 border-yellow-500/50' : 'text-cyan-300 border-cyan-500/50'} px-2 py-0.5 rounded border shadow">
+                            ${isSold ? 'TRẠNG THÁI: ĐÃ BÁN' : 'KHO SẴN SÀNG'}
                         </div>
                        </div>`
                     : `<div class="w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
@@ -972,6 +1034,7 @@
                        </div>`;
 
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
+                const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
 
                 card.innerHTML = `
                     <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
@@ -981,8 +1044,8 @@
                     ${imgSection}
                     <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
-                            <span class="cyber-font text-base sm:text-lg font-black text-red-400 tracking-wider">${escapeHtml(acc.title)}</span>
-                            <span class="text-xs text-zinc-400">${dateStr}</span>
+                            <span class="cyber-font text-base sm:text-lg font-black ${isSold ? 'text-yellow-400 line-through' : 'text-red-400'} tracking-wider">${escapeHtml(acc.title)}</span>
+                            <span class="text-xs text-zinc-400">${isSold ? `Bán: ${soldDateStr}` : `Tạo: ${dateStr}`}</span>
                         </div>
                         <div class="space-y-2.5">
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800">
@@ -1004,18 +1067,29 @@
                             </div>
                         </div>
 
+                        <!-- Chân Thẻ: Nút Tải Ảnh + Nút Chuyển Trạng Thái Đã Bán / Khôi Phục -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
-                            <span class="tracking-widest font-mono text-[11px]">SEC // ${acc.id.slice(-6)}</span>
-                            
-                            <div class="flex items-center space-x-2">
-                                ${acc.image ? `
-                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
-                                        class="px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
-                                        <i class="fa-solid fa-download text-xs text-cyan-400"></i>
-                                        <span>Tải ảnh</span>
-                                    </button>
-                                ` : ''}
-                            </div>
+                            ${acc.image ? `
+                                <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', event)"
+                                    class="px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
+                                    <i class="fa-solid fa-download text-xs text-cyan-400"></i>
+                                    <span>Tải ảnh</span>
+                                </button>
+                            ` : '<span></span>'}
+
+                            ${!isSold ? `
+                                <button type="button" onclick="markAccountAsSold('${acc.id}', '${escapeHtml(acc.title)}')"
+                                    class="px-3 py-1 rounded-md bg-yellow-950/50 hover:bg-yellow-400 border border-yellow-500/70 text-yellow-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(252,238,10,0.3)]">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                    <span>ĐÃ BÁN</span>
+                                </button>
+                            ` : `
+                                <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
+                                    class="px-3 py-1 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
+                                    <i class="fa-solid fa-rotate-left text-xs"></i>
+                                    <span>KHÔI PHỤC</span>
+                                </button>
+                            `}
                         </div>
                     </div>
                 `;
@@ -1025,7 +1099,6 @@
 
         window.setCollageMode = function(mode) {
             currentCollageMode = mode;
-            
             const btn1 = document.getElementById('modeBtn1');
             const btn2 = document.getElementById('modeBtn2');
             const btn3 = document.getElementById('modeBtn3');
@@ -1057,9 +1130,7 @@
             reader.readAsDataURL(file);
         };
 
-        window.syncWatermarkFromCode = function() {
-            processMergedCanvas();
-        };
+        window.syncWatermarkFromCode = function() { processMergedCanvas(); };
 
         function drawImageToSlot(ctx, img, x, y, w, h, slotIndex) {
             ctx.save();
@@ -1130,7 +1201,6 @@
                 const halfH = Math.round(H / 2);
                 drawImageToSlot(ctx, collageSlots[0], 0, 0, W, halfH, 0);
                 drawImageToSlot(ctx, collageSlots[1], 0, halfH, W, halfH, 1);
-                
                 ctx.strokeStyle = '#ff003c';
                 ctx.lineWidth = 2.5;
                 ctx.beginPath();
@@ -1198,9 +1268,7 @@
             modal.classList.remove('hidden');
         };
 
-        window.closeImgViewer = function() {
-            document.getElementById('imgModal').classList.add('hidden');
-        };
+        window.closeImgViewer = function() { document.getElementById('imgModal').classList.add('hidden'); };
 
         window.promptDeleteAccount = function(id, title) {
             pendingDeleteId = id;
@@ -1239,14 +1307,16 @@
         };
 
         window.handleSearch = function() {
-            const q = document.getElementById('searchInput').value.toLowerCase().trim();
-            const filtered = accounts.filter(a => a.title.toLowerCase().includes(q) || a.username.toLowerCase().includes(q));
-            renderAccountsList(filtered);
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const val = document.getElementById('searchInput').value;
+            clearBtn.classList.toggle('hidden', !val);
+            filterAndRender();
         };
 
         window.clearSearch = function() {
             document.getElementById('searchInput').value = '';
-            renderAccountsList(accounts);
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterAndRender();
         };
 
         function showToast(msg, isErr = false) {
@@ -1258,12 +1328,44 @@
 
         function escapeHtml(str) {
             if (!str) return '';
-            return str.replace(/&/g, '&amp;')
-                      .replace(/</g, '&lt;')
-                      .replace(/>/g, '&gt;')
-                      .replace(/"/g, '&quot;')
-                      .replace(/'/g, '&#039;');
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
+
+        // PWA App Install
+        let deferredPrompt = null;
+        const installAppBtn = document.getElementById('installAppBtn');
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installAppBtn) installAppBtn.classList.remove('hidden');
+        });
+
+        window.installPWAApp = async function() {
+            if (!deferredPrompt) {
+                showToast("Mở Menu trình duyệt (dấu 3 chấm) -> Chọn 'Cài đặt ứng dụng' hoặc 'Thêm vào màn hình chính'.");
+                return;
+            }
+            playCyberSound('click');
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                showToast("Đang cài đặt Kho acc của Chía thành App...");
+                if (installAppBtn) installAppBtn.classList.add('hidden');
+            }
+            deferredPrompt = null;
+        };
+
+        window.addEventListener('appinstalled', () => {
+            if (installAppBtn) installAppBtn.classList.add('hidden');
+            showToast("Đã cài đặt App thành công! Bạn có thể ghim vào Taskbar.");
+        });
 
         window.addEventListener('DOMContentLoaded', fetchAccountsFromSupabase);
     </script>
