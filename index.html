@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kho acc của Chía - Vault Management System</title>
     
-    <!-- Cấu hình Icon & PWA sang icon.jpg -->
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <link rel="shortcut icon" type="image/jpeg" href="icon.jpg">
     <link rel="apple-touch-icon" href="icon.jpg">
@@ -107,7 +106,6 @@
     <header class="sticky top-0 z-40 bg-[#06060a]/90 backdrop-blur-xl border-b border-red-500/30 px-3 sm:px-6 lg:px-8 py-3">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             
-            <!-- Brand & Logo -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3.5">
                     <div class="relative w-12 h-12 bg-red-950/50 border border-red-500/80 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(255,0,60,0.6)] flex-shrink-0 overflow-visible">
@@ -147,13 +145,11 @@
                     </div>
                 </div>
 
-                <!-- Nút Âm Thanh -->
                 <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" 
                     class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95">
                     <i id="soundIcon" class="fa-solid fa-volume-high text-sm text-cyan-400"></i>
                 </button>
 
-                <!-- Nút Thêm Acc -->
                 <button type="button" onclick="openAddModal()" 
                     class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95 group">
                     <i class="fa-solid fa-plus mr-1.5 text-black transition-transform group-hover:rotate-90"></i>
@@ -164,7 +160,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        <!-- Search Bar & Tab Navigation -->
         <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
             <div class="relative w-full md:w-2/3 flex items-center">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
@@ -189,10 +184,8 @@
             </div>
         </div>
 
-        <!-- Lưới danh sách tài khoản -->
         <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <!-- Trạng thái trống (Empty State) -->
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
                 <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
@@ -224,7 +217,6 @@
             <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Cột trái: Form nhập -->
                 <div class="lg:col-span-5 flex flex-col space-y-3">
-                    <!-- 1. Mã tài khoản -->
                     <div>
                         <div class="flex items-center justify-between mb-1">
                             <label for="accTitle" class="text-xs font-bold text-zinc-200 flex items-center">
@@ -241,7 +233,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. GIÁ TIỀN (VNĐ) -->
                     <div>
                         <label for="accPrice" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-tag text-yellow-400 mr-1.5 text-sm"></i> GIÁ TIỀN (VNĐ):
@@ -253,7 +244,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Tên Đăng Nhập / Email -->
                     <div>
                         <label for="accUsername" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-user-astronaut text-red-500 mr-1.5 text-sm"></i> TÀI KHOẢN / EMAIL:
@@ -262,7 +252,6 @@
                             class="w-full px-3.5 py-2 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
-                    <!-- 4. Mật Khẩu Game -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
@@ -276,7 +265,6 @@
                         </div>
                     </div>
 
-                    <!-- 5. Mật Khẩu Hotmail -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
@@ -290,7 +278,7 @@
                         </div>
                     </div>
 
-                    <!-- 6. Khung chọn chế độ ảnh & Đổi ảnh -->
+                    <!-- Khung chọn chế độ ảnh & Đổi riêng lẻ từng ảnh -->
                     <div class="pt-2 border-t border-zinc-800">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
@@ -305,9 +293,9 @@
 
                         <div id="slotsMode1" class="hidden space-y-1.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m1">Ảnh Đơn Toàn Cảnh</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m1">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
@@ -315,16 +303,16 @@
 
                         <div id="slotsMode2" class="space-y-1.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m2">Ảnh 1 (Phía Trên)</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m2">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Phía Dưới)</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel1_m2">Ảnh 2 (Phía Dưới)</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText1_m2">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
                                 </label>
                             </div>
@@ -332,23 +320,23 @@
 
                         <div id="slotsMode3" class="hidden space-y-1.5">
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m3">Ảnh 1 (Banner Trên)</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m3">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Dưới Trái)</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel1_m3">Ảnh 2 (Dưới Trái)</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText1_m3">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
                                 </label>
                             </div>
                             <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200">Ảnh 3 (Dưới Phải)</span>
+                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel2_m3">Ảnh 3 (Dưới Phải)</span>
                                 <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> Chọn
+                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText2_m3">Chọn</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 2)">
                                 </label>
                             </div>
@@ -496,14 +484,14 @@
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let accounts = [];
-        let currentTab = 'available'; // 'available' hoặc 'sold'
+        let currentTab = 'available';
         let pendingDeleteId = null;
         let isAudioEnabled = true;
         let currentCollageMode = 2;
         let collageSlots = [null, null, null];
         let currentUploadedImage = "";
         let currentTweakSlot = 0;
-        let editingAccountId = null; // Quản lý trạng thái đang tạo mới hay sửa tài khoản
+        let editingAccountId = null;
 
         let collageConfig = {
             slots: [
@@ -604,6 +592,7 @@
                     password: row.password,
                     hotmail_password: row.hotmail_password || '',
                     image: row.image,
+                    collage_data: row.collage_data || null, // Lưu các ảnh slot gốc
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
                     createdAt: row.created_at
@@ -719,7 +708,6 @@
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LƯU...`;
 
             try {
-                // Kiểm tra trùng mã tài khoản nếu tạo mới hoặc sửa sang mã của tài khoản khác
                 const { data: existing, error: checkErr } = await _supabase
                     .from('accounts')
                     .select('id')
@@ -735,15 +723,23 @@
                     return;
                 }
 
+                // Đóng gói dữ liệu ảnh các slot thành chuỗi JSON để lần sau sửa không cần làm lại
+                const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
+                const collageDataObj = {
+                    mode: currentCollageMode,
+                    slots: rawSlotsData,
+                    config: collageConfig
+                };
+
                 if (editingAccountId) {
-                    // Logic CẬP NHẬT
                     const updateData = {
                         title: formattedTitle,
                         price: parsedPrice,
                         username: username,
                         password: password,
                         hotmail_password: hotmailPassword || null,
-                        image: currentUploadedImage || null
+                        image: currentUploadedImage || null,
+                        collage_data: collageDataObj
                     };
 
                     const { error: updateErr } = await _supabase
@@ -758,7 +754,6 @@
                     playCyberSound('save');
                     showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
                 } else {
-                    // Logic TẠO MỚI
                     const newRecord = {
                         id: 'acc_' + Date.now(),
                         title: formattedTitle,
@@ -767,6 +762,7 @@
                         password: password,
                         hotmail_password: hotmailPassword || null,
                         image: currentUploadedImage || null,
+                        collage_data: collageDataObj,
                         is_sold: false,
                         sold_at: null
                     };
@@ -816,21 +812,18 @@
             showToast('Đang xử lý xuất ảnh kèm giá...');
 
             const img = new Image();
-            img.crossOrigin = 'anonymous'; // Tránh lỗi CORS khi ảnh là URL từ Supabase Storage
+            img.crossOrigin = 'anonymous';
             img.onload = function() {
                 const canvas = document.createElement('canvas');
                 canvas.width = img.width;
                 canvas.height = img.height;
                 const ctx = canvas.getContext('2d');
 
-                // 1. Vẽ lại ảnh gốc
                 ctx.drawImage(img, 0, 0);
 
-                // 2. Định dạng chuỗi giá tiền
                 const priceNum = parseFloat(accPrice) || 0;
                 const priceText = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
 
-                // 3. Tính toán tỉ lệ font & padding dựa trên kích thước ảnh gốc
                 const scale = Math.max(img.width / 1000, 0.8);
                 const fontSize = Math.round(26 * scale);
                 ctx.font = `900 ${fontSize}px 'Orbitron', monospace, sans-serif`;
@@ -840,11 +833,10 @@
                 const padY = 10 * scale;
                 const badgeW = textMetrics.width + padX * 2;
                 const badgeH = fontSize + padY * 2;
-                const posX = img.width - badgeW - (20 * scale); // Cách mép phải 20px
-                const posY = 20 * scale;                        // Cách mép trên 20px
+                const posX = img.width - badgeW - (20 * scale);
+                const posY = 20 * scale;
                 const radius = 8 * scale;
 
-                // 4. Vẽ nền badge màu đen cyberpunk
                 ctx.save();
                 ctx.beginPath();
                 ctx.moveTo(posX + radius, posY);
@@ -861,22 +853,19 @@
                 ctx.fillStyle = 'rgba(7, 7, 11, 0.92)';
                 ctx.fill();
 
-                // Viền neon vàng
                 ctx.lineWidth = 2.5 * scale;
                 ctx.strokeStyle = '#fcee0a';
                 ctx.shadowColor = '#fcee0a';
                 ctx.shadowBlur = 12 * scale;
                 ctx.stroke();
 
-                // Vẽ chữ giá tiền màu vàng neon
                 ctx.fillStyle = '#fcee0a';
                 ctx.textBaseline = 'middle';
                 ctx.textAlign = 'center';
-                ctx.shadowBlur = 0; // Tắt blur để chữ sắc nét
+                ctx.shadowBlur = 0;
                 ctx.fillText(priceText, posX + badgeW / 2, posY + badgeH / 2 + (1 * scale));
                 ctx.restore();
 
-                // 5. Tải ảnh đã gộp badge giá về máy
                 const finalUrl = canvas.toDataURL('image/jpeg', 0.95);
                 const safeTitle = (accTitle || 'TAI_KHOAN').trim().replace(/[/\\?%*:|"<>]/g, '');
                 const filename = `${safeTitle}.jpg`;
@@ -945,7 +934,8 @@
             else if (currentCollageMode === 2) activeSlots = [collageSlots[0], collageSlots[1]];
             else activeSlots = collageSlots;
 
-            if (!activeSlots.some(img => img !== null)) {
+            // Kiểm tra nếu có slot nào chứa ảnh hoặc ảnh tổng đang tồn tại
+            if (!activeSlots.some(img => img !== null) && !currentUploadedImage) {
                 showToast('Vui lòng chọn ít nhất 1 ảnh trước khi căn chỉnh!', true);
                 return;
             }
@@ -1076,7 +1066,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (CÓ NÚT CÂY VIẾT GÓC TRÁI & NÚT TẢI KÈM GIÁ) ---
+        // --- RENDER DANH SÁCH ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -1115,7 +1105,6 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
-                // Khung ảnh: Hiển thị badge Giá ở góc trên bên phải
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -1126,7 +1115,6 @@
                             </span>
                         </div>
 
-                        <!-- Badge Giá Tiền trên ảnh -->
                         <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
@@ -1176,13 +1164,11 @@
                 ` : '';
 
                 card.innerHTML = `
-                    <!-- Nút Cây Viết (Sửa thông tin & ảnh) góc trên bên trái -->
                     <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
                         class="absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)] transition active:scale-90">
                         <i class="fa-solid fa-pen text-xs"></i>
                     </button>
 
-                    <!-- Nút Xóa góc trên bên phải -->
                     <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
@@ -1199,7 +1185,6 @@
                             <span class="text-xs text-zinc-400">${isSold ? `Bán: ${soldDateStr}` : `Tạo: ${dateStr}`}</span>
                         </div>
                         <div class="space-y-2">
-                            <!-- Tài khoản -->
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
                                 <span class="text-zinc-100 font-semibold text-sm truncate mr-2">${escapeHtml(acc.username)}</span>
                                 <button type="button" onclick="copyToClipboard('${escapeHtml(acc.username)}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1">
@@ -1207,7 +1192,6 @@
                                 </button>
                             </div>
 
-                            <!-- Mật khẩu Game -->
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
                                 <div class="flex items-center space-x-2 truncate mr-2">
                                     <i class="fa-solid fa-lock text-red-500 text-xs"></i>
@@ -1223,11 +1207,9 @@
                                 </div>
                             </div>
 
-                            <!-- Mật khẩu Hotmail (Nếu có) -->
                             ${hotmailRowHtml}
                         </div>
 
-                        <!-- Chân Thẻ: Nút Tải ảnh tự động đóng watermark giá tiền -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
                             ${acc.image ? `
                                 <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
@@ -1271,12 +1253,35 @@
                 const img = new Image();
                 img.onload = function() {
                     collageSlots[slotIdx] = img;
+                    updateSlotButtonsStatus();
                     processMergedCanvas();
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         };
+
+        function updateSlotButtonsStatus() {
+            // Cập nhật nhãn nút "Chọn" / "Đổi ảnh" để dễ theo dõi
+            const has0 = !!collageSlots[0];
+            const has1 = !!collageSlots[1];
+            const has2 = !!collageSlots[2];
+
+            const btnText0_m1 = document.getElementById('slotBtnText0_m1');
+            if (btnText0_m1) btnText0_m1.textContent = has0 ? "Đổi ảnh" : "Chọn";
+
+            const btnText0_m2 = document.getElementById('slotBtnText0_m2');
+            if (btnText0_m2) btnText0_m2.textContent = has0 ? "Đổi ảnh" : "Chọn";
+            const btnText1_m2 = document.getElementById('slotBtnText1_m2');
+            if (btnText1_m2) btnText1_m2.textContent = has1 ? "Đổi ảnh" : "Chọn";
+
+            const btnText0_m3 = document.getElementById('slotBtnText0_m3');
+            if (btnText0_m3) btnText0_m3.textContent = has0 ? "Đổi ảnh" : "Chọn";
+            const btnText1_m3 = document.getElementById('slotBtnText1_m3');
+            if (btnText1_m3) btnText1_m3.textContent = has1 ? "Đổi ảnh" : "Chọn";
+            const btnText2_m3 = document.getElementById('slotBtnText2_m3');
+            if (btnText2_m3) btnText2_m3.textContent = has2 ? "Đổi ảnh" : "Chọn";
+        }
 
         window.syncWatermarkFromCode = function() { processMergedCanvas(); };
 
@@ -1411,58 +1416,67 @@
             document.getElementById('btnGenCode').classList.remove('hidden');
 
             setCollageMode(1);
+            updateSlotButtonsStatus();
             processMergedCanvas();
             generateUniqueAccCode();
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
         };
 
-        // Modal Chỉnh Sửa Tài Khoản & Ảnh
-        window.openEditModal = function(id) {
+        // Modal Chỉnh Sửa Tài Khoản: Tự khôi phục các ảnh ô cũ để có thể sửa lẻ từng ảnh
+        window.openEditModal = async function(id) {
             const acc = accounts.find(a => a.id === id);
             if (!acc) return;
 
             playCyberSound('click');
             editingAccountId = id;
 
-            // Đổ dữ liệu cũ vào các ô input
+            // Đổ dữ liệu cũ
             document.getElementById('accTitle').value = acc.title || '';
             document.getElementById('accPrice').value = acc.price || '';
             document.getElementById('accUsername').value = acc.username || '';
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
 
-            // Đổi tiêu đề và nút lưu
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA TÀI KHOẢN // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
             document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
             document.getElementById('modalPulseDot').className = "w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
             document.getElementById('btnGenCode').classList.add('hidden');
 
-            // Thiết lập ảnh hiện tại
             currentUploadedImage = acc.image || "";
             collageSlots = [null, null, null];
-            collageConfig.slots = [
-                { zoom: 1, panX: 0, panY: 0 },
-                { zoom: 1, panX: 0, panY: 0 },
-                { zoom: 1, panX: 0, panY: 0 }
-            ];
 
-            setCollageMode(1);
+            // Nếu tài khoản đã có dữ liệu ảnh slot từng phần trước đó
+            if (acc.collage_data && acc.collage_data.slots) {
+                const cData = acc.collage_data;
+                currentCollageMode = cData.mode || 1;
+                if (cData.config) collageConfig = cData.config;
 
-            const emptyState = document.getElementById('collageEmptyRightState');
-            const tweakPanel = document.getElementById('collageTweakPanel');
-            const previewImg = document.getElementById('mergedPreviewImg');
-            const expandedImg = document.getElementById('expandedPreviewImg');
-
-            if (currentUploadedImage) {
-                emptyState.classList.add('hidden');
-                tweakPanel.classList.remove('hidden');
-                if (previewImg) previewImg.src = currentUploadedImage;
-                if (expandedImg) expandedImg.src = currentUploadedImage;
-            } else {
-                emptyState.classList.remove('hidden');
-                tweakPanel.classList.add('hidden');
+                // Tải lại các ảnh slot vào mảng collageSlots
+                const loadPromises = cData.slots.map((src, idx) => {
+                    return new Promise((resolve) => {
+                        if (!src) { resolve(); return; }
+                        const img = new Image();
+                        img.onload = () => { collageSlots[idx] = img; resolve(); };
+                        img.onerror = () => resolve();
+                        img.src = src;
+                    });
+                });
+                await Promise.all(loadPromises);
+            } else if (currentUploadedImage) {
+                // Với acc cũ chưa có collage_data, nạp ảnh cũ vào slot 0 để luôn thao tác được
+                currentCollageMode = 1;
+                await new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => { collageSlots[0] = img; resolve(); };
+                    img.onerror = () => resolve();
+                    img.src = currentUploadedImage;
+                });
             }
+
+            setCollageMode(currentCollageMode);
+            updateSlotButtonsStatus();
+            processMergedCanvas();
 
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
