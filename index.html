@@ -252,28 +252,30 @@
                             class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
+                    <!-- Ô MẬT KHẨU TÀI KHOẢN (Mặc định che dấu) -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
                         </label>
                         <div class="relative">
-                            <input type="text" id="accPassword" required placeholder="Nhập mật khẩu..."
+                            <input type="password" id="accPassword" required placeholder="Nhập mật khẩu..."
                                 class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                             <button type="button" onclick="toggleFormPassVisibility('accPassword', 'formPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
-                                <i id="formPassEyeIcon" class="fa-solid fa-eye text-xs"></i>
+                                <i id="formPassEyeIcon" class="fa-solid fa-eye-slash text-xs"></i>
                             </button>
                         </div>
                     </div>
 
+                    <!-- Ô MẬT KHẨU HOTMAIL (Mặc định che dấu) -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
                         </label>
                         <div class="relative">
-                            <input type="text" id="accHotmailPassword" placeholder="Nhập pass hotmail (nếu có)..."
+                            <input type="password" id="accHotmailPassword" placeholder="Nhập pass hotmail (nếu có)..."
                                 class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-semibold focus:outline-none transition">
                             <button type="button" onclick="toggleFormPassVisibility('accHotmailPassword', 'formHotmailPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
-                                <i id="formHotmailPassEyeIcon" class="fa-solid fa-eye text-xs"></i>
+                                <i id="formHotmailPassEyeIcon" class="fa-solid fa-eye-slash text-xs"></i>
                             </button>
                         </div>
                     </div>
@@ -502,7 +504,6 @@
             ]
         };
 
-        // Kéo vuốt & Pinch Zoom
         let isDragging = false;
         let dragStartX = 0, dragStartY = 0;
         let initialPanX = 0, initialPanY = 0;
@@ -517,7 +518,6 @@
             return Math.sqrt(dx * dx + dy * dy);
         }
 
-        // Web Audio Synthesizer
         let audioContext = null;
         function initAudio() {
             if (!audioContext) {
@@ -574,8 +574,6 @@
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
-        // --- CÁC HÀM SUPABASE DATABASE ---
-
         async function fetchAccountsFromSupabase() {
             try {
                 const { data, error } = await _supabase
@@ -617,11 +615,9 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
-        // TỐI ƯU LIỀN MẠCH: Cập nhật biến mảng local ngay lập tức trước khi Supabase phản hồi
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
-                // 1. Cập nhật ngay trên bộ nhớ để giao diện phản hồi tức thì
                 const acc = accounts.find(a => a.id === id);
                 if (acc) {
                     acc.is_sold = true;
@@ -631,7 +627,6 @@
                 filterAndRender();
                 showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
 
-                // 2. Chạy ngầm lưu lên Supabase
                 try {
                     const { error } = await _supabase
                         .from('accounts')
@@ -645,7 +640,7 @@
                 } catch (err) {
                     console.error("Lỗi chuyển đã bán:", err);
                     showToast("Không thể đồng bộ trạng thái lên mạng!", true);
-                    await fetchAccountsFromSupabase(); // Rollback nếu lỗi
+                    await fetchAccountsFromSupabase();
                 }
             } else {
                 promptDeleteAccount(id, title);
@@ -654,7 +649,6 @@
 
         window.restoreAccountToVault = async function(id, title) {
             playCyberSound('click');
-            // 1. Cập nhật ngay tức thì trên giao diện
             const acc = accounts.find(a => a.id === id);
             if (acc) {
                 acc.is_sold = false;
@@ -664,7 +658,6 @@
             filterAndRender();
             showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
 
-            // 2. Đồng bộ ngầm lên Supabase
             try {
                 const { error } = await _supabase
                     .from('accounts')
@@ -787,7 +780,6 @@
                         collage_data: collageDataObj
                     };
 
-                    // Optimistic update
                     const accIdx = accounts.findIndex(a => a.id === editingAccountId);
                     if (accIdx !== -1) {
                         accounts[accIdx] = { ...accounts[accIdx], ...updateData };
@@ -820,7 +812,6 @@
                         createdAt: new Date().toISOString()
                     };
 
-                    // Optimistic update
                     accounts.unshift(newRecord);
                     updateHeaderCounts();
                     filterAndRender();
@@ -849,7 +840,6 @@
             const delId = pendingDeleteId;
             closeDeleteConfirmModal();
 
-            // Cập nhật ngay trên giao diện
             accounts = accounts.filter(a => a.id !== delId);
             updateHeaderCounts();
             filterAndRender();
@@ -865,7 +855,6 @@
             }
         };
 
-        // --- HÀM TẢI ẢNH: TỰ ĐỘNG ĐÓNG WATERMARK BADGE GIÁ TIỀN ---
         window.downloadAccountImage = function(imageUrl, accTitle, accPrice, event) {
             if (event) event.stopPropagation();
             if (!imageUrl) {
@@ -950,8 +939,6 @@
 
             img.src = imageUrl;
         };
-
-        // --- CĂN CHỈNH VUỐT CHẠM & PINCH-TO-ZOOM ---
 
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
@@ -1129,7 +1116,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (TỐI ƯU CỰC MƯỢT, KHÔNG CẦN F5 TRANG) ---
+        // --- RENDER DANH SÁCH ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -1218,7 +1205,6 @@
                 const closeBtnTitle = isSold ? "Xóa vĩnh viễn khỏi database" : "Đánh dấu đã bán";
 
                 card.innerHTML = `
-                    <!-- GIAO DIỆN MOBILE (< lg): GIỮ NGUYÊN 100% VỊ TRÍ 2 NÚT TRÒN NHÔ NGOÀI MÉP NHƯ CŨ -->
                     <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
                         class="lg:hidden absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)] transition active:scale-90">
                         <i class="fa-solid fa-pen text-xs"></i>
@@ -1229,7 +1215,6 @@
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
                     </button>
 
-                    <!-- GIAO DIỆN PC (>= lg): GIẢI PHÁP 1 GOM VÀO CỤM ACTION NẰM GỌN BÊN TRONG GÓC PHẢI THẺ -->
                     <div class="hidden lg:flex absolute top-2.5 right-2.5 z-30 items-center space-x-1.5 bg-black/85 backdrop-blur-md p-1 rounded-xl border border-zinc-800 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
                         <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
                             class="w-7 h-7 rounded-lg bg-zinc-900 border border-cyan-500/50 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center transition active:scale-90">
@@ -1277,7 +1262,6 @@
                             ${hotmailRowHtml}
                         </div>
 
-                        <!-- Chân Thẻ: Đối xứng 1 góc trái - 1 góc phải -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                             <div>
                                 ${acc.image ? `
@@ -1486,9 +1470,24 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
+        // RESET MẬT KHẨU VỀ MẶC ĐỊNH CHE DẤU
+        function resetPasswordInputsState() {
+            const pass = document.getElementById('accPassword');
+            const passIcon = document.getElementById('formPassEyeIcon');
+            if (pass) pass.type = 'password';
+            if (passIcon) passIcon.className = 'fa-solid fa-eye-slash text-xs';
+
+            const hotmail = document.getElementById('accHotmailPassword');
+            const hotmailIcon = document.getElementById('formHotmailPassEyeIcon');
+            if (hotmail) hotmail.type = 'password';
+            if (hotmailIcon) hotmailIcon.className = 'fa-solid fa-eye-slash text-xs';
+        }
+
         window.openAddModal = function() {
             editingAccountId = null;
             document.getElementById('addAccForm').reset();
+            resetPasswordInputsState();
+
             collageSlots = [null, null, null];
             currentUploadedImage = "";
             collageConfig.slots = [
@@ -1556,6 +1555,9 @@
             document.getElementById('accUsername').value = acc.username || '';
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
+
+            // Đặt lại luôn ở trạng thái ẩn mật khẩu
+            resetPasswordInputsState();
 
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
             document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
@@ -1665,12 +1667,19 @@
             }
         };
 
+        // BẤM VÀO CON MẮT TRONG FORM ĐỂ ẨN / HIỆN MẬT KHẨU
         window.toggleFormPassVisibility = function(inputId, iconId) {
             const pass = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
             if (!pass || !icon) return;
-            pass.type = pass.type === 'password' ? 'text' : 'password';
-            icon.className = pass.type === 'password' ? 'fa-solid fa-eye text-xs' : 'fa-solid fa-eye-slash text-xs text-cyan-400';
+            
+            if (pass.type === 'password') {
+                pass.type = 'text';
+                icon.className = 'fa-solid fa-eye text-xs text-cyan-400';
+            } else {
+                pass.type = 'password';
+                icon.className = 'fa-solid fa-eye-slash text-xs text-zinc-400';
+            }
         };
 
         window.copyToClipboard = function(txt, label) {
@@ -1735,7 +1744,6 @@
             showToast("Đã cài đặt App thành công! Bạn có thể ghim vào Taskbar.");
         });
 
-        // Thiết lập đồng bộ Realtime từ Supabase (Tự động cập nhật không cần F5)
         function initSupabaseRealtime() {
             _supabase
                 .channel('public:accounts')
