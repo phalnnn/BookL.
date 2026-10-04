@@ -201,20 +201,21 @@
 
     <!-- Modal Thêm / Chỉnh Sửa Acc -->
     <div id="addAccModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-        <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden my-auto max-h-[94vh] flex flex-col">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-red-950/80 bg-zinc-950/95 relative">
-                <div class="flex items-center space-x-3">
-                    <span id="modalPulseDot" class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse"></span>
-                    <h2 id="modalMainHeading" class="cyber-font text-base sm:text-lg font-black text-red-500 tracking-wider">
-                        KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE VAULT</span>
+        <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden my-auto max-h-[96vh] flex flex-col">
+            
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-red-950/80 bg-zinc-950/95 relative flex-shrink-0">
+                <div class="flex items-center space-x-2.5 truncate mr-2">
+                    <span id="modalPulseDot" class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse flex-shrink-0"></span>
+                    <h2 id="modalMainHeading" class="cyber-font text-xs sm:text-base font-black text-red-500 tracking-wider truncate">
+                        KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>
                     </h2>
                 </div>
-                <button type="button" onclick="closeAddModal()" class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-base">
+                <button type="button" onclick="closeAddModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm flex-shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-3.5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
                 <!-- Cột trái: Form nhập -->
                 <div class="lg:col-span-5 flex flex-col space-y-3">
                     <div>
@@ -228,7 +229,7 @@
                         </div>
                         <div class="relative">
                             <input type="text" id="accTitle" required placeholder="#12345" oninput="syncWatermarkFromCode(this.value)"
-                                class="w-full px-3.5 py-2 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
+                                class="w-full px-3.5 py-2.5 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
                             <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">TAG</span>
                         </div>
                     </div>
@@ -239,7 +240,7 @@
                         </label>
                         <div class="relative">
                             <input type="number" id="accPrice" min="0" step="1000" placeholder="Ví dụ: 150000 (để trống = Liên hệ)"
-                                class="w-full px-3.5 py-2 pr-12 bg-black/80 border border-zinc-700 focus:border-yellow-400 rounded-xl text-sm text-yellow-300 font-bold focus:outline-none transition">
+                                class="w-full px-3.5 py-2.5 pr-12 bg-black/80 border border-zinc-700 focus:border-yellow-400 rounded-xl text-sm text-yellow-300 font-bold focus:outline-none transition">
                             <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">VNĐ</span>
                         </div>
                     </div>
@@ -249,7 +250,7 @@
                             <i class="fa-solid fa-user-astronaut text-red-500 mr-1.5 text-sm"></i> TÀI KHOẢN / EMAIL:
                         </label>
                         <input type="text" id="accUsername" required placeholder="Nhập tên đăng nhập hoặc email..."
-                            class="w-full px-3.5 py-2 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
+                            class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
                     <div>
@@ -258,8 +259,8 @@
                         </label>
                         <div class="relative">
                             <input type="text" id="accPassword" required placeholder="Nhập mật khẩu..."
-                                class="w-full px-3.5 py-2 pr-10 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
-                            <button type="button" onclick="toggleFormPassVisibility('accPassword', 'formPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1">
+                                class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accPassword', 'formPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
                                 <i id="formPassEyeIcon" class="fa-solid fa-eye text-xs"></i>
                             </button>
                         </div>
@@ -271,124 +272,127 @@
                         </label>
                         <div class="relative">
                             <input type="text" id="accHotmailPassword" placeholder="Nhập pass hotmail (nếu có)..."
-                                class="w-full px-3.5 py-2 pr-10 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-semibold focus:outline-none transition">
-                            <button type="button" onclick="toggleFormPassVisibility('accHotmailPassword', 'formHotmailPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1">
+                                class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accHotmailPassword', 'formHotmailPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
                                 <i id="formHotmailPassEyeIcon" class="fa-solid fa-eye text-xs"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Khung chọn chế độ ảnh & Đổi riêng lẻ từng ảnh -->
-                    <div class="pt-2 border-t border-zinc-800">
+                    <!-- KHUNG ĐỔI ẢNH (3 Ô ĐỀU ĐẦY ĐỦ NÚT ĐỔI ẢNH) -->
+                    <div class="pt-2 border-t border-zinc-800 space-y-2">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
                                 <i class="fa-solid fa-layer-group text-red-500 mr-1.5 text-sm"></i> KHUNG ẢNH:
                             </label>
                             <div class="flex items-center space-x-1 bg-black p-0.5 rounded-lg border border-zinc-800">
-                                <button type="button" id="modeBtn1" onclick="setCollageMode(1)" class="px-2 py-0.5 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">1 Ảnh</button>
-                                <button type="button" id="modeBtn2" onclick="setCollageMode(2)" class="px-2 py-0.5 text-xs font-black rounded bg-red-600 text-black transition-colors shadow-[0_0_10px_#ff003c]">2 Ảnh</button>
-                                <button type="button" id="modeBtn3" onclick="setCollageMode(3)" class="px-2 py-0.5 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">3 Ảnh</button>
+                                <button type="button" id="modeBtn1" onclick="setCollageMode(1)" class="px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">1 Ảnh</button>
+                                <button type="button" id="modeBtn2" onclick="setCollageMode(2)" class="px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black transition-colors shadow-[0_0_10px_#ff003c]">2 Ảnh</button>
+                                <button type="button" id="modeBtn3" onclick="setCollageMode(3)" class="px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">3 Ảnh</button>
                             </div>
                         </div>
 
-                        <div id="slotsMode1" class="hidden space-y-1.5">
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m1">Ảnh Đơn Toàn Cảnh</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m1">Chọn</span>
+                        <!-- Mode 1 Ảnh -->
+                        <div id="slotsMode1" class="hidden space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m1">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
                         </div>
 
-                        <div id="slotsMode2" class="space-y-1.5">
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m2">Ảnh 1 (Phía Trên)</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m2">Chọn</span>
+                        <!-- Mode 2 Ảnh -->
+                        <div id="slotsMode2" class="space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m2">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel1_m2">Ảnh 2 (Phía Dưới)</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText1_m2">Chọn</span>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Phía Dưới)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText1_m2">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
                                 </label>
                             </div>
                         </div>
 
-                        <div id="slotsMode3" class="hidden space-y-1.5">
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel0_m3">Ảnh 1 (Banner Trên)</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText0_m3">Chọn</span>
+                        <!-- Mode 3 Ảnh (Cả 3 cái đều sẵn sàng đổi ảnh) -->
+                        <div id="slotsMode3" class="hidden space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m3">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
                                 </label>
                             </div>
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel1_m3">Ảnh 2 (Dưới Trái)</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText1_m3">Chọn</span>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Dưới Trái)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText1_m3">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
                                 </label>
                             </div>
-                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2 rounded-xl">
-                                <span class="text-xs font-semibold text-zinc-200" id="slotLabel2_m3">Ảnh 3 (Dưới Phải)</span>
-                                <label class="px-3 py-1 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer">
-                                    <i class="fa-solid fa-upload mr-1"></i> <span id="slotBtnText2_m3">Chọn</span>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 3 (Dưới Phải)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText2_m3">Đổi ảnh</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 2)">
                                 </label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="pt-2">
-                        <button type="submit" id="submitBtn"
-                            class="w-full py-2.5 cyber-cut-btn bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 text-black font-black cyber-font text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(255,0,60,0.6)] flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-                            <span id="submitBtnText">LƯU LÊN SUPABASE</span>
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Cột phải: Live Canvas -->
-                <div class="lg:col-span-7 flex flex-col space-y-3.5">
-                    <div id="collageEmptyRightState" class="h-64 lg:h-full min-h-[300px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-6">
-                        <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-4xl mb-4"></i>
-                        <h4 class="cyber-font text-base text-zinc-100 font-black mb-2">CYBER COLLAGE ENGINE</h4>
-                        <p class="text-sm text-zinc-400 max-w-sm">Chọn 1, 2 hoặc 3 ảnh ở cột bên trái để hiển thị khung ảnh.</p>
+                <!-- Cột phải: Live Canvas & Chạm Căn Chỉnh -->
+                <div class="lg:col-span-7 flex flex-col space-y-3">
+                    <div id="collageEmptyRightState" class="h-48 lg:h-full min-h-[220px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-4">
+                        <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-3xl mb-2"></i>
+                        <h4 class="cyber-font text-sm text-zinc-100 font-black">CHƯA CÓ DỮ LIỆU ẢNH</h4>
+                        <p class="text-xs text-zinc-400 mt-1">Chọn ảnh ở các ô phía trên để bắt đầu ghép ảnh.</p>
                     </div>
 
-                    <div id="collageTweakPanel" class="hidden flex flex-col space-y-2.5">
+                    <div id="collageTweakPanel" class="hidden flex flex-col space-y-2">
                         <div class="flex items-center justify-between text-xs">
-                            <span class="text-cyan-300 flex items-center font-bold text-xs sm:text-sm">
-                                <i class="fa-solid fa-hand-pointer mr-2 animate-pulse text-red-500"></i>
-                                Nhấn vào ảnh để phóng to căn chỉnh:
+                            <span class="text-cyan-300 font-bold text-xs truncate">
+                                <i class="fa-solid fa-hand-pointer mr-1 text-red-500 animate-pulse"></i> Chạm ảnh để căn chỉnh:
                             </span>
-                            <button type="button" onclick="openExpandedTouchEditor()" class="text-xs font-bold bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-black border border-red-500/60 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 active:scale-95">
+                            <button type="button" onclick="openExpandedTouchEditor()" class="text-xs font-bold bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-black border border-red-500/60 px-3 py-1 rounded-lg transition flex items-center gap-1 active:scale-95">
                                 <i class="fa-solid fa-expand"></i> Phóng to
                             </button>
                         </div>
 
                         <div onclick="openExpandedTouchEditor()"
-                            class="relative w-full h-64 sm:h-80 bg-black rounded-2xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_35px_rgba(255,0,60,0.4)] cursor-pointer select-none group/preview">
+                            class="relative w-full h-56 sm:h-72 bg-black rounded-xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_25px_rgba(255,0,60,0.3)] cursor-pointer select-none">
                             <img id="mergedPreviewImg" src="" alt="Khung ghép" class="w-full h-full object-contain pointer-events-none">
-                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                                <span class="text-xs sm:text-sm cyber-font font-black bg-black/95 text-red-400 border border-red-500 px-4 py-2 rounded-xl shadow-[0_0_20px_rgba(255,0,60,0.8)]">
-                                    <i class="fa-solid fa-up-right-and-down-left-from-center mr-2 text-cyan-400"></i>CHẠM ĐỂ CĂN CHỈNH
+                            <div class="absolute inset-0 bg-black/40 opacity-0 active:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                <span class="text-xs cyber-font font-black bg-black/95 text-red-400 border border-red-500 px-3 py-1.5 rounded-xl">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center mr-1 text-cyan-400"></i>CĂN CHỈNH
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+            <!-- Sticky Submit Footer -->
+            <div class="p-3 sm:p-4 bg-zinc-950 border-t border-zinc-800 flex-shrink-0">
+                <button type="button" onclick="document.getElementById('addAccForm').requestSubmit()" id="submitBtn"
+                    class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 text-black font-black cyber-font text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(255,0,60,0.6)] flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
+                    <span id="submitBtnText">LƯU LÊN SUPABASE</span>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Modal Phóng To Căn Chỉnh Mobile/PC -->
     <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
-        <div class="flex items-center justify-between pb-2.5 border-b border-red-900/60 mb-2">
+        <div class="flex items-center justify-between pb-2 border-b border-red-900/60 mb-1.5">
             <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_8px_#00f0ff]"></span>
                 <h3 class="cyber-font text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-400 truncate">
@@ -403,7 +407,7 @@
 
         <div class="flex items-center justify-between text-xs text-zinc-300 px-1 py-1 font-semibold">
             <span class="text-cyan-300 truncate mr-2 flex items-center text-[11px] sm:text-xs">
-                <i class="fa-solid fa-up-down-left-right mr-1.5 text-red-500 text-sm"></i> 1 ngón di chuyển • 2 ngón phóng to/nhỏ
+                <i class="fa-solid fa-up-down-left-right mr-1.5 text-red-500 text-sm"></i> 1 ngón kéo • 2 ngón zoom
             </span>
             <div class="flex items-center space-x-1.5 flex-shrink-0">
                 <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold">
@@ -467,7 +471,6 @@
         </div>
     </div>
 
-    <!-- Canvas ẩn để xử lý đồ họa -->
     <canvas id="collageCanvas" class="hidden"></canvas>
 
     <!-- Toast Notification -->
@@ -592,7 +595,7 @@
                     password: row.password,
                     hotmail_password: row.hotmail_password || '',
                     image: row.image,
-                    collage_data: row.collage_data || null, // Lưu các ảnh slot gốc
+                    collage_data: row.collage_data || null,
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
                     createdAt: row.created_at
@@ -615,6 +618,26 @@
             if (headerAvail) headerAvail.textContent = availCount;
             if (headerSold) headerSold.textContent = soldCount;
         }
+
+        window.markAccountAsSold = async function(id, title) {
+            playCyberSound('click');
+            try {
+                const { error } = await _supabase
+                    .from('accounts')
+                    .update({ 
+                        is_sold: true, 
+                        sold_at: new Date().toISOString() 
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                await fetchAccountsFromSupabase();
+                showToast(`Đã chuyển ${title} sang Lịch Sử Đã Bán!`);
+            } catch (err) {
+                console.error("Lỗi cập nhật đã bán:", err);
+                showToast("Không thể cập nhật trạng thái!", true);
+            }
+        };
 
         window.restoreAccountToVault = async function(id, title) {
             playCyberSound('click');
@@ -723,7 +746,7 @@
                     return;
                 }
 
-                // Đóng gói dữ liệu ảnh các slot thành chuỗi JSON để lần sau sửa không cần làm lại
+                // Lưu dữ liệu slot ảnh
                 const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
                 const collageDataObj = {
                     mode: currentCollageMode,
@@ -934,7 +957,6 @@
             else if (currentCollageMode === 2) activeSlots = [collageSlots[0], collageSlots[1]];
             else activeSlots = collageSlots;
 
-            // Kiểm tra nếu có slot nào chứa ảnh hoặc ảnh tổng đang tồn tại
             if (!activeSlots.some(img => img !== null) && !currentUploadedImage) {
                 showToast('Vui lòng chọn ít nhất 1 ảnh trước khi căn chỉnh!', true);
                 return;
@@ -1138,9 +1160,17 @@
                 if (isSold) {
                     actionBtnHtml = `
                         <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
-                            class="px-3 py-1 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
+                            class="px-3 py-1.5 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
                             <i class="fa-solid fa-rotate-left text-xs"></i>
                             <span>KHÔI PHỤC</span>
+                        </button>
+                    `;
+                } else {
+                    actionBtnHtml = `
+                        <button type="button" onclick="markAccountAsSold('${acc.id}', '${escapeHtml(acc.title)}')"
+                            class="px-3 py-1.5 rounded-md bg-yellow-950/50 hover:bg-yellow-500 border border-yellow-500/70 text-yellow-300 hover:text-black text-xs font-black transition flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(252,238,10,0.3)]">
+                            <i class="fa-solid fa-check text-xs"></i>
+                            <span>ĐÃ BÁN</span>
                         </button>
                     `;
                 }
@@ -1153,10 +1183,10 @@
                             <span id="hotmailPassText_${acc.id}" class="text-cyan-200 font-bold mono-font text-sm">••••••••</span>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button type="button" onclick="toggleCardPassword('hotmailPassText_${acc.id}', 'hotmailPassIcon_${acc.id}', '${escapeHtml(acc.hotmail_password)}')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                            <button type="button" onclick="toggleCardPassword('hotmailPassText_${acc.id}', 'hotmailPassIcon_${acc.id}', '${escapeHtml(acc.hotmail_password)}')" class="text-zinc-400 hover:text-cyan-300 p-1.5">
                                 <i id="hotmailPassIcon_${acc.id}" class="fa-solid fa-eye text-sm"></i>
                             </button>
-                            <button type="button" onclick="copyToClipboard('${escapeHtml(acc.hotmail_password)}', 'mật khẩu hotmail')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                            <button type="button" onclick="copyToClipboard('${escapeHtml(acc.hotmail_password)}', 'mật khẩu hotmail')" class="text-zinc-400 hover:text-cyan-300 p-1.5">
                                 <i class="fa-regular fa-copy text-sm"></i>
                             </button>
                         </div>
@@ -1187,7 +1217,7 @@
                         <div class="space-y-2">
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
                                 <span class="text-zinc-100 font-semibold text-sm truncate mr-2">${escapeHtml(acc.username)}</span>
-                                <button type="button" onclick="copyToClipboard('${escapeHtml(acc.username)}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                                <button type="button" onclick="copyToClipboard('${escapeHtml(acc.username)}', 'tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1.5">
                                     <i class="fa-regular fa-copy text-sm"></i>
                                 </button>
                             </div>
@@ -1198,10 +1228,10 @@
                                     <span id="passText_${acc.id}" class="text-zinc-100 font-bold mono-font text-sm">••••••••</span>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <button type="button" onclick="toggleCardPassword('passText_${acc.id}', 'passIcon_${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1">
+                                    <button type="button" onclick="toggleCardPassword('passText_${acc.id}', 'passIcon_${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1.5">
                                         <i id="passIcon_${acc.id}" class="fa-solid fa-eye text-sm"></i>
                                     </button>
-                                    <button type="button" onclick="copyToClipboard('${escapeHtml(acc.password)}', 'mật khẩu')" class="text-zinc-400 hover:text-cyan-300 p-1">
+                                    <button type="button" onclick="copyToClipboard('${escapeHtml(acc.password)}', 'mật khẩu')" class="text-zinc-400 hover:text-cyan-300 p-1.5">
                                         <i class="fa-regular fa-copy text-sm"></i>
                                     </button>
                                 </div>
@@ -1210,14 +1240,23 @@
                             ${hotmailRowHtml}
                         </div>
 
-                        <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400 font-medium">
-                            ${acc.image ? `
-                                <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
-                                    class="px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
-                                    <i class="fa-solid fa-download text-xs text-cyan-400"></i>
-                                    <span>Tải ảnh</span>
+                        <!-- Chân Thẻ -->
+                        <div class="pt-2.5 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center space-x-1.5">
+                                ${acc.image ? `
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
+                                        class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Tải ảnh">
+                                        <i class="fa-solid fa-download text-xs text-cyan-400"></i>
+                                        <span>Tải ảnh</span>
+                                    </button>
+                                ` : ''}
+
+                                <button type="button" onclick="copyCustomerInfo('${acc.id}')"
+                                    class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Sao chép toàn bộ thông tin">
+                                    <i class="fa-solid fa-share-nodes text-xs text-red-500"></i>
+                                    <span>Gửi khách</span>
                                 </button>
-                            ` : '<span></span>'}
+                            </div>
 
                             ${actionBtnHtml}
                         </div>
@@ -1233,15 +1272,16 @@
             const btn2 = document.getElementById('modeBtn2');
             const btn3 = document.getElementById('modeBtn3');
             
-            btn1.className = mode === 1 ? "px-2 py-0.5 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2 py-0.5 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            btn2.className = mode === 2 ? "px-2 py-0.5 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2 py-0.5 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            btn3.className = mode === 3 ? "px-2 py-0.5 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2 py-0.5 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn1.className = mode === 1 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
 
             document.getElementById('slotsMode1').classList.toggle('hidden', mode !== 1);
             document.getElementById('slotsMode2').classList.toggle('hidden', mode !== 2);
             document.getElementById('slotsMode3').classList.toggle('hidden', mode !== 3);
 
             if (currentTweakSlot >= mode) switchExpandedSlot(0);
+            updateSlotButtonLabels();
             processMergedCanvas();
         };
 
@@ -1253,7 +1293,7 @@
                 const img = new Image();
                 img.onload = function() {
                     collageSlots[slotIdx] = img;
-                    updateSlotButtonsStatus();
+                    updateSlotButtonLabels();
                     processMergedCanvas();
                 };
                 img.src = e.target.result;
@@ -1261,26 +1301,26 @@
             reader.readAsDataURL(file);
         };
 
-        function updateSlotButtonsStatus() {
-            // Cập nhật nhãn nút "Chọn" / "Đổi ảnh" để dễ theo dõi
+        function updateSlotButtonLabels() {
+            // Cập nhật nhãn Đổi ảnh / Chọn cho tất cả các nút
             const has0 = !!collageSlots[0];
             const has1 = !!collageSlots[1];
             const has2 = !!collageSlots[2];
 
-            const btnText0_m1 = document.getElementById('slotBtnText0_m1');
-            if (btnText0_m1) btnText0_m1.textContent = has0 ? "Đổi ảnh" : "Chọn";
+            const b0_m1 = document.getElementById('slotBtnText0_m1');
+            if (b0_m1) b0_m1.textContent = has0 ? "Đổi ảnh" : "Chọn";
 
-            const btnText0_m2 = document.getElementById('slotBtnText0_m2');
-            if (btnText0_m2) btnText0_m2.textContent = has0 ? "Đổi ảnh" : "Chọn";
-            const btnText1_m2 = document.getElementById('slotBtnText1_m2');
-            if (btnText1_m2) btnText1_m2.textContent = has1 ? "Đổi ảnh" : "Chọn";
+            const b0_m2 = document.getElementById('slotBtnText0_m2');
+            if (b0_m2) b0_m2.textContent = has0 ? "Đổi ảnh" : "Chọn";
+            const b1_m2 = document.getElementById('slotBtnText1_m2');
+            if (b1_m2) b1_m2.textContent = has1 ? "Đổi ảnh" : "Chọn";
 
-            const btnText0_m3 = document.getElementById('slotBtnText0_m3');
-            if (btnText0_m3) btnText0_m3.textContent = has0 ? "Đổi ảnh" : "Chọn";
-            const btnText1_m3 = document.getElementById('slotBtnText1_m3');
-            if (btnText1_m3) btnText1_m3.textContent = has1 ? "Đổi ảnh" : "Chọn";
-            const btnText2_m3 = document.getElementById('slotBtnText2_m3');
-            if (btnText2_m3) btnText2_m3.textContent = has2 ? "Đổi ảnh" : "Chọn";
+            const b0_m3 = document.getElementById('slotBtnText0_m3');
+            if (b0_m3) b0_m3.textContent = has0 ? "Đổi ảnh" : "Chọn";
+            const b1_m3 = document.getElementById('slotBtnText1_m3');
+            if (b1_m3) b1_m3.textContent = has1 ? "Đổi ảnh" : "Chọn";
+            const b2_m3 = document.getElementById('slotBtnText2_m3');
+            if (b2_m3) b2_m3.textContent = has2 ? "Đổi ảnh" : "Chọn";
         }
 
         window.syncWatermarkFromCode = function() { processMergedCanvas(); };
@@ -1398,7 +1438,6 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
-        // Helper UI & Modal Thêm
         window.openAddModal = function() {
             editingAccountId = null;
             document.getElementById('addAccForm').reset();
@@ -1410,20 +1449,55 @@
                 { zoom: 1, panX: 0, panY: 0 }
             ];
 
-            document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE VAULT</span>`;
+            document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
             document.getElementById('submitBtnText').textContent = "LƯU LÊN SUPABASE";
-            document.getElementById('modalPulseDot').className = "w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
+            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
             document.getElementById('btnGenCode').classList.remove('hidden');
 
             setCollageMode(1);
-            updateSlotButtonsStatus();
+            updateSlotButtonLabels();
             processMergedCanvas();
             generateUniqueAccCode();
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
         };
 
-        // Modal Chỉnh Sửa Tài Khoản: Tự khôi phục các ảnh ô cũ để có thể sửa lẻ từng ảnh
+        // Hàm hỗ trợ cắt ảnh trực tiếp từ ảnh ghép có sẵn nếu thiếu dữ liệu slot
+        function sliceImageToSlots(sourceImg, mode) {
+            return new Promise((resolve) => {
+                const W = sourceImg.naturalWidth || sourceImg.width;
+                const H = sourceImg.naturalHeight || sourceImg.height;
+
+                const makeCrop = (x, y, w, h) => {
+                    const c = document.createElement('canvas');
+                    c.width = w; c.height = h;
+                    const ctx = c.getContext('2d');
+                    ctx.drawImage(sourceImg, x, y, w, h, 0, 0, w, h);
+                    const img = new Image();
+                    img.src = c.toDataURL('image/jpeg', 0.9);
+                    return img;
+                };
+
+                if (mode === 3) {
+                    const topH = Math.round(H * 0.52);
+                    const botH = H - topH;
+                    const halfW = Math.round(W / 2);
+                    const img0 = makeCrop(0, 0, W, topH);
+                    const img1 = makeCrop(0, topH, halfW, botH);
+                    const img2 = makeCrop(halfW, topH, halfW, botH);
+                    resolve([img0, img1, img2]);
+                } else if (mode === 2) {
+                    const halfH = Math.round(H / 2);
+                    const img0 = makeCrop(0, 0, W, halfH);
+                    const img1 = makeCrop(0, halfH, W, halfH);
+                    resolve([img0, img1, null]);
+                } else {
+                    resolve([sourceImg, null, null]);
+                }
+            });
+        }
+
+        // Chỉnh sửa tài khoản: Nạp đủ 3 ô để luôn hiện chữ "Đổi ảnh"
         window.openEditModal = async function(id) {
             const acc = accounts.find(a => a.id === id);
             if (!acc) return;
@@ -1431,28 +1505,26 @@
             playCyberSound('click');
             editingAccountId = id;
 
-            // Đổ dữ liệu cũ
             document.getElementById('accTitle').value = acc.title || '';
             document.getElementById('accPrice').value = acc.price || '';
             document.getElementById('accUsername').value = acc.username || '';
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
 
-            document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA TÀI KHOẢN // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
+            document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
             document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
-            document.getElementById('modalPulseDot').className = "w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
+            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
             document.getElementById('btnGenCode').classList.add('hidden');
 
             currentUploadedImage = acc.image || "";
             collageSlots = [null, null, null];
 
-            // Nếu tài khoản đã có dữ liệu ảnh slot từng phần trước đó
-            if (acc.collage_data && acc.collage_data.slots) {
+            if (acc.collage_data && acc.collage_data.slots && acc.collage_data.slots.some(s => s !== null)) {
+                // Đã có dữ liệu slot tách riêng
                 const cData = acc.collage_data;
-                currentCollageMode = cData.mode || 1;
+                currentCollageMode = cData.mode || 3;
                 if (cData.config) collageConfig = cData.config;
 
-                // Tải lại các ảnh slot vào mảng collageSlots
                 const loadPromises = cData.slots.map((src, idx) => {
                     return new Promise((resolve) => {
                         if (!src) { resolve(); return; }
@@ -1464,18 +1536,23 @@
                 });
                 await Promise.all(loadPromises);
             } else if (currentUploadedImage) {
-                // Với acc cũ chưa có collage_data, nạp ảnh cũ vào slot 0 để luôn thao tác được
-                currentCollageMode = 1;
+                // Tự động nhận diện nếu ảnh trước đó là khung 3 ảnh -> Tự cắt ra 3 ô để nạp sẵn
+                const fullImg = new Image();
+                fullImg.crossOrigin = 'anonymous';
                 await new Promise((resolve) => {
-                    const img = new Image();
-                    img.onload = () => { collageSlots[0] = img; resolve(); };
-                    img.onerror = () => resolve();
-                    img.src = currentUploadedImage;
+                    fullImg.onload = resolve;
+                    fullImg.onerror = resolve;
+                    fullImg.src = currentUploadedImage;
                 });
+
+                // Mặc định nạp 3 ảnh để cả 3 ô đều hiển thị "Đổi ảnh"
+                currentCollageMode = 3;
+                const sliced = await sliceImageToSlots(fullImg, 3);
+                collageSlots = sliced;
             }
 
             setCollageMode(currentCollageMode);
-            updateSlotButtonsStatus();
+            updateSlotButtonLabels();
             processMergedCanvas();
 
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
@@ -1486,6 +1563,28 @@
             editingAccountId = null;
             document.getElementById('addAccModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
+        };
+
+        window.copyCustomerInfo = function(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return;
+
+            const priceNum = parseFloat(acc.price) || 0;
+            const priceFormatted = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + ' VNĐ' : 'Liên hệ';
+
+            let text = `📦 THÔNG TIN TÀI KHOẢN ${acc.title}\n`;
+            text += `💰 Giá: ${priceFormatted}\n`;
+            text += `👤 Tài khoản: ${acc.username}\n`;
+            text += `🔑 Mật khẩu: ${acc.password}\n`;
+            if (acc.hotmail_password) {
+                text += `📧 Hotmail: ${acc.hotmail_password}\n`;
+            }
+            text += `---------------------------------\n`;
+            text += `Cảm ơn bạn đã ủng hộ Kho acc của Chía! Chúc bạn chơi game vui vẻ ❤️`;
+
+            navigator.clipboard.writeText(text);
+            playCyberSound('click');
+            showToast(`Đã sao chép toàn bộ thông tin gửi khách!`);
         };
 
         window.openImgViewer = function(src) {
