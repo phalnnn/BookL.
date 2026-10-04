@@ -623,7 +623,6 @@
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
-                // Chuyển thẳng sang lịch sử đã bán
                 try {
                     const { error } = await _supabase
                         .from('accounts')
@@ -641,7 +640,6 @@
                     showToast("Không thể chuyển vào đã bán!", true);
                 }
             } else {
-                // Đang ở tab Đã bán -> Mở xác nhận xóa vĩnh viễn trên Supabase
                 promptDeleteAccount(id, title);
             }
         };
@@ -753,7 +751,6 @@
                     return;
                 }
 
-                // Lưu dữ liệu slot ảnh
                 const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
                 const collageDataObj = {
                     mode: currentCollageMode,
@@ -1163,18 +1160,6 @@
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
                 const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
 
-                let actionBtnHtml = '';
-                // Chỉ hiện nút KHÔI PHỤC ở tab Lịch sử đã bán, không thêm nút ĐÃ BÁN ở chân thẻ
-                if (isSold) {
-                    actionBtnHtml = `
-                        <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
-                            class="px-3 py-1.5 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
-                            <i class="fa-solid fa-rotate-left text-xs"></i>
-                            <span>KHÔI PHỤC</span>
-                        </button>
-                    `;
-                }
-
                 const hotmailRowHtml = acc.hotmail_password ? `
                     <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
                         <div class="flex items-center space-x-2 truncate mr-2">
@@ -1193,7 +1178,6 @@
                     </div>
                 ` : '';
 
-                // Nút X: Ở tab Kho hiện có -> Bấm là chuyển ĐÃ BÁN. Ở tab Đã bán -> Bấm là Xóa vĩnh viễn
                 const closeBtnTitle = isSold ? "Xóa vĩnh viễn khỏi database" : "Đánh dấu đã bán";
 
                 card.innerHTML = `
@@ -1202,7 +1186,6 @@
                         <i class="fa-solid fa-pen text-xs"></i>
                     </button>
 
-                    <!-- Nút X: Thông minh phân biệt Đã bán hay Xóa vĩnh viễn -->
                     <button type="button" onclick="handleCardCloseAction('${acc.id}', '${escapeHtml(acc.title)}')" title="${closeBtnTitle}"
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
@@ -1244,25 +1227,39 @@
                             ${hotmailRowHtml}
                         </div>
 
-                        <!-- Chân Thẻ: Chỉ gồm Tải ảnh, Gửi khách và nút Khôi phục (nếu đã bán) -->
-                        <div class="pt-2.5 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <div class="flex items-center space-x-1.5">
+                        <!-- Chân Thẻ: Đối xứng 1 góc trái - 1 góc phải -->
+                        <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                            <!-- Góc Trái: Nút Tải ảnh -->
+                            <div>
                                 ${acc.image ? `
                                     <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
-                                        class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Tải ảnh">
+                                        class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
                                         <i class="fa-solid fa-download text-xs text-cyan-400"></i>
                                         <span>Tải ảnh</span>
                                     </button>
-                                ` : ''}
-
-                                <button type="button" onclick="copyCustomerInfo('${acc.id}')"
-                                    class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Sao chép toàn bộ thông tin">
-                                    <i class="fa-solid fa-share-nodes text-xs text-red-500"></i>
-                                    <span>Gửi khách</span>
-                                </button>
+                                ` : '<span></span>'}
                             </div>
 
-                            ${actionBtnHtml}
+                            <!-- Góc Phải: Nút Gửi khách (ở Kho Hiện Có) hoặc Nút Khôi phục (ở Lịch Sử Đã Bán) -->
+                            <div class="flex items-center space-x-2">
+                                ${isSold ? `
+                                    <button type="button" onclick="copyCustomerInfo('${acc.id}')"
+                                        class="w-8 h-8 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center transition active:scale-95" title="Gửi khách">
+                                        <i class="fa-solid fa-share-nodes text-xs"></i>
+                                    </button>
+                                    <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
+                                        class="px-3.5 py-1.5 rounded-lg bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
+                                        <i class="fa-solid fa-rotate-left text-xs"></i>
+                                        <span>KHÔI PHỤC</span>
+                                    </button>
+                                ` : `
+                                    <button type="button" onclick="copyCustomerInfo('${acc.id}')"
+                                        class="px-3.5 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 border border-red-500/60 text-red-200 hover:text-white text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_12px_rgba(255,0,60,0.25)]">
+                                        <i class="fa-solid fa-share-nodes text-xs text-red-400"></i>
+                                        <span>Gửi khách</span>
+                                    </button>
+                                `}
+                            </div>
                         </div>
                     </div>
                 `;
