@@ -86,6 +86,15 @@
             border-color: rgba(255, 0, 60, 0.85);
             box-shadow: 0 0 35px rgba(255, 0, 60, 0.25), inset 0 0 20px rgba(255, 0, 60, 0.08);
         }
+        .sold-panel-glow {
+            border: 1px solid rgba(113, 113, 122, 0.4);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .sold-panel-glow:hover {
+            border-color: rgba(234, 179, 8, 0.7);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
+        }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #040407; }
         ::-webkit-scrollbar-thumb { background: #ff003c; border-radius: 2px; }
@@ -118,7 +127,7 @@
                 </div>
             </div>
 
-            <!-- Controls (Đã bỏ thống kê ĐÃ BÁN) -->
+            <!-- Controls -->
             <div class="flex items-center justify-between md:justify-end space-x-2.5 border-t md:border-t-0 border-red-950/60 pt-2.5 md:pt-0">
                 <div class="hidden sm:flex items-center space-x-2.5 px-3 py-1.5 rounded-lg bg-[#0e0e18] border border-zinc-700/80 text-xs mono-font text-zinc-300">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
@@ -126,9 +135,13 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <div class="flex items-center px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Tổng số tài khoản trong kho">
-                        <span class="text-zinc-400 mr-1.5">TỔNG ACC:</span>
+                    <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
+                        <span class="text-zinc-400 mr-1.5">SẴN:</span>
                         <span id="headerAvailableCount" class="text-red-400 font-black cyber-font text-sm sm:text-base">0</span>
+                    </div>
+                    <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-yellow-500/50 text-xs font-semibold" title="Acc đã bán">
+                        <span class="text-zinc-400 mr-1.5">ĐÃ BÁN:</span>
+                        <span id="headerSoldCount" class="text-yellow-400 font-black cyber-font text-sm sm:text-base">0</span>
                     </div>
                 </div>
 
@@ -147,14 +160,26 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        <!-- Search Bar (Gọn gàng toàn bộ chiều rộng) -->
-        <div class="mb-6 p-3 sm:p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex items-center justify-between">
-            <div class="relative w-full flex items-center">
+        <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
+            <div class="relative w-full md:w-2/3 flex items-center">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
                 <input type="text" id="searchInput" oninput="handleSearch()" placeholder="TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME..."
                     class="w-full pl-12 pr-12 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-red-500 rounded-xl text-sm sm:text-base text-zinc-100 placeholder-zinc-500 font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/40 transition">
                 <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white p-1">
                     <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
+                <button type="button" id="tabAvailableBtn" onclick="switchViewTab('available')" 
+                    class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <span>KHO HIỆN CÓ</span>
+                </button>
+                <button type="button" id="tabSoldBtn" onclick="switchViewTab('sold')" 
+                    class="flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>LỊCH SỬ ĐÃ BÁN</span>
                 </button>
             </div>
         </div>
@@ -163,12 +188,12 @@
 
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
-                <i class="fa-solid fa-shield-virus"></i>
+                <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
             </div>
-            <h3 class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2 tracking-wider">
+            <h3 id="emptyTitle" class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2 tracking-wider">
                 KHO DỮ LIỆU ĐANG TRỐNG
             </h3>
-            <p class="text-sm text-zinc-400 max-w-md mx-auto mb-6 leading-relaxed">
+            <p id="emptyDesc" class="text-sm text-zinc-400 max-w-md mx-auto mb-6 leading-relaxed">
                 Chưa có tài khoản nào được lưu trên Cloud Supabase. Nhấn nút <strong class="text-red-400">"THÊM ACC"</strong> để bắt đầu lưu trữ ngay bây giờ!
             </p>
         </div>
@@ -254,7 +279,7 @@
                         </div>
                     </div>
 
-                    <!-- Khung Đổi ảnh (Cả 3 ô đều hiển thị đầy đủ nút đổi ảnh) -->
+                    <!-- KHUNG ĐỔI ẢNH (3 Ô ĐỀU ĐẦY ĐỦ NÚT ĐỔI ẢNH) -->
                     <div class="pt-2 border-t border-zinc-800 space-y-2">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
@@ -323,7 +348,7 @@
                     </div>
                 </div>
 
-                <!-- Cột phải: Live Canvas -->
+                <!-- Cột phải: Live Canvas & Chạm Căn Chỉnh -->
                 <div class="lg:col-span-7 flex flex-col space-y-3">
                     <div id="collageEmptyRightState" class="h-48 lg:h-full min-h-[220px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-4">
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-3xl mb-2"></i>
@@ -422,7 +447,7 @@
         </div>
     </div>
 
-    <!-- Modal Xác Nhận Xóa -->
+    <!-- Modal Xác Nhận Xóa Vĩnh Viễn Trên Supabase (Chỉ hiện khi xóa ở tab Đã Bán) -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="relative w-full max-w-md bg-[#0a0a10] border-2 border-red-600 rounded-2xl p-6 shadow-[0_0_50px_rgba(255,0,60,0.6)] text-center">
             <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-950/70 border-2 border-red-500 flex items-center justify-center text-red-500 text-3xl">
@@ -431,7 +456,7 @@
             <h3 class="cyber-font text-base sm:text-lg font-black text-red-500 uppercase tracking-widest mb-1.5">
                 CẢNH BÁO XÓA DỮ LIỆU
             </h3>
-            <p class="text-xs sm:text-sm text-zinc-300 mono-font mb-2">Hệ thống chuẩn bị xóa vĩnh viễn tài khoản:</p>
+            <p class="text-xs sm:text-sm text-zinc-300 mono-font mb-2">Hệ thống chuẩn bị xóa vĩnh viễn khỏi Cloud Supabase:</p>
             <div id="deleteAccCodeDisplay" class="cyber-font text-base font-bold text-yellow-400 bg-black/80 py-1.5 px-4 rounded-lg border border-yellow-500/50 inline-block mb-4">
                 #00000
             </div>
@@ -462,6 +487,7 @@
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let accounts = [];
+        let currentTab = 'available';
         let pendingDeleteId = null;
         let isAudioEnabled = true;
         let currentCollageMode = 2;
@@ -570,6 +596,8 @@
                     hotmail_password: row.hotmail_password || '',
                     image: row.image,
                     collage_data: row.collage_data || null,
+                    is_sold: Boolean(row.is_sold),
+                    sold_at: row.sold_at,
                     createdAt: row.created_at
                 }));
 
@@ -582,13 +610,82 @@
         }
 
         function updateHeaderCounts() {
+            const availCount = accounts.filter(a => !a.is_sold).length;
+            const soldCount = accounts.filter(a => a.is_sold).length;
+
             const headerAvail = document.getElementById('headerAvailableCount');
-            if (headerAvail) headerAvail.textContent = accounts.length;
+            const headerSold = document.getElementById('headerSoldCount');
+            if (headerAvail) headerAvail.textContent = availCount;
+            if (headerSold) headerSold.textContent = soldCount;
         }
+
+        // BẤM NÚT X ĐỎ: Nếu ở kho hiện có thì chuyển sang ĐÃ BÁN, nếu ở tab Đã bán mới mở popup xóa
+        window.handleCardCloseAction = async function(id, title) {
+            playCyberSound('click');
+            if (currentTab === 'available') {
+                // Chuyển thẳng sang lịch sử đã bán
+                try {
+                    const { error } = await _supabase
+                        .from('accounts')
+                        .update({ 
+                            is_sold: true, 
+                            sold_at: new Date().toISOString() 
+                        })
+                        .eq('id', id);
+
+                    if (error) throw error;
+                    await fetchAccountsFromSupabase();
+                    showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
+                } catch (err) {
+                    console.error("Lỗi chuyển đã bán:", err);
+                    showToast("Không thể chuyển vào đã bán!", true);
+                }
+            } else {
+                // Đang ở tab Đã bán -> Mở xác nhận xóa vĩnh viễn trên Supabase
+                promptDeleteAccount(id, title);
+            }
+        };
+
+        window.restoreAccountToVault = async function(id, title) {
+            playCyberSound('click');
+            try {
+                const { error } = await _supabase
+                    .from('accounts')
+                    .update({ 
+                        is_sold: false, 
+                        sold_at: null 
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+                await fetchAccountsFromSupabase();
+                showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
+            } catch (err) {
+                console.error("Lỗi khôi phục:", err);
+                showToast("Không thể khôi phục tài khoản!", true);
+            }
+        };
+
+        window.switchViewTab = function(tab) {
+            playCyberSound('click');
+            currentTab = tab;
+            const btnAvail = document.getElementById('tabAvailableBtn');
+            const btnSold = document.getElementById('tabSoldBtn');
+
+            if (tab === 'available') {
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5";
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            } else {
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-yellow-400 text-black shadow-[0_0_12px_#fcee0a] transition flex items-center justify-center gap-1.5";
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            }
+
+            filterAndRender();
+        };
 
         function filterAndRender() {
             const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-            let filtered = accounts;
+            let filtered = accounts.filter(a => currentTab === 'available' ? !a.is_sold : a.is_sold);
 
             if (query) {
                 filtered = filtered.filter(a => a.title.toLowerCase().includes(query) || a.username.toLowerCase().includes(query));
@@ -656,6 +753,7 @@
                     return;
                 }
 
+                // Lưu dữ liệu slot ảnh
                 const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
                 const collageDataObj = {
                     mode: currentCollageMode,
@@ -694,7 +792,9 @@
                         password: password,
                         hotmail_password: hotmailPassword || null,
                         image: currentUploadedImage || null,
-                        collage_data: collageDataObj
+                        collage_data: collageDataObj,
+                        is_sold: false,
+                        sold_at: null
                     };
 
                     const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
@@ -995,11 +1095,14 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (ĐÃ BỎ NÚT "ĐÃ BÁN") ---
+        // --- RENDER DANH SÁCH ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
             const emptyState = document.getElementById('emptyVaultState');
+            const emptyTitle = document.getElementById('emptyTitle');
+            const emptyDesc = document.getElementById('emptyDesc');
+            const emptyIcon = document.getElementById('emptyIcon');
             if (!grid) return;
 
             grid.innerHTML = '';
@@ -1007,6 +1110,15 @@
             if (listToRender.length === 0) {
                 emptyState.classList.remove('hidden');
                 grid.classList.add('hidden');
+                if (currentTab === 'sold') {
+                    emptyIcon.className = "fa-solid fa-receipt text-yellow-500";
+                    emptyTitle.textContent = "CHƯA CÓ LỊCH SỬ BÁN";
+                    emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán.";
+                } else {
+                    emptyIcon.className = "fa-solid fa-shield-virus text-red-500";
+                    emptyTitle.textContent = "KHO DỮ LIỆU ĐANG TRỐNG";
+                    emptyDesc.textContent = "Chưa có tài khoản nào có sẵn trong kho. Nhấn 'THÊM ACC' để khởi tạo tài khoản mới!";
+                }
                 return;
             }
 
@@ -1015,14 +1127,16 @@
 
             listToRender.forEach(acc => {
                 const card = document.createElement('div');
+                const isSold = acc.is_sold;
+
                 const priceNum = parseFloat(acc.price) || 0;
                 const priceFormatted = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
 
-                card.className = "relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group cyber-panel-glow border-red-950/90 hover:border-red-500";
+                card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
-                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
                         
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="text-xs sm:text-sm cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-red-500 shadow-[0_0_15px_#ff003c]">
@@ -1032,6 +1146,10 @@
 
                         <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
+                        </div>
+
+                        <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold ${isSold ? 'text-yellow-400 border-yellow-500/50' : 'text-cyan-300 border-cyan-500/50'} px-2 py-0.5 rounded border shadow">
+                            ${isSold ? 'TRẠNG THÁI: ĐÃ BÁN' : 'KHO SẴN SÀNG'}
                         </div>
                        </div>`
                     : `<div class="relative w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
@@ -1043,6 +1161,19 @@
                        </div>`;
 
                 const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
+                const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
+
+                let actionBtnHtml = '';
+                // Chỉ hiện nút KHÔI PHỤC ở tab Lịch sử đã bán, không thêm nút ĐÃ BÁN ở chân thẻ
+                if (isSold) {
+                    actionBtnHtml = `
+                        <button type="button" onclick="restoreAccountToVault('${acc.id}', '${escapeHtml(acc.title)}')"
+                            class="px-3 py-1.5 rounded-md bg-emerald-950/50 hover:bg-emerald-500 border border-emerald-500/70 text-emerald-300 hover:text-black text-xs font-black transition flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(0,255,102,0.3)]">
+                            <i class="fa-solid fa-rotate-left text-xs"></i>
+                            <span>KHÔI PHỤC</span>
+                        </button>
+                    `;
+                }
 
                 const hotmailRowHtml = acc.hotmail_password ? `
                     <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
@@ -1062,13 +1193,17 @@
                     </div>
                 ` : '';
 
+                // Nút X: Ở tab Kho hiện có -> Bấm là chuyển ĐÃ BÁN. Ở tab Đã bán -> Bấm là Xóa vĩnh viễn
+                const closeBtnTitle = isSold ? "Xóa vĩnh viễn khỏi database" : "Đánh dấu đã bán";
+
                 card.innerHTML = `
                     <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
                         class="absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)] transition active:scale-90">
                         <i class="fa-solid fa-pen text-xs"></i>
                     </button>
 
-                    <button type="button" onclick="promptDeleteAccount('${acc.id}', '${escapeHtml(acc.title)}')" 
+                    <!-- Nút X: Thông minh phân biệt Đã bán hay Xóa vĩnh viễn -->
+                    <button type="button" onclick="handleCardCloseAction('${acc.id}', '${escapeHtml(acc.title)}')" title="${closeBtnTitle}"
                         class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
                     </button>
@@ -1078,10 +1213,10 @@
                     <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
                         <div class="flex items-center justify-between pb-2.5 border-b border-zinc-800">
                             <div>
-                                <span class="cyber-font text-base sm:text-lg font-black text-red-400 tracking-wider">${escapeHtml(acc.title)}</span>
+                                <span class="cyber-font text-base sm:text-lg font-black ${isSold ? 'text-yellow-400 line-through' : 'text-red-400'} tracking-wider">${escapeHtml(acc.title)}</span>
                                 <span class="ml-2 text-xs font-black text-yellow-400 bg-yellow-950/40 border border-yellow-500/50 px-2 py-0.5 rounded">${priceFormatted}</span>
                             </div>
-                            <span class="text-xs text-zinc-400">Tạo: ${dateStr}</span>
+                            <span class="text-xs text-zinc-400">${isSold ? `Bán: ${soldDateStr}` : `Tạo: ${dateStr}`}</span>
                         </div>
                         <div class="space-y-2">
                             <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
@@ -1109,21 +1244,25 @@
                             ${hotmailRowHtml}
                         </div>
 
-                        <!-- Chân Thẻ: Tải ảnh & Sao chép gửi khách -->
-                        <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between gap-2 text-xs">
-                            ${acc.image ? `
-                                <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
-                                    class="px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Tải ảnh">
-                                    <i class="fa-solid fa-download text-xs text-cyan-400"></i>
-                                    <span>Tải ảnh</span>
-                                </button>
-                            ` : '<span></span>'}
+                        <!-- Chân Thẻ: Chỉ gồm Tải ảnh, Gửi khách và nút Khôi phục (nếu đã bán) -->
+                        <div class="pt-2.5 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center space-x-1.5">
+                                ${acc.image ? `
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
+                                        class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Tải ảnh">
+                                        <i class="fa-solid fa-download text-xs text-cyan-400"></i>
+                                        <span>Tải ảnh</span>
+                                    </button>
+                                ` : ''}
 
-                            <button type="button" onclick="copyCustomerInfo('${acc.id}')"
-                                class="px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Sao chép toàn bộ thông tin">
-                                <i class="fa-solid fa-share-nodes text-xs text-red-500"></i>
-                                <span>Gửi khách</span>
-                            </button>
+                                <button type="button" onclick="copyCustomerInfo('${acc.id}')"
+                                    class="px-2.5 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow" title="Sao chép toàn bộ thông tin">
+                                    <i class="fa-solid fa-share-nodes text-xs text-red-500"></i>
+                                    <span>Gửi khách</span>
+                                </button>
+                            </div>
+
+                            ${actionBtnHtml}
                         </div>
                     </div>
                 `;
