@@ -617,10 +617,21 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
-        // BẤM NÚT X ĐỎ: Ở kho hiện có chuyển sang ĐÃ BÁN, ở tab Đã bán mới mở popup xóa
+        // TỐI ƯU LIỀN MẠCH: Cập nhật biến mảng local ngay lập tức trước khi Supabase phản hồi
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
+                // 1. Cập nhật ngay trên bộ nhớ để giao diện phản hồi tức thì
+                const acc = accounts.find(a => a.id === id);
+                if (acc) {
+                    acc.is_sold = true;
+                    acc.sold_at = new Date().toISOString();
+                }
+                updateHeaderCounts();
+                filterAndRender();
+                showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
+
+                // 2. Chạy ngầm lưu lên Supabase
                 try {
                     const { error } = await _supabase
                         .from('accounts')
@@ -631,11 +642,10 @@
                         .eq('id', id);
 
                     if (error) throw error;
-                    await fetchAccountsFromSupabase();
-                    showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
                 } catch (err) {
                     console.error("Lỗi chuyển đã bán:", err);
-                    showToast("Không thể chuyển vào đã bán!", true);
+                    showToast("Không thể đồng bộ trạng thái lên mạng!", true);
+                    await fetchAccountsFromSupabase(); // Rollback nếu lỗi
                 }
             } else {
                 promptDeleteAccount(id, title);
@@ -644,6 +654,17 @@
 
         window.restoreAccountToVault = async function(id, title) {
             playCyberSound('click');
+            // 1. Cập nhật ngay tức thì trên giao diện
+            const acc = accounts.find(a => a.id === id);
+            if (acc) {
+                acc.is_sold = false;
+                acc.sold_at = null;
+            }
+            updateHeaderCounts();
+            filterAndRender();
+            showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
+
+            // 2. Đồng bộ ngầm lên Supabase
             try {
                 const { error } = await _supabase
                     .from('accounts')
@@ -654,11 +675,10 @@
                     .eq('id', id);
 
                 if (error) throw error;
-                await fetchAccountsFromSupabase();
-                showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
             } catch (err) {
                 console.error("Lỗi khôi phục:", err);
-                showToast("Không thể khôi phục tài khoản!", true);
+                showToast("Không thể khôi phục tài khoản trên Supabase!", true);
+                await fetchAccountsFromSupabase();
             }
         };
 
@@ -767,17 +787,24 @@
                         collage_data: collageDataObj
                     };
 
+                    // Optimistic update
+                    const accIdx = accounts.findIndex(a => a.id === editingAccountId);
+                    if (accIdx !== -1) {
+                        accounts[accIdx] = { ...accounts[accIdx], ...updateData };
+                        updateHeaderCounts();
+                        filterAndRender();
+                    }
+
+                    closeAddModal();
+                    playCyberSound('save');
+                    showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
+
                     const { error: updateErr } = await _supabase
                         .from('accounts')
                         .update(updateData)
                         .eq('id', editingAccountId);
 
                     if (updateErr) throw updateErr;
-
-                    await fetchAccountsFromSupabase();
-                    closeAddModal();
-                    playCyberSound('save');
-                    showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
                 } else {
                     const newRecord = {
                         id: 'acc_' + Date.now(),
@@ -789,20 +816,26 @@
                         image: currentUploadedImage || null,
                         collage_data: collageDataObj,
                         is_sold: false,
-                        sold_at: null
+                        sold_at: null,
+                        createdAt: new Date().toISOString()
                     };
 
-                    const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
-                    if (insertErr) throw insertErr;
+                    // Optimistic update
+                    accounts.unshift(newRecord);
+                    updateHeaderCounts();
+                    filterAndRender();
 
-                    await fetchAccountsFromSupabase();
                     closeAddModal();
                     playCyberSound('save');
                     showToast(`Đã lưu ${formattedTitle} lên Supabase!`);
+
+                    const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
+                    if (insertErr) throw insertErr;
                 }
             } catch (err) {
                 console.error("Lỗi khi lưu:", err);
                 showToast("Không thể lưu tài khoản vào cơ sở dữ liệu!", true);
+                await fetchAccountsFromSupabase();
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>LƯU LÊN SUPABASE</span>`;
@@ -813,16 +846,22 @@
             if (!pendingDeleteId) return;
             playCyberSound('click');
 
-            try {
-                const { error } = await _supabase.from('accounts').delete().eq('id', pendingDeleteId);
-                if (error) throw error;
+            const delId = pendingDeleteId;
+            closeDeleteConfirmModal();
 
-                await fetchAccountsFromSupabase();
-                closeDeleteConfirmModal();
-                showToast("Đã xóa vĩnh viễn tài khoản khỏi Supabase!");
+            // Cập nhật ngay trên giao diện
+            accounts = accounts.filter(a => a.id !== delId);
+            updateHeaderCounts();
+            filterAndRender();
+            showToast("Đã xóa vĩnh viễn tài khoản khỏi Supabase!");
+
+            try {
+                const { error } = await _supabase.from('accounts').delete().eq('id', delId);
+                if (error) throw error;
             } catch (err) {
                 console.error("Lỗi xóa:", err);
                 showToast("Không thể xóa tài khoản!", true);
+                await fetchAccountsFromSupabase();
             }
         };
 
@@ -1090,7 +1129,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH (TỐI ƯU PC GIẢI PHÁP 1, GIỮ NGUYÊN 100% MOBILE) ---
+        // --- RENDER DANH SÁCH (TỐI ƯU CỰC MƯỢT, KHÔNG CẦN F5 TRANG) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -1129,7 +1168,6 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
-                // Khung ảnh: Trên mobile giữ badge góc phải, trên PC badge tự sang góc trái để nhường góc phải cho cụm nút
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -1140,7 +1178,6 @@
                             </span>
                         </div>
 
-                        <!-- Badge Giá: Mobile nằm góc phải (top-2.5 right-2.5), PC chuyển sang góc trái (lg:left-2.5 lg:right-auto) -->
                         <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
@@ -1698,7 +1735,20 @@
             showToast("Đã cài đặt App thành công! Bạn có thể ghim vào Taskbar.");
         });
 
-        window.addEventListener('DOMContentLoaded', fetchAccountsFromSupabase);
+        // Thiết lập đồng bộ Realtime từ Supabase (Tự động cập nhật không cần F5)
+        function initSupabaseRealtime() {
+            _supabase
+                .channel('public:accounts')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'accounts' }, () => {
+                    fetchAccountsFromSupabase();
+                })
+                .subscribe();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchAccountsFromSupabase();
+            initSupabaseRealtime();
+        });
     </script>
 </body>
 </html>
