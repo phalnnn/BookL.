@@ -216,7 +216,6 @@
             </div>
 
             <form id="addAccForm" onsubmit="handleAccountSubmit(event)" class="flex-1 overflow-y-auto p-3.5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
-                <!-- Cột trái: Form nhập -->
                 <div class="lg:col-span-5 flex flex-col space-y-3">
                     <div>
                         <div class="flex items-center justify-between mb-1">
@@ -279,7 +278,6 @@
                         </div>
                     </div>
 
-                    <!-- KHUNG ĐỔI ẢNH (3 Ô ĐỀU ĐẦY ĐỦ NÚT ĐỔI ẢNH) -->
                     <div class="pt-2 border-t border-zinc-800 space-y-2">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
@@ -447,7 +445,7 @@
         </div>
     </div>
 
-    <!-- Modal Xác Nhận Xóa Vĩnh Viễn Trên Supabase (Chỉ hiện khi xóa ở tab Đã Bán) -->
+    <!-- Modal Xác Nhận Xóa Vĩnh Viễn Trên Supabase -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
         <div class="relative w-full max-w-md bg-[#0a0a10] border-2 border-red-600 rounded-2xl p-6 shadow-[0_0_50px_rgba(255,0,60,0.6)] text-center">
             <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-950/70 border-2 border-red-500 flex items-center justify-center text-red-500 text-3xl">
@@ -619,7 +617,7 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
-        // BẤM NÚT X ĐỎ: Nếu ở kho hiện có thì chuyển sang ĐÃ BÁN, nếu ở tab Đã bán mới mở popup xóa
+        // BẤM NÚT X ĐỎ: Ở kho hiện có chuyển sang ĐÃ BÁN, ở tab Đã bán mới mở popup xóa
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
@@ -1092,7 +1090,7 @@
             }, { passive: false });
         }
 
-        // --- RENDER DANH SÁCH ---
+        // --- RENDER DANH SÁCH (TỐI ƯU PC GIẢI PHÁP 1, GIỮ NGUYÊN 100% MOBILE) ---
 
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
@@ -1131,6 +1129,7 @@
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
                 
+                // Khung ảnh: Trên mobile giữ badge góc phải, trên PC badge tự sang góc trái để nhường góc phải cho cụm nút
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
                         <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
@@ -1141,7 +1140,8 @@
                             </span>
                         </div>
 
-                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
+                        <!-- Badge Giá: Mobile nằm góc phải (top-2.5 right-2.5), PC chuyển sang góc trái (lg:left-2.5 lg:right-auto) -->
+                        <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
 
@@ -1152,7 +1152,7 @@
                     : `<div class="relative w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
                         <i class="fa-solid fa-microchip text-4xl mb-2 text-red-500/30"></i>
                         <span class="text-xs font-semibold text-zinc-400">KHÔNG CÓ DỮ LIỆU ẢNH</span>
-                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
+                        <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
                             ${priceFormatted}
                         </div>
                        </div>`;
@@ -1181,15 +1181,28 @@
                 const closeBtnTitle = isSold ? "Xóa vĩnh viễn khỏi database" : "Đánh dấu đã bán";
 
                 card.innerHTML = `
+                    <!-- GIAO DIỆN MOBILE (< lg): GIỮ NGUYÊN 100% VỊ TRÍ 2 NÚT TRÒN NHÔ NGOÀI MÉP NHƯ CŨ -->
                     <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
-                        class="absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)] transition active:scale-90">
+                        class="lg:hidden absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)] transition active:scale-90">
                         <i class="fa-solid fa-pen text-xs"></i>
                     </button>
 
                     <button type="button" onclick="handleCardCloseAction('${acc.id}', '${escapeHtml(acc.title)}')" title="${closeBtnTitle}"
-                        class="absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
+                        class="lg:hidden absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)] transition active:scale-90">
                         <i class="fa-solid fa-xmark text-sm font-black"></i>
                     </button>
+
+                    <!-- GIAO DIỆN PC (>= lg): GIẢI PHÁP 1 GOM VÀO CỤM ACTION NẰM GỌN BÊN TRONG GÓC PHẢI THẺ -->
+                    <div class="hidden lg:flex absolute top-2.5 right-2.5 z-30 items-center space-x-1.5 bg-black/85 backdrop-blur-md p-1 rounded-xl border border-zinc-800 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
+                        <button type="button" onclick="openEditModal('${acc.id}')" title="Sửa thông tin & ảnh"
+                            class="w-7 h-7 rounded-lg bg-zinc-900 border border-cyan-500/50 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center transition active:scale-90">
+                            <i class="fa-solid fa-pen text-[11px]"></i>
+                        </button>
+                        <button type="button" onclick="handleCardCloseAction('${acc.id}', '${escapeHtml(acc.title)}')" title="${closeBtnTitle}"
+                            class="w-7 h-7 rounded-lg bg-zinc-900 border border-red-500/60 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center transition active:scale-90">
+                            <i class="fa-solid fa-xmark text-xs font-black"></i>
+                        </button>
+                    </div>
 
                     ${imgSection}
 
@@ -1229,7 +1242,6 @@
 
                         <!-- Chân Thẻ: Đối xứng 1 góc trái - 1 góc phải -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
-                            <!-- Góc Trái: Nút Tải ảnh -->
                             <div>
                                 ${acc.image ? `
                                     <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
@@ -1240,7 +1252,6 @@
                                 ` : '<span></span>'}
                             </div>
 
-                            <!-- Góc Phải: Nút Gửi khách (ở Kho Hiện Có) hoặc Nút Khôi phục (ở Lịch Sử Đã Bán) -->
                             <div class="flex items-center space-x-2">
                                 ${isSold ? `
                                     <button type="button" onclick="copyCustomerInfo('${acc.id}')"
