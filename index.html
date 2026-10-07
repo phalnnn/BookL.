@@ -574,18 +574,30 @@
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
+        // LƯU VÀO LOCALSTORAGE ĐỂ TẢI TỨC THÌ
+        function saveAccountsToLocalCache(dataList) {
+            try {
+                localStorage.setItem('chia_accounts_cache', JSON.stringify(dataList));
+            } catch (e) {}
+        }
+
         async function fetchAccountsFromSupabase() {
-            const grid = document.getElementById('accountsGrid');
-            if (grid && accounts.length === 0) {
-                grid.classList.remove('hidden');
-                grid.innerHTML = `
-                    <div class="col-span-full py-16 flex flex-col items-center justify-center space-y-3">
-                        <i class="fa-solid fa-spinner fa-spin text-3xl text-red-500"></i>
-                        <p class="cyber-font text-xs tracking-widest text-zinc-400">ĐANG ĐỒNG BỘ DỮ LIỆU TỪ SUPABASE...</p>
-                    </div>
-                `;
+            // 1. Lợi dụng Cache: Đọc dữ liệu đã lưu từ LocalStorage để hiện acc ngay lập tức
+            const cached = localStorage.getItem('chia_accounts_cache');
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        accounts = parsed;
+                        updateHeaderCounts();
+                        filterAndRender();
+                    }
+                } catch (e) {
+                    console.error("Lỗi đọc cache:", e);
+                }
             }
 
+            // 2. Tải ngầm dữ liệu mới nhất từ Supabase
             try {
                 const { data, error } = await _supabase
                     .from('accounts')
@@ -594,29 +606,30 @@
 
                 if (error) {
                     console.error("Lỗi Supabase:", error);
-                    showToast("Lỗi tải dữ liệu!", true);
                     return;
                 }
 
-                accounts = (data || []).map(row => ({
-                    id: String(row.id || ('acc_' + Math.random())),
-                    title: String(row.title || '#CHUA_CO_MA'),
-                    price: Number(row.price) || 0,
-                    username: String(row.username || ''),
-                    password: String(row.password || ''),
-                    hotmail_password: row.hotmail_password ? String(row.hotmail_password) : '',
-                    image: row.image || '',
-                    collage_data: row.collage_data || null,
-                    is_sold: Boolean(row.is_sold),
-                    sold_at: row.sold_at || null,
-                    created_at: row.created_at || null
-                }));
+                if (data) {
+                    accounts = data.map(row => ({
+                        id: String(row.id || ('acc_' + Math.random())),
+                        title: String(row.title || '#CHUA_CO_MA'),
+                        price: Number(row.price) || 0,
+                        username: String(row.username || ''),
+                        password: String(row.password || ''),
+                        hotmail_password: row.hotmail_password ? String(row.hotmail_password) : '',
+                        image: row.image || '',
+                        collage_data: row.collage_data || null,
+                        is_sold: Boolean(row.is_sold),
+                        sold_at: row.sold_at || null,
+                        created_at: row.created_at || null
+                    }));
 
-                updateHeaderCounts();
-                filterAndRender();
+                    saveAccountsToLocalCache(accounts);
+                    updateHeaderCounts();
+                    filterAndRender();
+                }
             } catch (err) {
-                console.error("Lỗi crash khi fetch:", err);
-                showToast("Lỗi đồng bộ dữ liệu!", true);
+                console.error("Lỗi tải ngầm Supabase:", err);
             }
         }
 
@@ -639,6 +652,7 @@
                     acc.is_sold = true;
                     acc.sold_at = nowIso;
                 }
+                saveAccountsToLocalCache(accounts);
                 updateHeaderCounts();
                 filterAndRender();
                 showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
@@ -670,6 +684,7 @@
                 acc.is_sold = false;
                 acc.sold_at = null;
             }
+            saveAccountsToLocalCache(accounts);
             updateHeaderCounts();
             filterAndRender();
             showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
@@ -799,6 +814,7 @@
                     const accIdx = accounts.findIndex(a => a.id === editingAccountId);
                     if (accIdx !== -1) {
                         accounts[accIdx] = { ...accounts[accIdx], ...updateData };
+                        saveAccountsToLocalCache(accounts);
                         updateHeaderCounts();
                         filterAndRender();
                     }
@@ -829,6 +845,7 @@
                     };
 
                     accounts.unshift(newRecord);
+                    saveAccountsToLocalCache(accounts);
                     updateHeaderCounts();
                     filterAndRender();
 
@@ -857,6 +874,7 @@
             closeDeleteConfirmModal();
 
             accounts = accounts.filter(a => a.id !== delId);
+            saveAccountsToLocalCache(accounts);
             updateHeaderCounts();
             filterAndRender();
             showToast("Đã xóa vĩnh viễn tài khoản khỏi Supabase!");
@@ -1287,7 +1305,7 @@
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                             <div>
                                 ${acc.image ? `
-                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}',${acc.price || 0}, event)"
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
                                         class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
                                         <i class="fa-solid fa-download text-xs text-cyan-400"></i>
                                         <span>Tải ảnh</span>
@@ -1509,6 +1527,13 @@
             document.getElementById('addAccForm').reset();
             resetPasswordInputsState();
 
+            // Mở khóa lại nút submit và trả lại trạng thái mặc định
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span id="submitBtnText">LƯU LÊN SUPABASE</span>`;
+            }
+
             collageSlots = [null, null, null];
             currentUploadedImage = "";
             collageConfig.slots = [
@@ -1518,7 +1543,6 @@
             ];
 
             document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
-            document.getElementById('submitBtnText').textContent = "LƯU LÊN SUPABASE";
             document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
             document.getElementById('btnGenCode').classList.remove('hidden');
 
@@ -1526,7 +1550,10 @@
             updateSlotButtonLabels();
             processMergedCanvas();
             generateUniqueAccCode();
-            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+
+            const modal = document.getElementById('addAccModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         };
 
@@ -1579,8 +1606,13 @@
 
             resetPasswordInputsState();
 
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span id="submitBtnText">CẬP NHẬT TÀI KHOẢN</span>`;
+            }
+
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
-            document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
             document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
             document.getElementById('btnGenCode').classList.add('hidden');
 
@@ -1620,14 +1652,21 @@
             updateSlotButtonLabels();
             processMergedCanvas();
 
-            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+            const modal = document.getElementById('addAccModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         };
 
         window.closeAddModal = function() {
             editingAccountId = null;
-            document.getElementById('addAccModal').classList.replace('flex', 'hidden');
+            const modal = document.getElementById('addAccModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
             document.body.style.overflow = '';
+
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) submitBtn.disabled = false;
         };
 
         window.copyCustomerInfo = function(id) {
