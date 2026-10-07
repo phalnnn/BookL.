@@ -154,7 +154,7 @@
                     <span id="cyberClock">00:00:00 ICT</span>
                 </div>
 
-                <!-- Stats Container (Changes with current module) -->
+                <!-- Stats Container (Thay đổi theo module) -->
                 <div id="accountStatsContainer" class="flex items-center space-x-2">
                     <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
                         <span class="text-zinc-400 mr-1.5">SẴN:</span>
@@ -200,7 +200,7 @@
                 </button>
             </div>
 
-            <!-- Tab switcher for Accounts -->
+            <!-- Tab chọn cho Tài khoản -->
             <div id="accountTabsWrapper" class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
                 <button type="button" id="tabAvailableBtn" onclick="switchViewTab('available')" 
                     class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
@@ -214,7 +214,7 @@
                 </button>
             </div>
 
-            <!-- Header Action for WuWa Module -->
+            <!-- Header Action cho WuWa Module -->
             <div id="wuwaHeaderActionWrapper" class="hidden items-center w-full md:w-auto flex-shrink-0">
                 <div class="px-4 py-2 text-xs mono-font font-bold rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/50 flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved text-cyan-400"></i>
@@ -691,7 +691,7 @@
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
-        // --- MODULE SWITCHER (ACCOUNTS VS WUWA) ---
+        // --- MODULE SWITCHER ---
         window.switchMainModule = function(mod) {
             playCyberSound('click');
             activeModule = mod;
@@ -711,9 +711,11 @@
                 accStats.classList.remove('hidden');
                 accStats.classList.add('flex');
                 wuwaStats.classList.add('hidden');
+                wuwaStats.classList.remove('flex');
                 accTabsWrapper.classList.remove('hidden');
                 accTabsWrapper.classList.add('flex');
                 wuwaHeaderAction.classList.add('hidden');
+                wuwaHeaderAction.classList.remove('flex');
                 searchInput.placeholder = "TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME...";
                 desktopAddBtnText.textContent = "THÊM ACC";
                 document.getElementById('accountsGrid').classList.remove('hidden');
@@ -722,9 +724,11 @@
                 btnWuwa.className = "px-2.5 py-0.5 text-[11px] font-black cyber-font rounded bg-cyan-400 text-black shadow-[0_0_10px_#00f0ff] transition";
                 btnAcc.className = "px-2.5 py-0.5 text-[11px] font-bold cyber-font rounded bg-zinc-900 text-red-500 hover:text-white border border-red-500/40 transition";
                 accStats.classList.add('hidden');
+                accStats.classList.remove('flex');
                 wuwaStats.classList.remove('hidden');
                 wuwaStats.classList.add('flex');
                 accTabsWrapper.classList.add('hidden');
+                accTabsWrapper.classList.remove('flex');
                 wuwaHeaderAction.classList.remove('hidden');
                 wuwaHeaderAction.classList.add('flex');
                 searchInput.placeholder = "TÌM KIẾM GÓI NẠP WUWA, MỆNH GIÁ LUNITE...";
@@ -744,8 +748,7 @@
             }
         };
 
-        // --- SUPABASE FETCH & DATA HANDLING ---
-
+        // --- FETCH DỮ LIỆU TỪ SUPABASE ---
         async function fetchAccountsFromSupabase() {
             try {
                 const { data, error } = await _supabase
@@ -833,11 +836,11 @@
             }
         }
 
-        // --- WUWA LOGIC ---
-
+        // --- XỬ LÝ GÓI NẠP WUWA ---
         window.openWuwaModal = function() {
             editingWuwaId = null;
-            document.getElementById('addWuwaForm').reset();
+            const form = document.getElementById('addWuwaForm');
+            if (form) form.reset();
             currentWuwaImage = "";
             document.getElementById('wuwaPreviewImg').src = "";
             document.getElementById('wuwaImagePreviewContainer').classList.add('hidden');
@@ -846,13 +849,22 @@
 
             document.getElementById('wuwaModalHeading').innerHTML = `GÓI NẠP WUWA // <span class="text-cyan-300">TẠO MỚI</span>`;
             document.getElementById('wuwaSubmitBtnText').textContent = "LƯU GÓI NẠP LÊN SUPABASE";
-            document.getElementById('addWuwaModal').classList.replace('hidden', 'flex');
+            
+            const modal = document.getElementById('addWuwaModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
             document.body.style.overflow = 'hidden';
         };
 
         window.closeWuwaModal = function() {
             editingWuwaId = null;
-            document.getElementById('addWuwaModal').classList.replace('flex', 'hidden');
+            const modal = document.getElementById('addWuwaModal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
             document.body.style.overflow = '';
         };
 
@@ -884,7 +896,12 @@
 
             document.getElementById('wuwaModalHeading').innerHTML = `GÓI NẠP WUWA // <span class="text-yellow-400">CHỈNH SỬA</span>`;
             document.getElementById('wuwaSubmitBtnText').textContent = "CẬP NHẬT GÓI NẠP";
-            document.getElementById('addWuwaModal').classList.replace('hidden', 'flex');
+            
+            const modal = document.getElementById('addWuwaModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
             document.body.style.overflow = 'hidden';
         };
 
@@ -937,6 +954,7 @@
         window.handleWuwaSubmit = async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('wuwaSubmitBtn');
+            const submitText = document.getElementById('wuwaSubmitBtnText');
             const titleInput = document.getElementById('wuwaTitle').value.trim();
             const priceInput = document.getElementById('wuwaPrice').value.trim();
 
@@ -948,7 +966,7 @@
 
             const parsedPrice = priceInput ? parseFloat(priceInput) : 0;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LƯU...`;
+            if (submitText) submitText.textContent = "ĐANG LƯU...";
 
             try {
                 if (editingWuwaId) {
@@ -1000,7 +1018,7 @@
                 await fetchWuwaPackagesFromSupabase();
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>${editingWuwaId ? 'CẬP NHẬT GÓI NẠP' : 'LƯU GÓI NẠP LÊN SUPABASE'}</span>`;
+                if (submitText) submitText.textContent = editingWuwaId ? "CẬP NHẬT GÓI NẠP" : "LƯU GÓI NẠP LÊN SUPABASE";
             }
         };
 
@@ -1128,8 +1146,7 @@
             showToast(`Đã sao chép báo giá gói ${pkg.title}!`);
         };
 
-        // --- ACCOUNT RENDERING & LOGIC ---
-
+        // --- QUẢN LÝ TÀI KHOẢN (ACCOUNTS) ---
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -1410,9 +1427,11 @@
             return newCode;
         };
 
+        // --- SUBMIT TÀI KHOẢN (ĐÃ FIX TRIỆT ĐỂ LỖI KẸT NÚT) ---
         window.handleAccountSubmit = async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
             const codeInput = document.getElementById('accTitle').value.trim();
             const priceInput = document.getElementById('accPrice').value.trim();
             const username = document.getElementById('accUsername').value.trim();
@@ -1428,8 +1447,8 @@
             const formattedTitle = codeInput.startsWith('#') ? codeInput : '#' + codeInput;
             const parsedPrice = priceInput ? parseFloat(priceInput) : 0;
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LƯU...`;
+            if (submitBtn) submitBtn.disabled = true;
+            if (submitBtnText) submitBtnText.textContent = "ĐANG LƯU...";
 
             try {
                 const { data: existing, error: checkErr } = await _supabase
@@ -1442,8 +1461,8 @@
                 if (existing && existing.id !== editingAccountId) {
                     playCyberSound('warn');
                     showToast(`Mã ${formattedTitle} đã tồn tại! Vui lòng chọn mã khác.`, true);
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>${editingAccountId ? 'CẬP NHẬT TÀI KHOẢN' : 'LƯU LÊN SUPABASE'}</span>`;
+                    if (submitBtn) submitBtn.disabled = false;
+                    if (submitBtnText) submitBtnText.textContent = editingAccountId ? "CẬP NHẬT TÀI KHOẢN" : "LƯU LÊN SUPABASE";
                     return;
                 }
 
@@ -1513,12 +1532,12 @@
                 showToast("Không thể lưu tài khoản vào cơ sở dữ liệu!", true);
                 await fetchAccountsFromSupabase();
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>LƯU LÊN SUPABASE</span>`;
+                if (submitBtn) submitBtn.disabled = false;
+                if (submitBtnText) submitBtnText.textContent = editingAccountId ? "CẬP NHẬT TÀI KHOẢN" : "LƯU LÊN SUPABASE";
             }
         };
 
-        // --- DELETE ACTIONS (UNIFIED) ---
+        // --- XỬ LÝ XÓA DỮ LIỆU ---
         window.promptDeleteAction = function(id, title, type) {
             pendingDeleteId = id;
             pendingDeleteType = type;
@@ -1573,7 +1592,7 @@
             }
         };
 
-        // --- IMAGE DOWNLOAD WITH PRICE WATERMARK ---
+        // --- XUẤT ẢNH WATERMARK KÈM BẢNG GIÁ ---
         window.downloadAccountImage = function(imageUrl, title, price, event) {
             if (event) event.stopPropagation();
             if (!imageUrl) {
@@ -1659,7 +1678,7 @@
             img.src = imageUrl;
         };
 
-        // --- COLLAGE & TWEAK LOGIC (FOR ACCOUNTS) ---
+        // --- CĂN CHỈNH & GHÉP ẢNH CANVAS ---
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
             const rect = targetEl.getBoundingClientRect();
@@ -1712,14 +1731,15 @@
 
             playCyberSound('click');
             const modal = document.getElementById('expandedTouchModal');
-            modal.classList.remove('hidden');
+            if (modal) modal.classList.remove('hidden');
             switchExpandedSlot(currentTweakSlot || 0);
             document.body.style.overflow = 'hidden';
         };
 
         window.closeExpandedTouchEditor = function() {
             playCyberSound('click');
-            document.getElementById('expandedTouchModal').classList.add('hidden');
+            const modal = document.getElementById('expandedTouchModal');
+            if (modal) modal.classList.add('hidden');
             document.body.style.overflow = '';
         };
 
@@ -1842,13 +1862,17 @@
             const btn2 = document.getElementById('modeBtn2');
             const btn3 = document.getElementById('modeBtn3');
             
-            btn1.className = mode === 1 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            if (btn1) btn1.className = mode === 1 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            if (btn2) btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            if (btn3) btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
 
-            document.getElementById('slotsMode1').classList.toggle('hidden', mode !== 1);
-            document.getElementById('slotsMode2').classList.toggle('hidden', mode !== 2);
-            document.getElementById('slotsMode3').classList.toggle('hidden', mode !== 3);
+            const sm1 = document.getElementById('slotsMode1');
+            const sm2 = document.getElementById('slotsMode2');
+            const sm3 = document.getElementById('slotsMode3');
+
+            if (sm1) sm1.classList.toggle('hidden', mode !== 1);
+            if (sm2) sm2.classList.toggle('hidden', mode !== 2);
+            if (sm3) sm3.classList.toggle('hidden', mode !== 3);
 
             if (currentTweakSlot >= mode) switchExpandedSlot(0);
             updateSlotButtonLabels();
@@ -1941,20 +1965,20 @@
 
             if (!hasImg) {
                 if (currentUploadedImage) {
-                    emptyState.classList.add('hidden');
-                    tweakPanel.classList.remove('hidden');
+                    if (emptyState) emptyState.classList.add('hidden');
+                    if (tweakPanel) tweakPanel.classList.remove('hidden');
                     if (previewImg) previewImg.src = currentUploadedImage;
                     if (expandedImg) expandedImg.src = currentUploadedImage;
                     return;
                 }
-                emptyState.classList.remove('hidden');
-                tweakPanel.classList.add('hidden');
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (tweakPanel) tweakPanel.classList.add('hidden');
                 currentUploadedImage = "";
                 return;
             }
 
-            emptyState.classList.add('hidden');
-            tweakPanel.classList.remove('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
+            if (tweakPanel) tweakPanel.classList.remove('hidden');
 
             const canvas = document.getElementById('collageCanvas');
             const ctx = canvas.getContext('2d');
@@ -2019,9 +2043,12 @@
             if (hotmailIcon) hotmailIcon.className = 'fa-solid fa-eye-slash text-xs';
         }
 
+        // --- OPEN MODAL (AN TOÀN TUYỆT ĐỐI) ---
         window.openAddModal = function() {
             editingAccountId = null;
-            document.getElementById('addAccForm').reset();
+            const form = document.getElementById('addAccForm');
+            if (form) form.reset();
+            
             resetPasswordInputsState();
 
             collageSlots = [null, null, null];
@@ -2032,16 +2059,31 @@
                 { zoom: 1, panX: 0, panY: 0 }
             ];
 
-            document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
-            document.getElementById('submitBtnText').textContent = "LƯU LÊN SUPABASE";
-            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
-            document.getElementById('btnGenCode').classList.remove('hidden');
+            const heading = document.getElementById('modalMainHeading');
+            if (heading) heading.innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) submitBtn.disabled = false;
+            
+            const btnText = document.getElementById('submitBtnText');
+            if (btnText) btnText.textContent = "LƯU LÊN SUPABASE";
+
+            const dot = document.getElementById('modalPulseDot');
+            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
+            
+            const btnGen = document.getElementById('btnGenCode');
+            if (btnGen) btnGen.classList.remove('hidden');
 
             setCollageMode(1);
             updateSlotButtonLabels();
             processMergedCanvas();
             generateUniqueAccCode();
-            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+
+            const modal = document.getElementById('addAccModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
             document.body.style.overflow = 'hidden';
         };
 
@@ -2094,10 +2136,20 @@
 
             resetPasswordInputsState();
 
-            document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
-            document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
-            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
-            document.getElementById('btnGenCode').classList.add('hidden');
+            const heading = document.getElementById('modalMainHeading');
+            if (heading) heading.innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) submitBtn.disabled = false;
+
+            const btnText = document.getElementById('submitBtnText');
+            if (btnText) btnText.textContent = "CẬP NHẬT TÀI KHOẢN";
+
+            const dot = document.getElementById('modalPulseDot');
+            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
+            
+            const btnGen = document.getElementById('btnGenCode');
+            if (btnGen) btnGen.classList.add('hidden');
 
             currentUploadedImage = acc.image || "";
             collageSlots = [null, null, null];
@@ -2135,13 +2187,21 @@
             updateSlotButtonLabels();
             processMergedCanvas();
 
-            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+            const modal = document.getElementById('addAccModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
             document.body.style.overflow = 'hidden';
         };
 
         window.closeAddModal = function() {
             editingAccountId = null;
-            document.getElementById('addAccModal').classList.replace('flex', 'hidden');
+            const modal = document.getElementById('addAccModal');
+            if (modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
             document.body.style.overflow = '';
         };
 
@@ -2236,7 +2296,7 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        // --- REALTIME SUPABASE INITIALIZATION ---
+        // --- KHỞI TẠO REALTIME SUPABASE ---
         function initSupabaseRealtime() {
             _supabase
                 .channel('public:all_data')
