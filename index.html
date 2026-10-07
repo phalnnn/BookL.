@@ -252,7 +252,7 @@
                             class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
-                    <!-- Ô MẬT KHẨU TÀI KHOẢN (Mặc định che dấu) -->
+                    <!-- Ô MẬT KHẨU TÀI KHOẢN: Mặc định luôn che giấu -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
@@ -266,7 +266,7 @@
                         </div>
                     </div>
 
-                    <!-- Ô MẬT KHẨU HOTMAIL (Mặc định che dấu) -->
+                    <!-- Ô MẬT KHẨU HOTMAIL: Mặc định luôn che giấu -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
@@ -280,6 +280,7 @@
                         </div>
                     </div>
 
+                    <!-- Khung chọn chế độ ảnh -->
                     <div class="pt-2 border-t border-zinc-800 space-y-2">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
@@ -615,6 +616,7 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
+        // TỐI ƯU CẬP NHẬT TỨC THÌ (OPTIMISTIC UPDATE)
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
@@ -762,7 +764,20 @@
                     return;
                 }
 
-                const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
+                // TỰ ĐỘNG NÉN ẢNH ĐỂ KHÔNG BỊ TRÀN REQUEST / LỖI MẠNG
+                const compressSlotImage = (img) => {
+                    if (!img) return null;
+                    const c = document.createElement('canvas');
+                    const maxW = 600;
+                    const scale = Math.min(1, maxW / (img.naturalWidth || img.width || 600));
+                    c.width = (img.naturalWidth || img.width) * scale;
+                    c.height = (img.naturalHeight || img.height) * scale;
+                    const ctx = c.getContext('2d');
+                    ctx.drawImage(img, 0, 0, c.width, c.height);
+                    return c.toDataURL('image/jpeg', 0.65);
+                };
+
+                const rawSlotsData = collageSlots.map(img => compressSlotImage(img));
                 const collageDataObj = {
                     mode: currentCollageMode,
                     slots: rawSlotsData,
@@ -809,7 +824,7 @@
                         collage_data: collageDataObj,
                         is_sold: false,
                         sold_at: null,
-                        createdAt: new Date().toISOString()
+                        created_at: new Date().toISOString()
                     };
 
                     accounts.unshift(newRecord);
@@ -825,11 +840,12 @@
                 }
             } catch (err) {
                 console.error("Lỗi khi lưu:", err);
-                showToast("Không thể lưu tài khoản vào cơ sở dữ liệu!", true);
+                const errMsg = err?.message || "Không thể lưu tài khoản vào cơ sở dữ liệu!";
+                showToast(`Lỗi: ${errMsg}`, true);
                 await fetchAccountsFromSupabase();
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>LƯU LÊN SUPABASE</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>${editingAccountId ? 'CẬP NHẬT TÀI KHOẢN' : 'LƯU LÊN SUPABASE'}</span>`;
             }
         };
 
@@ -1165,6 +1181,7 @@
                             </span>
                         </div>
 
+                        <!-- Badge Giá: Mobile nằm góc phải, PC chuyển sang góc trái -->
                         <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
@@ -1262,10 +1279,11 @@
                             ${hotmailRowHtml}
                         </div>
 
+                        <!-- Chân Thẻ: Đối xứng 1 góc trái - 1 góc phải -->
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                             <div>
                                 ${acc.image ? `
-                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}',${acc.price || 0}, event)"
                                         class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
                                         <i class="fa-solid fa-download text-xs text-cyan-400"></i>
                                         <span>Tải ảnh</span>
@@ -1470,7 +1488,7 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
-        // RESET MẬT KHẨU VỀ MẶC ĐỊNH CHE DẤU
+        // ĐẶT LẠI TRẠNG THÁI CHE MẬT KHẨU
         function resetPasswordInputsState() {
             const pass = document.getElementById('accPassword');
             const passIcon = document.getElementById('formPassEyeIcon');
@@ -1556,7 +1574,6 @@
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
 
-            // Đặt lại luôn ở trạng thái ẩn mật khẩu
             resetPasswordInputsState();
 
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
@@ -1667,7 +1684,6 @@
             }
         };
 
-        // BẤM VÀO CON MẮT TRONG FORM ĐỂ ẨN / HIỆN MẬT KHẨU
         window.toggleFormPassVisibility = function(inputId, iconId) {
             const pass = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
