@@ -1050,14 +1050,22 @@
 
         window.openWuwaModal = function() {
             editingWuwaPkgId = null;
-            document.getElementById('addWuwaForm').reset();
+            const form = document.getElementById('addWuwaForm');
+            if (form) form.reset();
             currentWuwaSingleImage = "";
-            document.getElementById('wuwaImgPreviewContainer').classList.add('hidden');
+            const prevContainer = document.getElementById('wuwaImgPreviewContainer');
+            if (prevContainer) prevContainer.classList.add('hidden');
 
             const submitBtn = document.getElementById('submitWuwaBtn');
-            if (submitBtn) submitBtn.disabled = false;
-            document.getElementById('submitWuwaBtnText').textContent = "LƯU GÓI NẠP LÊN SUPABASE";
-            document.getElementById('modalWuwaHeading').innerHTML = `THÊM GÓI NẠP WUWA // <span class="text-zinc-100">BẢNG GIÁ</span>`;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            const submitWuwaBtnText = document.getElementById('submitWuwaBtnText');
+            if (submitWuwaBtnText) submitWuwaBtnText.textContent = "LƯU GÓI NẠP LÊN SUPABASE";
+            
+            const modalHeading = document.getElementById('modalWuwaHeading');
+            if (modalHeading) modalHeading.innerHTML = `THÊM GÓI NẠP WUWA // <span class="text-zinc-100">BẢNG GIÁ</span>`;
 
             document.getElementById('addWuwaModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
@@ -1151,12 +1159,17 @@
 
         window.openAddModal = function() {
             editingAccountId = null;
-            document.getElementById('addAccForm').reset();
+            const form = document.getElementById('addAccForm');
+            if (form) form.reset();
             resetPasswordInputsState();
 
             const submitBtn = document.getElementById('submitAccBtn');
-            if (submitBtn) submitBtn.disabled = false;
-            document.getElementById('submitAccBtnText').textContent = "LƯU LÊN SUPABASE";
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            const submitBtnText = document.getElementById('submitAccBtnText');
+            if (submitBtnText) submitBtnText.textContent = "LƯU LÊN SUPABASE";
 
             collageSlots = [null, null, null];
             currentUploadedImage = "";
