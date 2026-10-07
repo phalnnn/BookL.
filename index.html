@@ -252,7 +252,7 @@
                             class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
-                    <!-- Ô MẬT KHẨU TÀI KHOẢN (Mặc định che dấu) -->
+                    <!-- Ô MẬT KHẨU TÀI KHOẢN -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
@@ -266,7 +266,7 @@
                         </div>
                     </div>
 
-                    <!-- Ô MẬT KHẨU HOTMAIL (Mặc định che dấu) -->
+                    <!-- Ô MẬT KHẨU HOTMAIL -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
@@ -586,7 +586,7 @@
                 accounts = (data || []).map(row => ({
                     id: row.id,
                     title: row.title,
-                    price: row.price || 0,
+                    price: parseFloat(row.price) || 0,
                     username: row.username,
                     password: row.password,
                     hotmail_password: row.hotmail_password || '',
@@ -594,7 +594,7 @@
                     collage_data: row.collage_data || null,
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
-                    createdAt: row.created_at
+                    created_at: row.created_at || new Date().toISOString()
                 }));
 
                 updateHeaderCounts();
@@ -619,9 +619,10 @@
             playCyberSound('click');
             if (currentTab === 'available') {
                 const acc = accounts.find(a => a.id === id);
+                const nowIso = new Date().toISOString();
                 if (acc) {
                     acc.is_sold = true;
-                    acc.sold_at = new Date().toISOString();
+                    acc.sold_at = nowIso;
                 }
                 updateHeaderCounts();
                 filterAndRender();
@@ -632,7 +633,7 @@
                         .from('accounts')
                         .update({ 
                             is_sold: true, 
-                            sold_at: new Date().toISOString() 
+                            sold_at: nowIso 
                         })
                         .eq('id', id);
 
@@ -697,7 +698,7 @@
             let filtered = accounts.filter(a => currentTab === 'available' ? !a.is_sold : a.is_sold);
 
             if (query) {
-                filtered = filtered.filter(a => a.title.toLowerCase().includes(query) || a.username.toLowerCase().includes(query));
+                filtered = filtered.filter(a => (a.title || '').toLowerCase().includes(query) || (a.username || '').toLowerCase().includes(query));
             }
 
             renderAccountsList(filtered);
@@ -809,7 +810,7 @@
                         collage_data: collageDataObj,
                         is_sold: false,
                         sold_at: null,
-                        createdAt: new Date().toISOString()
+                        created_at: new Date().toISOString()
                     };
 
                     accounts.unshift(newRecord);
@@ -1181,7 +1182,7 @@
                         </div>
                        </div>`;
 
-                const dateStr = new Date(acc.createdAt).toLocaleDateString('vi-VN');
+                const dateStr = acc.created_at ? new Date(acc.created_at).toLocaleDateString('vi-VN') : 'Mới tạo';
                 const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
 
                 const hotmailRowHtml = acc.hotmail_password ? `
@@ -1265,7 +1266,7 @@
                         <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                             <div>
                                 ${acc.image ? `
-                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}', ${acc.price || 0}, event)"
+                                    <button type="button" onclick="downloadAccountImage('${acc.image}', '${escapeHtml(acc.title)}',${acc.price || 0}, event)"
                                         class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
                                         <i class="fa-solid fa-download text-xs text-cyan-400"></i>
                                         <span>Tải ảnh</span>
@@ -1556,7 +1557,6 @@
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
 
-            // Đặt lại luôn ở trạng thái ẩn mật khẩu
             resetPasswordInputsState();
 
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
