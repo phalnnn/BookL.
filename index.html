@@ -377,7 +377,7 @@
         </div>
     </div>
 
-    <!-- Modal Phóng To Căn Chỉnh Của Kho Acc (Giữ trọn vẹn kéo vuốt zoom) -->
+    <!-- Modal Phóng To Căn Chỉnh Của Kho Acc -->
     <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
         <div class="flex items-center justify-between pb-2 border-b border-red-900/60 mb-1.5">
             <div class="flex items-center space-x-2">
@@ -424,7 +424,7 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL THÊM / SỬA GÓI NẠP WUWA (TINH GỌN) ==================== -->
+    <!-- ==================== MODAL THÊM / SỬA GÓI NẠP WUWA ==================== -->
     <div id="addWuwaModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div class="relative w-full max-w-lg bg-[#080b12] border-2 border-cyan-400 rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.35)] overflow-hidden my-auto max-h-[96vh] flex flex-col">
             
@@ -523,14 +523,13 @@
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // State chính
-        let currentSection = 'accounts'; // 'accounts' hoặc 'wuwa'
-        let currentSubTab = 'available';  // 'available' hoặc 'sold'
+        let currentSection = 'accounts'; 
+        let currentSubTab = 'available';  
         let accounts = [];
         let wuwaPackages = [];
 
         let pendingDeleteId = null;
-        let pendingDeleteType = null; // 'account' hoặc 'wuwa'
+        let pendingDeleteType = null; 
 
         let isAudioEnabled = true;
         let currentCollageMode = 2;
@@ -549,7 +548,6 @@
             ]
         };
 
-        // Kéo vuốt & Pinch Zoom
         let isDragging = false;
         let dragStartX = 0, dragStartY = 0;
         let initialPanX = 0, initialPanY = 0;
@@ -564,7 +562,6 @@
             return Math.sqrt(dx * dx + dy * dy);
         }
 
-        // Web Audio Synthesizer
         let audioContext = null;
         function initAudio() {
             if (!audioContext) {
@@ -616,7 +613,6 @@
             icon.className = isAudioEnabled ? "fa-solid fa-volume-high text-xs text-cyan-400" : "fa-solid fa-volume-xmark text-xs text-zinc-500";
         };
 
-        // --- ĐIỀU HƯỚNG PHÂN HỆ: KHO ACC VS GÓI NẠP WUWA ---
         window.switchMainSection = function(section) {
             playCyberSound('click');
             currentSection = section;
@@ -682,7 +678,6 @@
             }
         };
 
-        // --- FETCH DỮ LIỆU TỪ SUPABASE ---
         async function fetchAllData() {
             await Promise.all([fetchAccountsFromSupabase(), fetchWuwaPackagesFromSupabase()]);
             updateHeaderStats();
@@ -757,7 +752,6 @@
             }
         }
 
-        // --- RENDER DANH SÁCH KHO ACC ---
         function renderAccountsList(list) {
             const grid = document.getElementById('cardsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -873,7 +867,6 @@
             });
         }
 
-        // --- RENDER DANH SÁCH GÓI NẠP WUWA ---
         function renderWuwaPackagesList(list) {
             const grid = document.getElementById('cardsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -943,7 +936,6 @@
                             </div>
                         </div>
 
-                        <!-- Chân Thẻ Gói Nạp -->
                         <div class="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-xs">
                             <div>
                                 ${pkg.image ? `
@@ -966,7 +958,6 @@
             });
         }
 
-        // --- SUBMIT GÓI NẠP WUWA LÊN SUPABASE ---
         window.handleWuwaPackageSubmit = async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitWuwaBtn');
@@ -1031,7 +1022,6 @@
             }
         };
 
-        // --- TẢI & NÉN 1 ẢNH DUY NHẤT CHO GÓI NẠP WUWA ---
         window.handleWuwaSingleImageUpload = function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1075,6 +1065,8 @@
 
         window.closeWuwaModal = function() {
             editingWuwaPkgId = null;
+            const submitBtn = document.getElementById('submitWuwaBtn');
+            if (submitBtn) submitBtn.disabled = false;
             document.getElementById('addWuwaModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
         };
@@ -1123,7 +1115,6 @@
             showToast("Đã sao chép báo giá gói nạp gửi khách!");
         };
 
-        // --- XỬ LÝ XOÁ DỮ LIỆU ---
         function promptDeleteRecord(id, type, label) {
             pendingDeleteId = id;
             pendingDeleteType = type;
@@ -1158,7 +1149,6 @@
             showToast("Đã xóa vĩnh viễn khỏi Cloud Supabase!");
         };
 
-        // ==================== CÁC HÀM XỬ LÝ KHO ACC ====================
         window.openAddModal = function() {
             editingAccountId = null;
             document.getElementById('addAccForm').reset();
@@ -1184,6 +1174,8 @@
 
         window.closeAddModal = function() {
             editingAccountId = null;
+            const submitBtn = document.getElementById('submitAccBtn');
+            if (submitBtn) submitBtn.disabled = false;
             document.getElementById('addAccModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
         };
@@ -1271,6 +1263,8 @@
             updateSlotButtonLabels();
             processMergedCanvas();
 
+            const submitBtn = document.getElementById('submitAccBtn');
+            if (submitBtn) submitBtn.disabled = false;
             document.getElementById('submitAccBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
@@ -1653,7 +1647,6 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
-        // --- CĂN CHỈNH VUỐT CHẠM & ZOOM MODAL KHO ACC ---
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
             const rect = targetEl.getBoundingClientRect();
