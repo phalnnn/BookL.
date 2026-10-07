@@ -154,7 +154,7 @@
                     <span id="cyberClock">00:00:00 ICT</span>
                 </div>
 
-                <!-- Stats Container (Thay đổi theo module) -->
+                <!-- Stats Container -->
                 <div id="accountStatsContainer" class="flex items-center space-x-2">
                     <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
                         <span class="text-zinc-400 mr-1.5">SẴN:</span>
@@ -769,7 +769,7 @@
                     collage_data: row.collage_data || null,
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
-                    createdAt: row.created_at
+                    createdAt: row.created_at || row.createdAt || new Date().toISOString()
                 }));
 
                 updateHeaderCounts();
@@ -794,7 +794,7 @@
                     title: row.title,
                     price: row.price || 0,
                     image: row.image,
-                    createdAt: row.created_at
+                    createdAt: row.created_at || new Date().toISOString()
                 }));
 
                 updateHeaderCounts();
@@ -997,8 +997,7 @@
                         id: 'wuwa_' + Date.now(),
                         title: titleInput,
                         price: parsedPrice,
-                        image: currentWuwaImage || null,
-                        created_at: new Date().toISOString()
+                        image: currentWuwaImage || null
                     };
 
                     wuwaPackages.unshift(newPkg);
@@ -1014,7 +1013,8 @@
                 }
             } catch (err) {
                 console.error("Lỗi lưu gói WuWa:", err);
-                showToast("Lỗi khi đồng bộ gói nạp với Supabase!", true);
+                const errDetail = err.message || err.error_description || JSON.stringify(err);
+                showToast("Lỗi WuWa: " + errDetail, true);
                 await fetchWuwaPackagesFromSupabase();
             } finally {
                 submitBtn.disabled = false;
@@ -1205,7 +1205,7 @@
                     : `<div class="relative w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
                         <i class="fa-solid fa-microchip text-4xl mb-2 text-red-500/30"></i>
                         <span class="text-xs font-semibold text-zinc-400">KHÔNG CÓ DỮ LIỆU ẢNH</span>
-                        <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
+                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
                             ${priceFormatted}
                         </div>
                        </div>`;
@@ -1427,7 +1427,7 @@
             return newCode;
         };
 
-        // --- SUBMIT TÀI KHOẢN (ĐÃ FIX TRIỆT ĐỂ LỖI KẸT NÚT) ---
+        // --- SUBMIT TÀI KHOẢN (ĐÃ TỐI ƯU CỰC KỲ AN TOÀN) ---
         window.handleAccountSubmit = async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
@@ -1451,21 +1451,6 @@
             if (submitBtnText) submitBtnText.textContent = "ĐANG LƯU...";
 
             try {
-                const { data: existing, error: checkErr } = await _supabase
-                    .from('accounts')
-                    .select('id')
-                    .eq('title', formattedTitle)
-                    .maybeSingle();
-
-                if (checkErr) throw checkErr;
-                if (existing && existing.id !== editingAccountId) {
-                    playCyberSound('warn');
-                    showToast(`Mã ${formattedTitle} đã tồn tại! Vui lòng chọn mã khác.`, true);
-                    if (submitBtn) submitBtn.disabled = false;
-                    if (submitBtnText) submitBtnText.textContent = editingAccountId ? "CẬP NHẬT TÀI KHOẢN" : "LƯU LÊN SUPABASE";
-                    return;
-                }
-
                 const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
                 const collageDataObj = {
                     mode: currentCollageMode,
@@ -1474,7 +1459,7 @@
                 };
 
                 if (editingAccountId) {
-                    const updateData = {
+                    const updatePayload = {
                         title: formattedTitle,
                         price: parsedPrice,
                         username: username,
@@ -1484,9 +1469,16 @@
                         collage_data: collageDataObj
                     };
 
+                    const { error: updateErr } = await _supabase
+                        .from('accounts')
+                        .update(updatePayload)
+                        .eq('id', editingAccountId);
+
+                    if (updateErr) throw updateErr;
+
                     const accIdx = accounts.findIndex(a => a.id === editingAccountId);
                     if (accIdx !== -1) {
-                        accounts[accIdx] = { ...accounts[accIdx], ...updateData };
+                        accounts[accIdx] = { ...accounts[accIdx], ...updatePayload };
                         updateHeaderCounts();
                         filterAndRender();
                     }
@@ -1495,14 +1487,8 @@
                     playCyberSound('save');
                     showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
 
-                    const { error: updateErr } = await _supabase
-                        .from('accounts')
-                        .update(updateData)
-                        .eq('id', editingAccountId);
-
-                    if (updateErr) throw updateErr;
                 } else {
-                    const newRecord = {
+                    const insertPayload = {
                         id: 'acc_' + Date.now(),
                         title: formattedTitle,
                         price: parsedPrice,
@@ -1511,26 +1497,37 @@
                         hotmail_password: hotmailPassword || null,
                         image: currentUploadedImage || null,
                         collage_data: collageDataObj,
-                        is_sold: false,
-                        sold_at: null,
+                        is_sold: false
+                    };
+
+                    const { data, error: insertErr } = await _supabase
+                        .from('accounts')
+                        .insert([insertPayload])
+                        .select();
+
+                    if (insertErr) throw insertErr;
+
+                    const recordAdded = (data && data[0]) ? data[0] : {
+                        ...insertPayload,
                         createdAt: new Date().toISOString()
                     };
 
-                    accounts.unshift(newRecord);
+                    accounts.unshift({
+                        ...recordAdded,
+                        createdAt: recordAdded.created_at || recordAdded.createdAt || new Date().toISOString()
+                    });
+
                     updateHeaderCounts();
                     filterAndRender();
 
                     closeAddModal();
                     playCyberSound('save');
                     showToast(`Đã lưu ${formattedTitle} lên Supabase!`);
-
-                    const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
-                    if (insertErr) throw insertErr;
                 }
             } catch (err) {
-                console.error("Lỗi khi lưu:", err);
-                showToast("Không thể lưu tài khoản vào cơ sở dữ liệu!", true);
-                await fetchAccountsFromSupabase();
+                console.error("Lỗi khi lưu chi tiết:", err);
+                const errDetail = err.message || err.error_description || JSON.stringify(err);
+                showToast("Lỗi: " + errDetail, true);
             } finally {
                 if (submitBtn) submitBtn.disabled = false;
                 if (submitBtnText) submitBtnText.textContent = editingAccountId ? "CẬP NHẬT TÀI KHOẢN" : "LƯU LÊN SUPABASE";
@@ -2043,7 +2040,7 @@
             if (hotmailIcon) hotmailIcon.className = 'fa-solid fa-eye-slash text-xs';
         }
 
-        // --- OPEN MODAL (AN TOÀN TUYỆT ĐỐI) ---
+        // --- OPEN MODAL ---
         window.openAddModal = function() {
             editingAccountId = null;
             const form = document.getElementById('addAccForm');
