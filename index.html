@@ -575,33 +575,48 @@
         }, 1000);
 
         async function fetchAccountsFromSupabase() {
+            const grid = document.getElementById('accountsGrid');
+            if (grid && accounts.length === 0) {
+                grid.classList.remove('hidden');
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 flex flex-col items-center justify-center space-y-3">
+                        <i class="fa-solid fa-spinner fa-spin text-3xl text-red-500"></i>
+                        <p class="cyber-font text-xs tracking-widest text-zinc-400">ĐANG ĐỒNG BỘ DỮ LIỆU TỪ SUPABASE...</p>
+                    </div>
+                `;
+            }
+
             try {
                 const { data, error } = await _supabase
                     .from('accounts')
                     .select('*')
                     .order('created_at', { ascending: false });
 
-                if (error) throw error;
+                if (error) {
+                    console.error("Lỗi Supabase:", error);
+                    showToast("Lỗi tải dữ liệu!", true);
+                    return;
+                }
 
                 accounts = (data || []).map(row => ({
-                    id: row.id,
-                    title: row.title,
-                    price: parseFloat(row.price) || 0,
-                    username: row.username,
-                    password: row.password,
-                    hotmail_password: row.hotmail_password || '',
-                    image: row.image,
+                    id: String(row.id || ('acc_' + Math.random())),
+                    title: String(row.title || '#CHUA_CO_MA'),
+                    price: Number(row.price) || 0,
+                    username: String(row.username || ''),
+                    password: String(row.password || ''),
+                    hotmail_password: row.hotmail_password ? String(row.hotmail_password) : '',
+                    image: row.image || '',
                     collage_data: row.collage_data || null,
                     is_sold: Boolean(row.is_sold),
-                    sold_at: row.sold_at,
-                    created_at: row.created_at || new Date().toISOString()
+                    sold_at: row.sold_at || null,
+                    created_at: row.created_at || null
                 }));
 
                 updateHeaderCounts();
                 filterAndRender();
             } catch (err) {
-                console.error("Lỗi Supabase:", err);
-                showToast("Lỗi kết nối cơ sở dữ liệu Supabase!", true);
+                console.error("Lỗi crash khi fetch:", err);
+                showToast("Lỗi đồng bộ dữ liệu!", true);
             }
         }
 
@@ -1129,47 +1144,46 @@
 
             grid.innerHTML = '';
 
-            if (listToRender.length === 0) {
-                emptyState.classList.remove('hidden');
+            if (!listToRender || listToRender.length === 0) {
+                if (emptyState) emptyState.classList.remove('hidden');
                 grid.classList.add('hidden');
-                if (currentTab === 'sold') {
-                    emptyIcon.className = "fa-solid fa-receipt text-yellow-500";
-                    emptyTitle.textContent = "CHƯA CÓ LỊCH SỬ BÁN";
-                    emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán.";
-                } else {
-                    emptyIcon.className = "fa-solid fa-shield-virus text-red-500";
-                    emptyTitle.textContent = "KHO DỮ LIỆU ĐANG TRỐNG";
-                    emptyDesc.textContent = "Chưa có tài khoản nào có sẵn trong kho. Nhấn 'THÊM ACC' để khởi tạo tài khoản mới!";
+                if (emptyTitle) {
+                    if (currentTab === 'sold') {
+                        if (emptyIcon) emptyIcon.className = "fa-solid fa-receipt text-yellow-500";
+                        emptyTitle.textContent = "CHƯA CÓ LỊCH SỬ BÁN";
+                        if (emptyDesc) emptyDesc.textContent = "Chưa có tài khoản nào được đánh dấu đã bán.";
+                    } else {
+                        if (emptyIcon) emptyIcon.className = "fa-solid fa-shield-virus text-red-500";
+                        emptyTitle.textContent = "KHO DỮ LIỆU ĐANG TRỐNG";
+                        if (emptyDesc) emptyDesc.textContent = "Chưa có tài khoản nào có sẵn trong kho.";
+                    }
                 }
                 return;
             }
 
-            emptyState.classList.add('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
             grid.classList.remove('hidden');
 
             listToRender.forEach(acc => {
                 const card = document.createElement('div');
-                const isSold = acc.is_sold;
+                const isSold = Boolean(acc.is_sold);
 
                 const priceNum = parseFloat(acc.price) || 0;
                 const priceFormatted = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
 
                 card.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group ${isSold ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'cyber-panel-glow border-red-950/90 hover:border-red-500'}`;
-                
+
                 const imgSection = acc.image 
                     ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${acc.image}')">
-                        <img src="${acc.image}" alt="${acc.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
-                        
+                        <img src="${acc.image}" alt="${escapeHtml(acc.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <span class="text-xs sm:text-sm cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-red-500 shadow-[0_0_15px_#ff003c]">
                                 <i class="fa-solid fa-magnifying-glass-plus mr-1.5 text-cyan-400"></i> XEM ẢNH
                             </span>
                         </div>
-
                         <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
-
                         <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold ${isSold ? 'text-yellow-400 border-yellow-500/50' : 'text-cyan-300 border-cyan-500/50'} px-2 py-0.5 rounded border shadow">
                             ${isSold ? 'TRẠNG THÁI: ĐÃ BÁN' : 'KHO SẴN SÀNG'}
                         </div>
@@ -1182,8 +1196,15 @@
                         </div>
                        </div>`;
 
-                const dateStr = acc.created_at ? new Date(acc.created_at).toLocaleDateString('vi-VN') : 'Mới tạo';
-                const soldDateStr = acc.sold_at ? new Date(acc.sold_at).toLocaleDateString('vi-VN') : '';
+                let dateStr = 'Mới tạo';
+                try {
+                    if (acc.created_at) dateStr = new Date(acc.created_at).toLocaleDateString('vi-VN');
+                } catch (e) {}
+
+                let soldDateStr = '';
+                try {
+                    if (acc.sold_at) soldDateStr = new Date(acc.sold_at).toLocaleDateString('vi-VN');
+                } catch (e) {}
 
                 const hotmailRowHtml = acc.hotmail_password ? `
                     <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
@@ -1471,7 +1492,6 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
-        // RESET MẬT KHẨU VỀ MẶC ĐỊNH CHE DẤU
         function resetPasswordInputsState() {
             const pass = document.getElementById('accPassword');
             const passIcon = document.getElementById('formPassEyeIcon');
@@ -1667,7 +1687,6 @@
             }
         };
 
-        // BẤM VÀO CON MẮT TRONG FORM ĐỂ ẨN / HIỆN MẬT KHẨU
         window.toggleFormPassVisibility = function(inputId, iconId) {
             const pass = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -1713,7 +1732,6 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        // PWA App Install Logic
         let deferredPrompt = null;
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
