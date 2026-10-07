@@ -523,13 +523,14 @@
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let currentSection = 'accounts'; 
-        let currentSubTab = 'available';  
+        // State chính
+        let currentSection = 'accounts'; // 'accounts' hoặc 'wuwa'
+        let currentSubTab = 'available';  // 'available' hoặc 'sold'
         let accounts = [];
         let wuwaPackages = [];
 
         let pendingDeleteId = null;
-        let pendingDeleteType = null; 
+        let pendingDeleteType = null; // 'account' hoặc 'wuwa'
 
         let isAudioEnabled = true;
         let currentCollageMode = 2;
@@ -548,6 +549,7 @@
             ]
         };
 
+        // Kéo vuốt & Pinch Zoom
         let isDragging = false;
         let dragStartX = 0, dragStartY = 0;
         let initialPanX = 0, initialPanY = 0;
@@ -562,6 +564,7 @@
             return Math.sqrt(dx * dx + dy * dy);
         }
 
+        // Web Audio Synthesizer
         let audioContext = null;
         function initAudio() {
             if (!audioContext) {
@@ -613,6 +616,7 @@
             icon.className = isAudioEnabled ? "fa-solid fa-volume-high text-xs text-cyan-400" : "fa-solid fa-volume-xmark text-xs text-zinc-500";
         };
 
+        // --- ĐIỀU HƯỚNG PHÂN HỆ: KHO ACC VS GÓI NẠP WUWA ---
         window.switchMainSection = function(section) {
             playCyberSound('click');
             currentSection = section;
@@ -678,6 +682,7 @@
             }
         };
 
+        // --- FETCH DỮ LIỆU TỪ SUPABASE ---
         async function fetchAllData() {
             await Promise.all([fetchAccountsFromSupabase(), fetchWuwaPackagesFromSupabase()]);
             updateHeaderStats();
@@ -752,6 +757,7 @@
             }
         }
 
+        // --- RENDER DANH SÁCH KHO ACC ---
         function renderAccountsList(list) {
             const grid = document.getElementById('cardsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -867,6 +873,7 @@
             });
         }
 
+        // --- RENDER DANH SÁCH GÓI NẠP WUWA ---
         function renderWuwaPackagesList(list) {
             const grid = document.getElementById('cardsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -958,6 +965,7 @@
             });
         }
 
+        // --- SUBMIT GÓI NẠP WUWA LÊN SUPABASE ---
         window.handleWuwaPackageSubmit = async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitWuwaBtn');
@@ -1018,6 +1026,7 @@
                 await fetchWuwaPackagesFromSupabase();
             } finally {
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 document.getElementById('submitWuwaBtnText').textContent = "LƯU GÓI NẠP LÊN SUPABASE";
             }
         };
@@ -1061,11 +1070,8 @@
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-            const submitWuwaBtnText = document.getElementById('submitWuwaBtnText');
-            if (submitWuwaBtnText) submitWuwaBtnText.textContent = "LƯU GÓI NẠP LÊN SUPABASE";
-            
-            const modalHeading = document.getElementById('modalWuwaHeading');
-            if (modalHeading) modalHeading.innerHTML = `THÊM GÓI NẠP WUWA // <span class="text-zinc-100">BẢNG GIÁ</span>`;
+            document.getElementById('submitWuwaBtnText').textContent = "LƯU GÓI NẠP LÊN SUPABASE";
+            document.getElementById('modalWuwaHeading').innerHTML = `THÊM GÓI NẠP WUWA // <span class="text-zinc-100">BẢNG GIÁ</span>`;
 
             document.getElementById('addWuwaModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
@@ -1099,7 +1105,10 @@
             }
 
             const submitBtn = document.getElementById('submitWuwaBtn');
-            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
             document.getElementById('submitWuwaBtnText').textContent = "CẬP NHẬT GÓI NẠP";
             document.getElementById('modalWuwaHeading').innerHTML = `CHỈNH SỬA GÓI // <span class="text-cyan-300">${pkg.title}</span>`;
 
@@ -1123,6 +1132,7 @@
             showToast("Đã sao chép báo giá gói nạp gửi khách!");
         };
 
+        // --- XỬ LÝ XOÁ DỮ LIỆU ---
         function promptDeleteRecord(id, type, label) {
             pendingDeleteId = id;
             pendingDeleteType = type;
@@ -1157,6 +1167,7 @@
             showToast("Đã xóa vĩnh viễn khỏi Cloud Supabase!");
         };
 
+        // ==================== CÁC HÀM XỬ LÝ KHO ACC ====================
         window.openAddModal = function() {
             editingAccountId = null;
             const form = document.getElementById('addAccForm');
@@ -1168,8 +1179,7 @@
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-            const submitBtnText = document.getElementById('submitAccBtnText');
-            if (submitBtnText) submitBtnText.textContent = "LƯU LÊN SUPABASE";
+            document.getElementById('submitAccBtnText').textContent = "LƯU LÊN SUPABASE";
 
             collageSlots = [null, null, null];
             currentUploadedImage = "";
@@ -1193,45 +1203,17 @@
             document.body.style.overflow = '';
         };
 
-        function sliceImageToSlots(sourceImg, mode) {
-            return new Promise((resolve) => {
-                const W = sourceImg.naturalWidth || sourceImg.width;
-                const H = sourceImg.naturalHeight || sourceImg.height;
-
-                const makeCrop = (x, y, w, h) => {
-                    const c = document.createElement('canvas');
-                    c.width = w; c.height = h;
-                    const ctx = c.getContext('2d');
-                    ctx.drawImage(sourceImg, x, y, w, h, 0, 0, w, h);
-                    const img = new Image();
-                    img.src = c.toDataURL('image/jpeg', 0.9);
-                    return img;
-                };
-
-                if (mode === 3) {
-                    const topH = Math.round(H * 0.52);
-                    const botH = H - topH;
-                    const halfW = Math.round(W / 2);
-                    const img0 = makeCrop(0, 0, W, topH);
-                    const img1 = makeCrop(0, topH, halfW, botH);
-                    const img2 = makeCrop(halfW, topH, halfW, botH);
-                    resolve([img0, img1, img2]);
-                } else if (mode === 2) {
-                    const halfH = Math.round(H / 2);
-                    const img0 = makeCrop(0, 0, W, halfH);
-                    const img1 = makeCrop(0, halfH, W, halfH);
-                    resolve([img0, img1, null]);
-                } else {
-                    resolve([sourceImg, null, null]);
-                }
-            });
-        }
-
         window.openEditModal = async function(id) {
             const acc = accounts.find(a => a.id === id);
             if (!acc) return;
             playCyberSound('click');
             editingAccountId = id;
+
+            const submitBtn = document.getElementById('submitAccBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
 
             document.getElementById('accTitle').value = acc.title || '';
             document.getElementById('accPrice').value = acc.price || '';
@@ -1276,8 +1258,6 @@
             updateSlotButtonLabels();
             processMergedCanvas();
 
-            const submitBtn = document.getElementById('submitAccBtn');
-            if (submitBtn) submitBtn.disabled = false;
             document.getElementById('submitAccBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
@@ -1366,6 +1346,7 @@
                 await fetchAccountsFromSupabase();
             } finally {
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 document.getElementById('submitAccBtnText').textContent = "LƯU LÊN SUPABASE";
             }
         };
@@ -1660,6 +1641,7 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
+        // --- CĂN CHỈNH VUỐT CHẠM & ZOOM MODAL KHO ACC ---
         function getSlotAtCoords(clientX, clientY, targetEl) {
             if (currentCollageMode === 1) return 0;
             const rect = targetEl.getBoundingClientRect();
