@@ -252,7 +252,7 @@
                             class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
-                    <!-- Ô MẬT KHẨU TÀI KHOẢN: Mặc định luôn che giấu -->
+                    <!-- Ô MẬT KHẨU TÀI KHOẢN -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
@@ -266,7 +266,7 @@
                         </div>
                     </div>
 
-                    <!-- Ô MẬT KHẨU HOTMAIL: Mặc định luôn che giấu -->
+                    <!-- Ô MẬT KHẨU HOTMAIL -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
@@ -280,7 +280,6 @@
                         </div>
                     </div>
 
-                    <!-- Khung chọn chế độ ảnh -->
                     <div class="pt-2 border-t border-zinc-800 space-y-2">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-zinc-200 flex items-center">
@@ -616,7 +615,6 @@
             if (headerSold) headerSold.textContent = soldCount;
         }
 
-        // TỐI ƯU CẬP NHẬT TỨC THÌ (OPTIMISTIC UPDATE)
         window.handleCardCloseAction = async function(id, title) {
             playCyberSound('click');
             if (currentTab === 'available') {
@@ -764,7 +762,7 @@
                     return;
                 }
 
-                // TỰ ĐỘNG NÉN ẢNH ĐỂ KHÔNG BỊ TRÀN REQUEST / LỖI MẠNG
+                // TỰ ĐỘNG NÉN ẢNH TRÁNH LỖI TRÀN PAYLOAD
                 const compressSlotImage = (img) => {
                     if (!img) return null;
                     const c = document.createElement('canvas');
@@ -844,6 +842,7 @@
                 showToast(`Lỗi: ${errMsg}`, true);
                 await fetchAccountsFromSupabase();
             } finally {
+                // Luôn mở khóa nút sau khi hoàn tất
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>${editingAccountId ? 'CẬP NHẬT TÀI KHOẢN' : 'LƯU LÊN SUPABASE'}</span>`;
             }
@@ -1181,7 +1180,6 @@
                             </span>
                         </div>
 
-                        <!-- Badge Giá: Mobile nằm góc phải, PC chuyển sang góc trái -->
                         <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
                             ${priceFormatted}
                         </div>
@@ -1488,7 +1486,7 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
-        // ĐẶT LẠI TRẠNG THÁI CHE MẬT KHẨU
+        // RESET MẬT KHẨU VỀ MẶC ĐỊNH CHE DẤU
         function resetPasswordInputsState() {
             const pass = document.getElementById('accPassword');
             const passIcon = document.getElementById('formPassEyeIcon');
@@ -1501,10 +1499,17 @@
             if (hotmailIcon) hotmailIcon.className = 'fa-solid fa-eye-slash text-xs';
         }
 
+        // MỞ MODAL THÊM: Luôn mở khóa nút submit và tự sinh mã mới
         window.openAddModal = function() {
             editingAccountId = null;
             document.getElementById('addAccForm').reset();
             resetPasswordInputsState();
+
+            // Mở khóa nút lưu đề phòng lần trước bị kẹt
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtnText) submitBtnText.textContent = "LƯU LÊN SUPABASE";
 
             collageSlots = [null, null, null];
             currentUploadedImage = "";
@@ -1515,14 +1520,13 @@
             ];
 
             document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
-            document.getElementById('submitBtnText').textContent = "LƯU LÊN SUPABASE";
             document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
             document.getElementById('btnGenCode').classList.remove('hidden');
 
             setCollageMode(1);
             updateSlotButtonLabels();
             processMergedCanvas();
-            generateUniqueAccCode();
+            generateUniqueAccCode(); // Tự sinh mã mới
             document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
         };
@@ -1568,6 +1572,12 @@
             playCyberSound('click');
             editingAccountId = id;
 
+            // Mở khóa nút lưu
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtnText) submitBtnText.textContent = "CẬP NHẬT TÀI KHOẢN";
+
             document.getElementById('accTitle').value = acc.title || '';
             document.getElementById('accPrice').value = acc.price || '';
             document.getElementById('accUsername').value = acc.username || '';
@@ -1577,7 +1587,6 @@
             resetPasswordInputsState();
 
             document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
-            document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
             document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
             document.getElementById('btnGenCode').classList.add('hidden');
 
@@ -1623,6 +1632,10 @@
 
         window.closeAddModal = function() {
             editingAccountId = null;
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            if (submitBtn) submitBtn.disabled = false;
+            if (submitBtnText) submitBtnText.textContent = "LƯU LÊN SUPABASE";
             document.getElementById('addAccModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
         };
@@ -1684,6 +1697,7 @@
             }
         };
 
+        // BẤM CON MẮT TRONG FORM ĐỂ ẨN / HIỆN MẬT KHẨU
         window.toggleFormPassVisibility = function(inputId, iconId) {
             const pass = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
