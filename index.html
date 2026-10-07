@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kho acc của Chía - Vault & Top-Up Management System</title>
+    <title>Kho acc của Chía - Vault Management System</title>
     
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <link rel="shortcut icon" type="image/jpeg" href="icon.jpg">
@@ -86,15 +86,6 @@
             border-color: rgba(255, 0, 60, 0.85);
             box-shadow: 0 0 35px rgba(255, 0, 60, 0.25), inset 0 0 20px rgba(255, 0, 60, 0.08);
         }
-        .wuwa-panel-glow {
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.12), inset 0 0 15px rgba(0, 240, 255, 0.04);
-            transition: all 0.3s ease;
-        }
-        .wuwa-panel-glow:hover {
-            border-color: rgba(0, 240, 255, 0.9);
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.28), inset 0 0 20px rgba(0, 240, 255, 0.08);
-        }
         .sold-panel-glow {
             border: 1px solid rgba(113, 113, 122, 0.4);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -118,29 +109,18 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3.5">
                     <div class="relative w-12 h-12 bg-red-950/50 border border-red-500/80 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(255,0,60,0.6)] flex-shrink-0 overflow-visible">
-                        <img src="icon1.jpg" alt="Icon" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/48x48/12121c/ff003c?text=Chia'">
+                        <img src="icon1.jpg" alt="Icon" class="w-full h-full object-cover rounded-xl">
                         <span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f0ff]"></span>
                     </div>
                     <div>
                         <h1 class="cyber-font text-lg sm:text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-300 to-cyan-300">
                             Kho acc của Chía
                         </h1>
-                        <!-- Main Module Switcher -->
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <button type="button" id="moduleAccountsBtn" onclick="switchMainModule('accounts')"
-                                class="px-2.5 py-0.5 text-[11px] font-black cyber-font rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c] transition">
-                                <i class="fa-solid fa-boxes-stacked mr-1"></i> TÀI KHOẢN
-                            </button>
-                            <button type="button" id="moduleWuwaBtn" onclick="switchMainModule('wuwa')"
-                                class="px-2.5 py-0.5 text-[11px] font-bold cyber-font rounded bg-zinc-900 text-cyan-400 hover:text-white border border-cyan-500/40 transition">
-                                <i class="fa-solid fa-gem mr-1"></i> NẠP WUWA
-                            </button>
-                        </div>
                     </div>
                 </div>
 
                 <div class="flex md:hidden items-center space-x-2">
-                    <button type="button" id="mobileAddBtn" onclick="handlePrimaryAddAction()" 
+                    <button type="button" onclick="openAddModal()" 
                         class="cyber-cut-btn px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-black font-black cyber-font text-sm uppercase tracking-wider shadow-[0_0_18px_rgba(255,0,60,0.8)] active:scale-95">
                         <i class="fa-solid fa-plus mr-1"></i> THÊM
                     </button>
@@ -154,8 +134,7 @@
                     <span id="cyberClock">00:00:00 ICT</span>
                 </div>
 
-                <!-- Stats Container -->
-                <div id="accountStatsContainer" class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2">
                     <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-red-600/50 text-xs font-semibold" title="Acc đang có sẵn">
                         <span class="text-zinc-400 mr-1.5">SẴN:</span>
                         <span id="headerAvailableCount" class="text-red-400 font-black cyber-font text-sm sm:text-base">0</span>
@@ -166,30 +145,21 @@
                     </div>
                 </div>
 
-                <div id="wuwaStatsContainer" class="hidden items-center space-x-2">
-                    <div class="flex items-center px-3 py-1.5 rounded-lg bg-zinc-900 border border-cyan-500/50 text-xs font-semibold" title="Tổng gói nạp WuWa">
-                        <span class="text-zinc-400 mr-1.5">GÓI WUWA:</span>
-                        <span id="headerWuwaCount" class="text-cyan-400 font-black cyber-font text-sm sm:text-base">0</span>
-                    </div>
-                </div>
-
                 <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" 
                     class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-400 flex items-center justify-center transition active:scale-95">
                     <i id="soundIcon" class="fa-solid fa-volume-high text-sm text-cyan-400"></i>
                 </button>
 
-                <button type="button" id="desktopAddBtn" onclick="handlePrimaryAddAction()" 
+                <button type="button" onclick="openAddModal()" 
                     class="hidden md:inline-flex cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 hover:to-rose-400 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95 group">
                     <i class="fa-solid fa-plus mr-1.5 text-black transition-transform group-hover:rotate-90"></i>
-                    <span id="desktopAddBtnText">THÊM ACC</span>
+                    <span>THÊM ACC</span>
                 </button>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full flex-1">
-        
-        <!-- SEARCH & FILTER BAR -->
         <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
             <div class="relative w-full md:w-2/3 flex items-center">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
@@ -200,8 +170,7 @@
                 </button>
             </div>
 
-            <!-- Tab chọn cho Tài khoản -->
-            <div id="accountTabsWrapper" class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
+            <div class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
                 <button type="button" id="tabAvailableBtn" onclick="switchViewTab('available')" 
                     class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-box-archive"></i>
@@ -213,23 +182,10 @@
                     <span>LỊCH SỬ ĐÃ BÁN</span>
                 </button>
             </div>
-
-            <!-- Header Action cho WuWa Module -->
-            <div id="wuwaHeaderActionWrapper" class="hidden items-center w-full md:w-auto flex-shrink-0">
-                <div class="px-4 py-2 text-xs mono-font font-bold rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/50 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-cyan-400"></i>
-                    <span>BẢNG GIÁ NẠP CHÍNH THỨC</span>
-                </div>
-            </div>
         </div>
 
-        <!-- ACCOUNTS GRID -->
         <div id="accountsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
-        <!-- WUWA PACKAGES GRID -->
-        <div id="wuwaGrid" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        <!-- EMPTY STATE -->
         <div id="emptyVaultState" class="hidden text-center py-20 px-4">
             <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
                 <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
@@ -296,6 +252,7 @@
                             class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
                     </div>
 
+                    <!-- Ô MẬT KHẨU TÀI KHOẢN (Mặc định che dấu) -->
                     <div>
                         <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:
@@ -309,6 +266,7 @@
                         </div>
                     </div>
 
+                    <!-- Ô MẬT KHẨU HOTMAIL (Mặc định che dấu) -->
                     <div>
                         <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1">
                             <i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:
@@ -390,7 +348,7 @@
                     </div>
                 </div>
 
-                <!-- Cột phải: Live Canvas -->
+                <!-- Cột phải: Live Canvas & Chạm Căn Chỉnh -->
                 <div class="lg:col-span-7 flex flex-col space-y-3">
                     <div id="collageEmptyRightState" class="h-48 lg:h-full min-h-[220px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-4">
                         <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-3xl mb-2"></i>
@@ -421,6 +379,7 @@
                 </div>
             </form>
 
+            <!-- Sticky Submit Footer -->
             <div class="p-3 sm:p-4 bg-zinc-950 border-t border-zinc-800 flex-shrink-0">
                 <button type="button" onclick="document.getElementById('addAccForm').requestSubmit()" id="submitBtn"
                     class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 text-black font-black cyber-font text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(255,0,60,0.6)] flex items-center justify-center gap-2 active:scale-95">
@@ -428,72 +387,6 @@
                     <span id="submitBtnText">LƯU LÊN SUPABASE</span>
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal Thêm / Chỉnh Sửa Gói Nạp WuWa -->
-    <div id="addWuwaModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
-        <div class="relative w-full max-w-lg bg-[#0a0a14] border-2 border-cyan-400 rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.35)] overflow-hidden my-auto flex flex-col">
-            
-            <div class="flex items-center justify-between px-5 py-4 border-b border-cyan-950/80 bg-zinc-950/95 flex-shrink-0">
-                <div class="flex items-center space-x-2.5 truncate">
-                    <span id="wuwaModalPulseDot" class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse"></span>
-                    <h2 id="wuwaModalHeading" class="cyber-font text-sm sm:text-base font-black text-cyan-400 tracking-wider">
-                        GÓI NẠP WUWA // <span class="text-zinc-100">CLOUD</span>
-                    </h2>
-                </div>
-                <button type="button" onclick="closeWuwaModal()" class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <form id="addWuwaForm" onsubmit="handleWuwaSubmit(event)" class="p-5 space-y-4">
-                <div>
-                    <label for="wuwaTitle" class="block text-xs font-bold text-zinc-200 mb-1">
-                        <i class="fa-solid fa-gem text-cyan-400 mr-1.5 text-sm"></i> TÊN GÓI NẠP / LUNITE:
-                    </label>
-                    <input type="text" id="wuwaTitle" required placeholder="Ví dụ: Thẻ Tháng Lunite Pass, 6480 Mộng Ảo..."
-                        class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-bold focus:outline-none transition">
-                </div>
-
-                <div>
-                    <label for="wuwaPrice" class="block text-xs font-bold text-zinc-200 mb-1">
-                        <i class="fa-solid fa-tag text-yellow-400 mr-1.5 text-sm"></i> GIÁ BÁN (VNĐ):
-                    </label>
-                    <div class="relative">
-                        <input type="number" id="wuwaPrice" min="0" step="1000" placeholder="Ví dụ: 120000 (để trống = Liên hệ)"
-                            class="w-full px-3.5 py-2.5 pr-12 bg-black/80 border border-zinc-700 focus:border-yellow-400 rounded-xl text-sm text-yellow-300 font-bold focus:outline-none transition">
-                        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">VNĐ</span>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-zinc-200 mb-1">
-                        <i class="fa-solid fa-image text-cyan-400 mr-1.5 text-sm"></i> HÌNH ẢNH MINH HỌA GÓI:
-                    </label>
-                    <div class="flex items-center gap-3">
-                        <label class="px-4 py-2 text-xs font-bold bg-cyan-950 hover:bg-cyan-900 border border-cyan-500 text-cyan-200 rounded-xl cursor-pointer flex items-center gap-2 active:scale-95 transition">
-                            <i class="fa-solid fa-upload"></i> <span>Chọn ảnh từ máy</span>
-                            <input type="file" id="wuwaFileInput" accept="image/*" class="hidden" onchange="handleWuwaImageUpload(event)">
-                        </label>
-                        <button type="button" id="wuwaClearImgBtn" onclick="clearWuwaImage()" class="hidden text-xs text-red-400 hover:text-red-300 font-bold">
-                            Xóa ảnh
-                        </button>
-                    </div>
-
-                    <div id="wuwaImagePreviewContainer" class="mt-3 relative h-40 w-full bg-black/70 border border-zinc-800 rounded-xl overflow-hidden hidden items-center justify-center">
-                        <img id="wuwaPreviewImg" src="" alt="WuWa Preview" class="w-full h-full object-contain">
-                    </div>
-                </div>
-
-                <div class="pt-3 border-t border-zinc-800">
-                    <button type="submit" id="wuwaSubmitBtn"
-                        class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-cyan-500 via-teal-400 to-cyan-500 text-black font-black cyber-font text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(0,240,255,0.6)] flex items-center justify-center gap-2 active:scale-95">
-                        <i class="fa-solid fa-cloud-arrow-up text-sm"></i>
-                        <span id="wuwaSubmitBtnText">LƯU GÓI NẠP LÊN SUPABASE</span>
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -563,7 +456,7 @@
             <h3 class="cyber-font text-base sm:text-lg font-black text-red-500 uppercase tracking-widest mb-1.5">
                 CẢNH BÁO XÓA DỮ LIỆU
             </h3>
-            <p id="deleteModalDesc" class="text-xs sm:text-sm text-zinc-300 mono-font mb-2">Hệ thống chuẩn bị xóa vĩnh viễn khỏi Cloud Supabase:</p>
+            <p class="text-xs sm:text-sm text-zinc-300 mono-font mb-2">Hệ thống chuẩn bị xóa vĩnh viễn khỏi Cloud Supabase:</p>
             <div id="deleteAccCodeDisplay" class="cyber-font text-base font-bold text-yellow-400 bg-black/80 py-1.5 px-4 rounded-lg border border-yellow-500/50 inline-block mb-4">
                 #00000
             </div>
@@ -571,7 +464,7 @@
                 <button type="button" onclick="closeDeleteConfirmModal()" class="flex-1 py-2.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 mono-font text-xs uppercase">
                     HỦY BỎ
                 </button>
-                <button type="button" onclick="executeDeleteAction()" class="flex-1 py-2.5 cyber-cut-btn bg-gradient-to-r from-red-600 to-rose-600 text-black font-black cyber-font text-xs uppercase shadow-[0_0_20px_rgba(255,0,60,0.8)]">
+                <button type="button" onclick="executeDeleteAccount()" class="flex-1 py-2.5 cyber-cut-btn bg-gradient-to-r from-red-600 to-rose-600 text-black font-black cyber-font text-xs uppercase shadow-[0_0_20px_rgba(255,0,60,0.8)]">
                     XÁC NHẬN XÓA
                 </button>
             </div>
@@ -593,15 +486,10 @@
         const { createClient } = supabase;
         const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let activeModule = 'accounts'; // 'accounts' | 'wuwa'
         let accounts = [];
-        let wuwaPackages = [];
         let currentTab = 'available';
         let pendingDeleteId = null;
-        let pendingDeleteType = 'account'; // 'account' | 'wuwa'
         let isAudioEnabled = true;
-
-        // Accounts Collage states
         let currentCollageMode = 2;
         let collageSlots = [null, null, null];
         let currentUploadedImage = "";
@@ -616,11 +504,6 @@
             ]
         };
 
-        // WuWa Top-up Form State
-        let editingWuwaId = null;
-        let currentWuwaImage = "";
-
-        // Touch & Drag Variables
         let isDragging = false;
         let dragStartX = 0, dragStartY = 0;
         let initialPanX = 0, initialPanY = 0;
@@ -691,64 +574,6 @@
             if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
         }, 1000);
 
-        // --- MODULE SWITCHER ---
-        window.switchMainModule = function(mod) {
-            playCyberSound('click');
-            activeModule = mod;
-
-            const btnAcc = document.getElementById('moduleAccountsBtn');
-            const btnWuwa = document.getElementById('moduleWuwaBtn');
-            const accStats = document.getElementById('accountStatsContainer');
-            const wuwaStats = document.getElementById('wuwaStatsContainer');
-            const accTabsWrapper = document.getElementById('accountTabsWrapper');
-            const wuwaHeaderAction = document.getElementById('wuwaHeaderActionWrapper');
-            const searchInput = document.getElementById('searchInput');
-            const desktopAddBtnText = document.getElementById('desktopAddBtnText');
-
-            if (mod === 'accounts') {
-                btnAcc.className = "px-2.5 py-0.5 text-[11px] font-black cyber-font rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c] transition";
-                btnWuwa.className = "px-2.5 py-0.5 text-[11px] font-bold cyber-font rounded bg-zinc-900 text-cyan-400 hover:text-white border border-cyan-500/40 transition";
-                accStats.classList.remove('hidden');
-                accStats.classList.add('flex');
-                wuwaStats.classList.add('hidden');
-                wuwaStats.classList.remove('flex');
-                accTabsWrapper.classList.remove('hidden');
-                accTabsWrapper.classList.add('flex');
-                wuwaHeaderAction.classList.add('hidden');
-                wuwaHeaderAction.classList.remove('flex');
-                searchInput.placeholder = "TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME...";
-                desktopAddBtnText.textContent = "THÊM ACC";
-                document.getElementById('accountsGrid').classList.remove('hidden');
-                document.getElementById('wuwaGrid').classList.add('hidden');
-            } else {
-                btnWuwa.className = "px-2.5 py-0.5 text-[11px] font-black cyber-font rounded bg-cyan-400 text-black shadow-[0_0_10px_#00f0ff] transition";
-                btnAcc.className = "px-2.5 py-0.5 text-[11px] font-bold cyber-font rounded bg-zinc-900 text-red-500 hover:text-white border border-red-500/40 transition";
-                accStats.classList.add('hidden');
-                accStats.classList.remove('flex');
-                wuwaStats.classList.remove('hidden');
-                wuwaStats.classList.add('flex');
-                accTabsWrapper.classList.add('hidden');
-                accTabsWrapper.classList.remove('flex');
-                wuwaHeaderAction.classList.remove('hidden');
-                wuwaHeaderAction.classList.add('flex');
-                searchInput.placeholder = "TÌM KIẾM GÓI NẠP WUWA, MỆNH GIÁ LUNITE...";
-                desktopAddBtnText.textContent = "THÊM GÓI WUWA";
-                document.getElementById('accountsGrid').classList.add('hidden');
-                document.getElementById('wuwaGrid').classList.remove('hidden');
-            }
-
-            clearSearch();
-        };
-
-        window.handlePrimaryAddAction = function() {
-            if (activeModule === 'accounts') {
-                openAddModal();
-            } else {
-                openWuwaModal();
-            }
-        };
-
-        // --- FETCH DỮ LIỆU TỪ SUPABASE ---
         async function fetchAccountsFromSupabase() {
             try {
                 const { data, error } = await _supabase
@@ -769,39 +594,14 @@
                     collage_data: row.collage_data || null,
                     is_sold: Boolean(row.is_sold),
                     sold_at: row.sold_at,
-                    createdAt: row.created_at || row.createdAt || new Date().toISOString()
+                    createdAt: row.created_at
                 }));
 
                 updateHeaderCounts();
-                if (activeModule === 'accounts') filterAndRender();
+                filterAndRender();
             } catch (err) {
-                console.error("Lỗi Supabase Accounts:", err);
-                showToast("Lỗi kết nối cơ sở dữ liệu Supabase Accounts!", true);
-            }
-        }
-
-        async function fetchWuwaPackagesFromSupabase() {
-            try {
-                const { data, error } = await _supabase
-                    .from('wuwa_packages')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                wuwaPackages = (data || []).map(row => ({
-                    id: row.id,
-                    title: row.title,
-                    price: row.price || 0,
-                    image: row.image,
-                    createdAt: row.created_at || new Date().toISOString()
-                }));
-
-                updateHeaderCounts();
-                if (activeModule === 'wuwa') filterAndRender();
-            } catch (err) {
-                console.error("Lỗi Supabase Wuwa Packages:", err);
-                showToast("Lỗi kết nối bảng wuwa_packages trên Supabase!", true);
+                console.error("Lỗi Supabase:", err);
+                showToast("Lỗi kết nối cơ sở dữ liệu Supabase!", true);
             }
         }
 
@@ -811,342 +611,513 @@
 
             const headerAvail = document.getElementById('headerAvailableCount');
             const headerSold = document.getElementById('headerSoldCount');
-            const headerWuwa = document.getElementById('headerWuwaCount');
-
             if (headerAvail) headerAvail.textContent = availCount;
             if (headerSold) headerSold.textContent = soldCount;
-            if (headerWuwa) headerWuwa.textContent = wuwaPackages.length;
         }
+
+        window.handleCardCloseAction = async function(id, title) {
+            playCyberSound('click');
+            if (currentTab === 'available') {
+                const acc = accounts.find(a => a.id === id);
+                if (acc) {
+                    acc.is_sold = true;
+                    acc.sold_at = new Date().toISOString();
+                }
+                updateHeaderCounts();
+                filterAndRender();
+                showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
+
+                try {
+                    const { error } = await _supabase
+                        .from('accounts')
+                        .update({ 
+                            is_sold: true, 
+                            sold_at: new Date().toISOString() 
+                        })
+                        .eq('id', id);
+
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Lỗi chuyển đã bán:", err);
+                    showToast("Không thể đồng bộ trạng thái lên mạng!", true);
+                    await fetchAccountsFromSupabase();
+                }
+            } else {
+                promptDeleteAccount(id, title);
+            }
+        };
+
+        window.restoreAccountToVault = async function(id, title) {
+            playCyberSound('click');
+            const acc = accounts.find(a => a.id === id);
+            if (acc) {
+                acc.is_sold = false;
+                acc.sold_at = null;
+            }
+            updateHeaderCounts();
+            filterAndRender();
+            showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
+
+            try {
+                const { error } = await _supabase
+                    .from('accounts')
+                    .update({ 
+                        is_sold: false, 
+                        sold_at: null 
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+            } catch (err) {
+                console.error("Lỗi khôi phục:", err);
+                showToast("Không thể khôi phục tài khoản trên Supabase!", true);
+                await fetchAccountsFromSupabase();
+            }
+        };
+
+        window.switchViewTab = function(tab) {
+            playCyberSound('click');
+            currentTab = tab;
+            const btnAvail = document.getElementById('tabAvailableBtn');
+            const btnSold = document.getElementById('tabSoldBtn');
+
+            if (tab === 'available') {
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5";
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            } else {
+                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-yellow-400 text-black shadow-[0_0_12px_#fcee0a] transition flex items-center justify-center gap-1.5";
+                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            }
+
+            filterAndRender();
+        };
 
         function filterAndRender() {
             const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            let filtered = accounts.filter(a => currentTab === 'available' ? !a.is_sold : a.is_sold);
 
-            if (activeModule === 'accounts') {
-                let filtered = accounts.filter(a => currentTab === 'available' ? !a.is_sold : a.is_sold);
-                if (query) {
-                    filtered = filtered.filter(a => a.title.toLowerCase().includes(query) || a.username.toLowerCase().includes(query));
-                }
-                renderAccountsList(filtered);
-            } else {
-                let filtered = [...wuwaPackages];
-                if (query) {
-                    filtered = filtered.filter(p => p.title.toLowerCase().includes(query));
-                }
-                renderWuwaList(filtered);
+            if (query) {
+                filtered = filtered.filter(a => a.title.toLowerCase().includes(query) || a.username.toLowerCase().includes(query));
             }
+
+            renderAccountsList(filtered);
         }
 
-        // --- XỬ LÝ GÓI NẠP WUWA ---
-        window.openWuwaModal = function() {
-            editingWuwaId = null;
-            const form = document.getElementById('addWuwaForm');
-            if (form) form.reset();
-            currentWuwaImage = "";
-            document.getElementById('wuwaPreviewImg').src = "";
-            document.getElementById('wuwaImagePreviewContainer').classList.add('hidden');
-            document.getElementById('wuwaImagePreviewContainer').classList.remove('flex');
-            document.getElementById('wuwaClearImgBtn').classList.add('hidden');
-
-            document.getElementById('wuwaModalHeading').innerHTML = `GÓI NẠP WUWA // <span class="text-cyan-300">TẠO MỚI</span>`;
-            document.getElementById('wuwaSubmitBtnText').textContent = "LƯU GÓI NẠP LÊN SUPABASE";
-            
-            const modal = document.getElementById('addWuwaModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.closeWuwaModal = function() {
-            editingWuwaId = null;
-            const modal = document.getElementById('addWuwaModal');
-            if (modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-            document.body.style.overflow = '';
-        };
-
-        window.openEditWuwaModal = function(id) {
-            const pkg = wuwaPackages.find(p => p.id === id);
-            if (!pkg) return;
-
+        window.generateUniqueAccCode = function() {
             playCyberSound('click');
-            editingWuwaId = id;
+            const existingCodes = new Set(accounts.map(acc => (acc.title || '').trim().toUpperCase()));
+            let newCode = "";
+            let duplicate = true;
+            let attempts = 0;
 
-            document.getElementById('wuwaTitle').value = pkg.title || '';
-            document.getElementById('wuwaPrice').value = pkg.price || '';
-            currentWuwaImage = pkg.image || "";
-
-            const prevBox = document.getElementById('wuwaImagePreviewContainer');
-            const prevImg = document.getElementById('wuwaPreviewImg');
-            const clearBtn = document.getElementById('wuwaClearImgBtn');
-
-            if (currentWuwaImage) {
-                prevImg.src = currentWuwaImage;
-                prevBox.classList.remove('hidden');
-                prevBox.classList.add('flex');
-                clearBtn.classList.remove('hidden');
-            } else {
-                prevBox.classList.add('hidden');
-                prevBox.classList.remove('flex');
-                clearBtn.classList.add('hidden');
+            while (duplicate && attempts < 1000) {
+                const rand = Math.floor(10000 + Math.random() * 90000);
+                newCode = `#${rand}`;
+                if (!existingCodes.has(newCode.toUpperCase())) duplicate = false;
+                attempts++;
             }
 
-            document.getElementById('wuwaModalHeading').innerHTML = `GÓI NẠP WUWA // <span class="text-yellow-400">CHỈNH SỬA</span>`;
-            document.getElementById('wuwaSubmitBtnText').textContent = "CẬP NHẬT GÓI NẠP";
-            
-            const modal = document.getElementById('addWuwaModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
+            const titleInput = document.getElementById('accTitle');
+            if (titleInput) {
+                titleInput.value = newCode;
+                syncWatermarkFromCode(newCode);
             }
-            document.body.style.overflow = 'hidden';
+            return newCode;
         };
 
-        window.handleWuwaImageUpload = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 900;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > maxW) {
-                        height = Math.round((height * maxW) / width);
-                        width = maxW;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    currentWuwaImage = canvas.toDataURL('image/jpeg', 0.85);
-
-                    const prevBox = document.getElementById('wuwaImagePreviewContainer');
-                    const prevImg = document.getElementById('wuwaPreviewImg');
-                    prevImg.src = currentWuwaImage;
-                    prevBox.classList.remove('hidden');
-                    prevBox.classList.add('flex');
-                    document.getElementById('wuwaClearImgBtn').classList.remove('hidden');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.clearWuwaImage = function() {
-            currentWuwaImage = "";
-            document.getElementById('wuwaFileInput').value = "";
-            document.getElementById('wuwaPreviewImg').src = "";
-            document.getElementById('wuwaImagePreviewContainer').classList.add('hidden');
-            document.getElementById('wuwaImagePreviewContainer').classList.remove('flex');
-            document.getElementById('wuwaClearImgBtn').classList.add('hidden');
-        };
-
-        window.handleWuwaSubmit = async function(e) {
+        window.handleAccountSubmit = async function(e) {
             e.preventDefault();
-            const submitBtn = document.getElementById('wuwaSubmitBtn');
-            const submitText = document.getElementById('wuwaSubmitBtnText');
-            const titleInput = document.getElementById('wuwaTitle').value.trim();
-            const priceInput = document.getElementById('wuwaPrice').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const codeInput = document.getElementById('accTitle').value.trim();
+            const priceInput = document.getElementById('accPrice').value.trim();
+            const username = document.getElementById('accUsername').value.trim();
+            const password = document.getElementById('accPassword').value.trim();
+            const hotmailPassword = document.getElementById('accHotmailPassword').value.trim();
 
-            if (!titleInput) {
+            if (!codeInput || !username || !password) {
                 playCyberSound('warn');
-                showToast('Vui lòng nhập tên gói nạp!', true);
+                showToast('Vui lòng điền đủ thông tin!', true);
                 return;
             }
 
+            const formattedTitle = codeInput.startsWith('#') ? codeInput : '#' + codeInput;
             const parsedPrice = priceInput ? parseFloat(priceInput) : 0;
+
             submitBtn.disabled = true;
-            if (submitText) submitText.textContent = "ĐANG LƯU...";
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> ĐANG LƯU...`;
 
             try {
-                if (editingWuwaId) {
+                const { data: existing, error: checkErr } = await _supabase
+                    .from('accounts')
+                    .select('id')
+                    .eq('title', formattedTitle)
+                    .maybeSingle();
+
+                if (checkErr) throw checkErr;
+                if (existing && existing.id !== editingAccountId) {
+                    playCyberSound('warn');
+                    showToast(`Mã ${formattedTitle} đã tồn tại! Vui lòng chọn mã khác.`, true);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>${editingAccountId ? 'CẬP NHẬT TÀI KHOẢN' : 'LƯU LÊN SUPABASE'}</span>`;
+                    return;
+                }
+
+                const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
+                const collageDataObj = {
+                    mode: currentCollageMode,
+                    slots: rawSlotsData,
+                    config: collageConfig
+                };
+
+                if (editingAccountId) {
                     const updateData = {
-                        title: titleInput,
+                        title: formattedTitle,
                         price: parsedPrice,
-                        image: currentWuwaImage || null
+                        username: username,
+                        password: password,
+                        hotmail_password: hotmailPassword || null,
+                        image: currentUploadedImage || null,
+                        collage_data: collageDataObj
                     };
 
-                    const idx = wuwaPackages.findIndex(p => p.id === editingWuwaId);
-                    if (idx !== -1) {
-                        wuwaPackages[idx] = { ...wuwaPackages[idx], ...updateData };
+                    const accIdx = accounts.findIndex(a => a.id === editingAccountId);
+                    if (accIdx !== -1) {
+                        accounts[accIdx] = { ...accounts[accIdx], ...updateData };
+                        updateHeaderCounts();
                         filterAndRender();
                     }
 
-                    closeWuwaModal();
+                    closeAddModal();
                     playCyberSound('save');
-                    showToast(`Đã cập nhật gói ${titleInput}!`);
+                    showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
 
-                    const { error } = await _supabase
-                        .from('wuwa_packages')
+                    const { error: updateErr } = await _supabase
+                        .from('accounts')
                         .update(updateData)
-                        .eq('id', editingWuwaId);
+                        .eq('id', editingAccountId);
 
-                    if (error) throw error;
+                    if (updateErr) throw updateErr;
                 } else {
-                    const newPkg = {
-                        id: 'wuwa_' + Date.now(),
-                        title: titleInput,
+                    const newRecord = {
+                        id: 'acc_' + Date.now(),
+                        title: formattedTitle,
                         price: parsedPrice,
-                        image: currentWuwaImage || null
+                        username: username,
+                        password: password,
+                        hotmail_password: hotmailPassword || null,
+                        image: currentUploadedImage || null,
+                        collage_data: collageDataObj,
+                        is_sold: false,
+                        sold_at: null,
+                        createdAt: new Date().toISOString()
                     };
 
-                    wuwaPackages.unshift(newPkg);
+                    accounts.unshift(newRecord);
                     updateHeaderCounts();
                     filterAndRender();
 
-                    closeWuwaModal();
+                    closeAddModal();
                     playCyberSound('save');
-                    showToast(`Đã thêm gói nạp ${titleInput} lên Supabase!`);
+                    showToast(`Đã lưu ${formattedTitle} lên Supabase!`);
 
-                    const { error } = await _supabase.from('wuwa_packages').insert([newPkg]);
-                    if (error) throw error;
+                    const { error: insertErr } = await _supabase.from('accounts').insert([newRecord]);
+                    if (insertErr) throw insertErr;
                 }
             } catch (err) {
-                console.error("Lỗi lưu gói WuWa:", err);
-                const errDetail = err.message || err.error_description || JSON.stringify(err);
-                showToast("Lỗi WuWa: " + errDetail, true);
-                await fetchWuwaPackagesFromSupabase();
+                console.error("Lỗi khi lưu:", err);
+                showToast("Không thể lưu tài khoản vào cơ sở dữ liệu!", true);
+                await fetchAccountsFromSupabase();
             } finally {
                 submitBtn.disabled = false;
-                if (submitText) submitText.textContent = editingWuwaId ? "CẬP NHẬT GÓI NẠP" : "LƯU GÓI NẠP LÊN SUPABASE";
+                submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-sm"></i><span>LƯU LÊN SUPABASE</span>`;
             }
         };
 
-        function renderWuwaList(listToRender) {
-            const grid = document.getElementById('wuwaGrid');
-            const emptyState = document.getElementById('emptyVaultState');
-            const emptyTitle = document.getElementById('emptyTitle');
-            const emptyDesc = document.getElementById('emptyDesc');
-            const emptyIcon = document.getElementById('emptyIcon');
-            if (!grid) return;
+        window.executeDeleteAccount = async function() {
+            if (!pendingDeleteId) return;
+            playCyberSound('click');
 
-            grid.innerHTML = '';
+            const delId = pendingDeleteId;
+            closeDeleteConfirmModal();
 
-            if (listToRender.length === 0) {
-                emptyState.classList.remove('hidden');
-                grid.classList.add('hidden');
-                emptyIcon.className = "fa-solid fa-gem text-cyan-400";
-                emptyTitle.textContent = "CHƯA CÓ GÓI NẠP WUWA";
-                emptyDesc.textContent = "Chưa có gói nạp Wuthering Waves nào được lưu. Nhấn 'THÊM GÓI WUWA' để bắt đầu tạo bảng giá!";
+            accounts = accounts.filter(a => a.id !== delId);
+            updateHeaderCounts();
+            filterAndRender();
+            showToast("Đã xóa vĩnh viễn tài khoản khỏi Supabase!");
+
+            try {
+                const { error } = await _supabase.from('accounts').delete().eq('id', delId);
+                if (error) throw error;
+            } catch (err) {
+                console.error("Lỗi xóa:", err);
+                showToast("Không thể xóa tài khoản!", true);
+                await fetchAccountsFromSupabase();
+            }
+        };
+
+        window.downloadAccountImage = function(imageUrl, accTitle, accPrice, event) {
+            if (event) event.stopPropagation();
+            if (!imageUrl) {
+                showToast('Tài khoản này chưa có ảnh!', true);
+                return;
+            }
+            playCyberSound('click');
+            showToast('Đang xử lý xuất ảnh kèm giá...');
+
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+
+                ctx.drawImage(img, 0, 0);
+
+                const priceNum = parseFloat(accPrice) || 0;
+                const priceText = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
+
+                const scale = Math.max(img.width / 1000, 0.8);
+                const fontSize = Math.round(26 * scale);
+                ctx.font = `900 ${fontSize}px 'Orbitron', monospace, sans-serif`;
+                
+                const textMetrics = ctx.measureText(priceText);
+                const padX = 18 * scale;
+                const padY = 10 * scale;
+                const badgeW = textMetrics.width + padX * 2;
+                const badgeH = fontSize + padY * 2;
+                const posX = img.width - badgeW - (20 * scale);
+                const posY = 20 * scale;
+                const radius = 8 * scale;
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(posX + radius, posY);
+                ctx.lineTo(posX + badgeW - radius, posY);
+                ctx.quadraticCurveTo(posX + badgeW, posY, posX + badgeW, posY + radius);
+                ctx.lineTo(posX + badgeW, posY + badgeH - radius);
+                ctx.quadraticCurveTo(posX + badgeW, posY + badgeH, posX + badgeW - radius, posY + badgeH);
+                ctx.lineTo(posX + radius, posY + badgeH);
+                ctx.quadraticCurveTo(posX, posY + badgeH, posX, posY + badgeH - radius);
+                ctx.lineTo(posX, posY + radius);
+                ctx.quadraticCurveTo(posX, posY, posX + radius, posY);
+                ctx.closePath();
+
+                ctx.fillStyle = 'rgba(7, 7, 11, 0.92)';
+                ctx.fill();
+
+                ctx.lineWidth = 2.5 * scale;
+                ctx.strokeStyle = '#fcee0a';
+                ctx.shadowColor = '#fcee0a';
+                ctx.shadowBlur = 12 * scale;
+                ctx.stroke();
+
+                ctx.fillStyle = '#fcee0a';
+                ctx.textBaseline = 'middle';
+                ctx.textAlign = 'center';
+                ctx.shadowBlur = 0;
+                ctx.fillText(priceText, posX + badgeW / 2, posY + badgeH / 2 + (1 * scale));
+                ctx.restore();
+
+                const finalUrl = canvas.toDataURL('image/jpeg', 0.95);
+                const safeTitle = (accTitle || 'TAI_KHOAN').trim().replace(/[/\\?%*:|"<>]/g, '');
+                const filename = `${safeTitle}.jpg`;
+
+                const link = document.createElement('a');
+                link.href = finalUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                showToast(`Đã tải ảnh ${filename} kèm giá thành công!`);
+            };
+
+            img.onerror = function() {
+                showToast('Không thể xử lý ảnh để tải về!', true);
+            };
+
+            img.src = imageUrl;
+        };
+
+        function getSlotAtCoords(clientX, clientY, targetEl) {
+            if (currentCollageMode === 1) return 0;
+            const rect = targetEl.getBoundingClientRect();
+            const relX = (clientX - rect.left) / rect.width;
+            const relY = (clientY - rect.top) / rect.height;
+
+            if (currentCollageMode === 2) {
+                return relY < 0.5 ? 0 : 1;
+            } else {
+                if (relY < 0.52) return 0;
+                return relX < 0.5 ? 1 : 2;
+            }
+        }
+
+        function handleDragStart(clientX, clientY, targetEl) {
+            const targetSlot = getSlotAtCoords(clientX, clientY, targetEl);
+            if (targetSlot !== undefined) {
+                dragSlotIndex = targetSlot;
+                switchExpandedSlot(dragSlotIndex);
+                isDragging = true;
+                dragStartX = clientX;
+                dragStartY = clientY;
+                initialPanX = collageConfig.slots[dragSlotIndex].panX;
+                initialPanY = collageConfig.slots[dragSlotIndex].panY;
+            }
+        }
+
+        function handleDragMove(clientX, clientY) {
+            if (!isDragging) return;
+            const deltaX = (clientX - dragStartX) * 1.5;
+            const deltaY = (clientY - dragStartY) * 1.5;
+
+            collageConfig.slots[dragSlotIndex].panX = Math.round(initialPanX + deltaX);
+            collageConfig.slots[dragSlotIndex].panY = Math.round(initialPanY + deltaY);
+            processMergedCanvas();
+        }
+
+        function handleDragEnd() { isDragging = false; }
+
+        window.openExpandedTouchEditor = function() {
+            let activeSlots = [];
+            if (currentCollageMode === 1) activeSlots = [collageSlots[0]];
+            else if (currentCollageMode === 2) activeSlots = [collageSlots[0], collageSlots[1]];
+            else activeSlots = collageSlots;
+
+            if (!activeSlots.some(img => img !== null) && !currentUploadedImage) {
+                showToast('Vui lòng chọn ít nhất 1 ảnh trước khi căn chỉnh!', true);
                 return;
             }
 
-            emptyState.classList.add('hidden');
-            grid.classList.remove('hidden');
-            grid.classList.add('grid');
-
-            listToRender.forEach(pkg => {
-                const card = document.createElement('div');
-                const priceNum = parseFloat(pkg.price) || 0;
-                const priceFormatted = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
-                const dateStr = new Date(pkg.createdAt).toLocaleDateString('vi-VN');
-
-                card.className = "relative bg-[#0b0c16] rounded-2xl flex flex-col justify-between transition-all duration-300 group wuwa-panel-glow border-cyan-950/80 hover:border-cyan-400";
-
-                const imgSection = pkg.image
-                    ? `<div class="relative w-full h-44 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="openImgViewer('${pkg.image}')">
-                        <img src="${pkg.image}" alt="${escapeHtml(pkg.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span class="text-xs sm:text-sm cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-cyan-400 shadow-[0_0_15px_#00f0ff]">
-                                <i class="fa-solid fa-magnifying-glass-plus mr-1.5 text-cyan-400"></i> XEM ẢNH
-                            </span>
-                        </div>
-                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow-[0_0_12px_rgba(252,238,10,0.4)]">
-                            ${priceFormatted}
-                        </div>
-                        <div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold text-cyan-300 border-cyan-500/50 px-2 py-0.5 rounded border shadow">
-                            WUTHERING WAVES
-                        </div>
-                       </div>`
-                    : `<div class="relative w-full h-36 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
-                        <i class="fa-solid fa-gem text-4xl mb-2 text-cyan-400/40"></i>
-                        <span class="text-xs font-semibold text-zinc-400">CHƯA CÓ ẢNH GÓI</span>
-                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
-                            ${priceFormatted}
-                        </div>
-                       </div>`;
-
-                card.innerHTML = `
-                    <div class="absolute top-2.5 right-2.5 z-30 flex items-center space-x-1.5 bg-black/85 backdrop-blur-md p-1 rounded-xl border border-zinc-800 shadow-[0_0_15px_rgba(0,0,0,0.8)]">
-                        <button type="button" onclick="openEditWuwaModal('${pkg.id}')" title="Sửa gói nạp"
-                            class="w-7 h-7 rounded-lg bg-zinc-900 border border-cyan-500/50 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center transition active:scale-90">
-                            <i class="fa-solid fa-pen text-[11px]"></i>
-                        </button>
-                        <button type="button" onclick="promptDeleteAction('${pkg.id}', '${escapeHtml(pkg.title)}', 'wuwa')" title="Xóa gói nạp"
-                            class="w-7 h-7 rounded-lg bg-zinc-900 border border-red-500/60 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center transition active:scale-90">
-                            <i class="fa-solid fa-trash-can text-xs font-black"></i>
-                        </button>
-                    </div>
-
-                    ${imgSection}
-
-                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
-                        <div class="flex items-center justify-between pb-2 border-b border-zinc-800">
-                            <div class="truncate mr-2">
-                                <h3 class="cyber-font text-sm sm:text-base font-black text-cyan-300 tracking-wider truncate">${escapeHtml(pkg.title)}</h3>
-                            </div>
-                            <span class="text-[11px] text-zinc-400 flex-shrink-0">${dateStr}</span>
-                        </div>
-
-                        <div class="bg-black/70 px-3.5 py-2.5 rounded-xl border border-zinc-800 flex items-center justify-between">
-                            <span class="text-xs font-bold text-zinc-400 uppercase">GIÁ NẠP:</span>
-                            <span class="text-sm font-black text-yellow-300 cyber-font">${priceFormatted}</span>
-                        </div>
-
-                        <div class="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-xs gap-2">
-                            <div>
-                                ${pkg.image ? `
-                                    <button type="button" onclick="downloadAccountImage('${pkg.image}', '${escapeHtml(pkg.title)}', ${pkg.price || 0}, event)"
-                                        class="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-cyan-950/80 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-cyan-300 text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow">
-                                        <i class="fa-solid fa-download text-xs text-cyan-400"></i>
-                                        <span>Tải ảnh</span>
-                                    </button>
-                                ` : '<span></span>'}
-                            </div>
-
-                            <button type="button" onclick="copyWuwaCustomerInfo('${pkg.id}')"
-                                class="px-3.5 py-1.5 rounded-lg bg-cyan-950/50 hover:bg-cyan-400 border border-cyan-500/70 text-cyan-300 hover:text-black text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.25)]">
-                                <i class="fa-solid fa-share-nodes text-xs"></i>
-                                <span>Gửi khách</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-
-                grid.appendChild(card);
-            });
-        }
-
-        window.copyWuwaCustomerInfo = function(id) {
-            const pkg = wuwaPackages.find(p => p.id === id);
-            if (!pkg) return;
-
-            const priceNum = parseFloat(pkg.price) || 0;
-            const priceFormatted = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + ' VNĐ' : 'Liên hệ';
-
-            let text = `💎 BẢNG GIÁ NẠP WUTHERING WAVES - KHO CỦA CHÍA\n`;
-            text += `📦 Gói nạp: ${pkg.title}\n`;
-            text += `💰 Giá thanh toán: ${priceFormatted}\n`;
-            text += `---------------------------------\n`;
-            text += `⚡ Nạp trực tiếp qua UID / Đăng nhập an toàn 100% không lo ban!\n`;
-            text += `Cảm ơn bạn đã tin tưởng ủng hộ Kho acc của Chía ❤️`;
-
-            navigator.clipboard.writeText(text);
             playCyberSound('click');
-            showToast(`Đã sao chép báo giá gói ${pkg.title}!`);
+            const modal = document.getElementById('expandedTouchModal');
+            modal.classList.remove('hidden');
+            switchExpandedSlot(currentTweakSlot || 0);
+            document.body.style.overflow = 'hidden';
         };
 
-        // --- QUẢN LÝ TÀI KHOẢN (ACCOUNTS) ---
+        window.closeExpandedTouchEditor = function() {
+            playCyberSound('click');
+            document.getElementById('expandedTouchModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        window.switchExpandedSlot = function(index) {
+            currentTweakSlot = index;
+            const slotNames = [
+                currentCollageMode === 1 ? "Ảnh Đơn" : "Ảnh 1 (Phía Trên)",
+                currentCollageMode === 2 ? "Ảnh 2 (Phía Dưới)" : "Ảnh 2 (Dưới Trái)",
+                "Ảnh 3 (Dưới Phải)"
+            ];
+
+            const titleEl = document.getElementById('expandedSlotTitle');
+            if (titleEl) titleEl.textContent = slotNames[index] || `Ảnh ${index + 1}`;
+
+            const zoomVal = (collageConfig.slots[index]?.zoom || 1).toFixed(1);
+            const zoomEl = document.getElementById('expandedZoomIndicator');
+            if (zoomEl) zoomEl.textContent = zoomVal + 'x';
+
+            for (let i = 0; i < 3; i++) {
+                const b = document.getElementById(`expSlotBtn${i}`);
+                if (!b) continue;
+
+                if (i >= currentCollageMode) {
+                    b.classList.add('hidden');
+                } else {
+                    b.classList.remove('hidden');
+                    if (i === index) {
+                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]";
+                    } else {
+                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800";
+                    }
+                }
+            }
+        };
+
+        window.adjustActiveZoom = function(delta) {
+            playCyberSound('click');
+            const currentZoom = collageConfig.slots[currentTweakSlot].zoom;
+            let newZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3.0);
+            newZoom = parseFloat(newZoom.toFixed(2));
+            collageConfig.slots[currentTweakSlot].zoom = newZoom;
+
+            const zoomEl = document.getElementById('expandedZoomIndicator');
+            if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
+            processMergedCanvas();
+        };
+
+        window.resetSlotAdjustments = function() {
+            playCyberSound('click');
+            collageConfig.slots = [
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 },
+                { zoom: 1, panX: 0, panY: 0 }
+            ];
+            switchExpandedSlot(currentTweakSlot);
+            processMergedCanvas();
+            showToast('Đã đặt lại căn chỉnh ảnh!');
+        };
+
+        const expCanvasWrapper = document.getElementById('expandedCanvasWrapper');
+        if (expCanvasWrapper) {
+            expCanvasWrapper.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                handleDragStart(e.clientX, e.clientY, expCanvasWrapper);
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging) handleDragMove(e.clientX, e.clientY);
+            });
+            window.addEventListener('mouseup', () => { if (isDragging) handleDragEnd(); });
+
+            expCanvasWrapper.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isPinching = false;
+                    handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
+                } else if (e.touches.length === 2) {
+                    isDragging = false;
+                    isPinching = true;
+                    initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+                    initialPinchZoom = collageConfig.slots[currentTweakSlot].zoom;
+                }
+            }, { passive: false });
+
+            expCanvasWrapper.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (e.touches.length === 1 && isDragging && !isPinching) {
+                    handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
+                } else if (e.touches.length === 2 && isPinching) {
+                    const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
+                    if (initialPinchDistance > 0) {
+                        const ratio = currentDist / initialPinchDistance;
+                        let newZoom = initialPinchZoom * ratio;
+                        newZoom = Math.min(Math.max(newZoom, 0.5), 3.0);
+                        newZoom = parseFloat(newZoom.toFixed(2));
+                        collageConfig.slots[currentTweakSlot].zoom = newZoom;
+                        const zoomEl = document.getElementById('expandedZoomIndicator');
+                        if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
+                        processMergedCanvas();
+                    }
+                }
+            }, { passive: false });
+
+            expCanvasWrapper.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) isPinching = false;
+                if (e.touches.length === 0) handleDragEnd();
+                else if (e.touches.length === 1) handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
+            });
+
+            expCanvasWrapper.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const slotToZoom = getSlotAtCoords(e.clientX, e.clientY, expCanvasWrapper);
+                switchExpandedSlot(slotToZoom);
+                const zoomFactor = e.deltaY < 0 ? 0.08 : -0.08;
+                adjustActiveZoom(zoomFactor);
+            }, { passive: false });
+        }
+
+        // --- RENDER DANH SÁCH ---
+
         function renderAccountsList(listToRender) {
             const grid = document.getElementById('accountsGrid');
             const emptyState = document.getElementById('emptyVaultState');
@@ -1205,7 +1176,7 @@
                     : `<div class="relative w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl">
                         <i class="fa-solid fa-microchip text-4xl mb-2 text-red-500/30"></i>
                         <span class="text-xs font-semibold text-zinc-400">KHÔNG CÓ DỮ LIỆU ẢNH</span>
-                        <div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
+                        <div class="absolute top-2.5 right-2.5 lg:right-auto lg:left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">
                             ${priceFormatted}
                         </div>
                        </div>`;
@@ -1328,548 +1299,19 @@
             });
         }
 
-        window.handleCardCloseAction = async function(id, title) {
-            playCyberSound('click');
-            if (currentTab === 'available') {
-                const acc = accounts.find(a => a.id === id);
-                if (acc) {
-                    acc.is_sold = true;
-                    acc.sold_at = new Date().toISOString();
-                }
-                updateHeaderCounts();
-                filterAndRender();
-                showToast(`Đã chuyển ${title} vào Lịch Sử Đã Bán!`);
-
-                try {
-                    const { error } = await _supabase
-                        .from('accounts')
-                        .update({ 
-                            is_sold: true, 
-                            sold_at: new Date().toISOString() 
-                        })
-                        .eq('id', id);
-
-                    if (error) throw error;
-                } catch (err) {
-                    console.error("Lỗi chuyển đã bán:", err);
-                    showToast("Không thể đồng bộ trạng thái lên mạng!", true);
-                    await fetchAccountsFromSupabase();
-                }
-            } else {
-                promptDeleteAction(id, title, 'account');
-            }
-        };
-
-        window.restoreAccountToVault = async function(id, title) {
-            playCyberSound('click');
-            const acc = accounts.find(a => a.id === id);
-            if (acc) {
-                acc.is_sold = false;
-                acc.sold_at = null;
-            }
-            updateHeaderCounts();
-            filterAndRender();
-            showToast(`Đã khôi phục tài khoản ${title} về lại Kho!`);
-
-            try {
-                const { error } = await _supabase
-                    .from('accounts')
-                    .update({ 
-                        is_sold: false, 
-                        sold_at: null 
-                    })
-                    .eq('id', id);
-
-                if (error) throw error;
-            } catch (err) {
-                console.error("Lỗi khôi phục:", err);
-                showToast("Không thể khôi phục tài khoản trên Supabase!", true);
-                await fetchAccountsFromSupabase();
-            }
-        };
-
-        window.switchViewTab = function(tab) {
-            playCyberSound('click');
-            currentTab = tab;
-            const btnAvail = document.getElementById('tabAvailableBtn');
-            const btnSold = document.getElementById('tabSoldBtn');
-
-            if (tab === 'available') {
-                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5";
-                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
-            } else {
-                btnSold.className = "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-yellow-400 text-black shadow-[0_0_12px_#fcee0a] transition flex items-center justify-center gap-1.5";
-                btnAvail.className = "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
-            }
-
-            filterAndRender();
-        };
-
-        window.generateUniqueAccCode = function() {
-            playCyberSound('click');
-            const existingCodes = new Set(accounts.map(acc => (acc.title || '').trim().toUpperCase()));
-            let newCode = "";
-            let duplicate = true;
-            let attempts = 0;
-
-            while (duplicate && attempts < 1000) {
-                const rand = Math.floor(10000 + Math.random() * 90000);
-                newCode = `#${rand}`;
-                if (!existingCodes.has(newCode.toUpperCase())) duplicate = false;
-                attempts++;
-            }
-
-            const titleInput = document.getElementById('accTitle');
-            if (titleInput) {
-                titleInput.value = newCode;
-                syncWatermarkFromCode(newCode);
-            }
-            return newCode;
-        };
-
-        // --- SUBMIT TÀI KHOẢN (ĐÃ TỐI ƯU CỰC KỲ AN TOÀN) ---
-        window.handleAccountSubmit = async function(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            const submitBtnText = document.getElementById('submitBtnText');
-            const codeInput = document.getElementById('accTitle').value.trim();
-            const priceInput = document.getElementById('accPrice').value.trim();
-            const username = document.getElementById('accUsername').value.trim();
-            const password = document.getElementById('accPassword').value.trim();
-            const hotmailPassword = document.getElementById('accHotmailPassword').value.trim();
-
-            if (!codeInput || !username || !password) {
-                playCyberSound('warn');
-                showToast('Vui lòng điền đủ thông tin!', true);
-                return;
-            }
-
-            const formattedTitle = codeInput.startsWith('#') ? codeInput : '#' + codeInput;
-            const parsedPrice = priceInput ? parseFloat(priceInput) : 0;
-
-            if (submitBtn) submitBtn.disabled = true;
-            if (submitBtnText) submitBtnText.textContent = "ĐANG LƯU...";
-
-            try {
-                const rawSlotsData = collageSlots.map(img => img ? (img.currentSrc || img.src) : null);
-                const collageDataObj = {
-                    mode: currentCollageMode,
-                    slots: rawSlotsData,
-                    config: collageConfig
-                };
-
-                if (editingAccountId) {
-                    const updatePayload = {
-                        title: formattedTitle,
-                        price: parsedPrice,
-                        username: username,
-                        password: password,
-                        hotmail_password: hotmailPassword || null,
-                        image: currentUploadedImage || null,
-                        collage_data: collageDataObj
-                    };
-
-                    const { error: updateErr } = await _supabase
-                        .from('accounts')
-                        .update(updatePayload)
-                        .eq('id', editingAccountId);
-
-                    if (updateErr) throw updateErr;
-
-                    const accIdx = accounts.findIndex(a => a.id === editingAccountId);
-                    if (accIdx !== -1) {
-                        accounts[accIdx] = { ...accounts[accIdx], ...updatePayload };
-                        updateHeaderCounts();
-                        filterAndRender();
-                    }
-
-                    closeAddModal();
-                    playCyberSound('save');
-                    showToast(`Đã cập nhật tài khoản ${formattedTitle}!`);
-
-                } else {
-                    const insertPayload = {
-                        id: 'acc_' + Date.now(),
-                        title: formattedTitle,
-                        price: parsedPrice,
-                        username: username,
-                        password: password,
-                        hotmail_password: hotmailPassword || null,
-                        image: currentUploadedImage || null,
-                        collage_data: collageDataObj,
-                        is_sold: false
-                    };
-
-                    const { data, error: insertErr } = await _supabase
-                        .from('accounts')
-                        .insert([insertPayload])
-                        .select();
-
-                    if (insertErr) throw insertErr;
-
-                    const recordAdded = (data && data[0]) ? data[0] : {
-                        ...insertPayload,
-                        createdAt: new Date().toISOString()
-                    };
-
-                    accounts.unshift({
-                        ...recordAdded,
-                        createdAt: recordAdded.created_at || recordAdded.createdAt || new Date().toISOString()
-                    });
-
-                    updateHeaderCounts();
-                    filterAndRender();
-
-                    closeAddModal();
-                    playCyberSound('save');
-                    showToast(`Đã lưu ${formattedTitle} lên Supabase!`);
-                }
-            } catch (err) {
-                console.error("Lỗi khi lưu chi tiết:", err);
-                const errDetail = err.message || err.error_description || JSON.stringify(err);
-                showToast("Lỗi: " + errDetail, true);
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
-                if (submitBtnText) submitBtnText.textContent = editingAccountId ? "CẬP NHẬT TÀI KHOẢN" : "LƯU LÊN SUPABASE";
-            }
-        };
-
-        // --- XỬ LÝ XÓA DỮ LIỆU ---
-        window.promptDeleteAction = function(id, title, type) {
-            pendingDeleteId = id;
-            pendingDeleteType = type;
-            document.getElementById('deleteAccCodeDisplay').textContent = title;
-            document.getElementById('deleteModalDesc').textContent = type === 'account' 
-                ? 'Hệ thống chuẩn bị xóa vĩnh viễn tài khoản khỏi Cloud Supabase:' 
-                : 'Hệ thống chuẩn bị xóa vĩnh viễn gói nạp WuWa khỏi Supabase:';
-            document.getElementById('deleteConfirmModal').classList.replace('hidden', 'flex');
-        };
-
-        window.closeDeleteConfirmModal = function() {
-            pendingDeleteId = null;
-            document.getElementById('deleteConfirmModal').classList.replace('flex', 'hidden');
-        };
-
-        window.executeDeleteAction = async function() {
-            if (!pendingDeleteId) return;
-            playCyberSound('click');
-
-            const delId = pendingDeleteId;
-            const delType = pendingDeleteType;
-            closeDeleteConfirmModal();
-
-            if (delType === 'account') {
-                accounts = accounts.filter(a => a.id !== delId);
-                updateHeaderCounts();
-                filterAndRender();
-                showToast("Đã xóa vĩnh viễn tài khoản khỏi Supabase!");
-
-                try {
-                    const { error } = await _supabase.from('accounts').delete().eq('id', delId);
-                    if (error) throw error;
-                } catch (err) {
-                    console.error("Lỗi xóa account:", err);
-                    showToast("Không thể xóa tài khoản!", true);
-                    await fetchAccountsFromSupabase();
-                }
-            } else {
-                wuwaPackages = wuwaPackages.filter(p => p.id !== delId);
-                updateHeaderCounts();
-                filterAndRender();
-                showToast("Đã xóa gói nạp WuWa khỏi Supabase!");
-
-                try {
-                    const { error } = await _supabase.from('wuwa_packages').delete().eq('id', delId);
-                    if (error) throw error;
-                } catch (err) {
-                    console.error("Lỗi xóa gói nạp:", err);
-                    showToast("Không thể xóa gói nạp!", true);
-                    await fetchWuwaPackagesFromSupabase();
-                }
-            }
-        };
-
-        // --- XUẤT ẢNH WATERMARK KÈM BẢNG GIÁ ---
-        window.downloadAccountImage = function(imageUrl, title, price, event) {
-            if (event) event.stopPropagation();
-            if (!imageUrl) {
-                showToast('Chưa có dữ liệu ảnh!', true);
-                return;
-            }
-            playCyberSound('click');
-            showToast('Đang xử lý xuất ảnh kèm giá...');
-
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-
-                ctx.drawImage(img, 0, 0);
-
-                const priceNum = parseFloat(price) || 0;
-                const priceText = priceNum > 0 ? priceNum.toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
-
-                const scale = Math.max(img.width / 1000, 0.8);
-                const fontSize = Math.round(26 * scale);
-                ctx.font = `900 ${fontSize}px 'Orbitron', monospace, sans-serif`;
-                
-                const textMetrics = ctx.measureText(priceText);
-                const padX = 18 * scale;
-                const padY = 10 * scale;
-                const badgeW = textMetrics.width + padX * 2;
-                const badgeH = fontSize + padY * 2;
-                const posX = img.width - badgeW - (20 * scale);
-                const posY = 20 * scale;
-                const radius = 8 * scale;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(posX + radius, posY);
-                ctx.lineTo(posX + badgeW - radius, posY);
-                ctx.quadraticCurveTo(posX + badgeW, posY, posX + badgeW, posY + radius);
-                ctx.lineTo(posX + badgeW, posY + badgeH - radius);
-                ctx.quadraticCurveTo(posX + badgeW, posY + badgeH, posX + badgeW - radius, posY + badgeH);
-                ctx.lineTo(posX + radius, posY + badgeH);
-                ctx.quadraticCurveTo(posX, posY + badgeH, posX, posY + badgeH - radius);
-                ctx.lineTo(posX, posY + radius);
-                ctx.quadraticCurveTo(posX, posY, posX + radius, posY);
-                ctx.closePath();
-
-                ctx.fillStyle = 'rgba(7, 7, 11, 0.92)';
-                ctx.fill();
-
-                ctx.lineWidth = 2.5 * scale;
-                ctx.strokeStyle = '#fcee0a';
-                ctx.shadowColor = '#fcee0a';
-                ctx.shadowBlur = 12 * scale;
-                ctx.stroke();
-
-                ctx.fillStyle = '#fcee0a';
-                ctx.textBaseline = 'middle';
-                ctx.textAlign = 'center';
-                ctx.shadowBlur = 0;
-                ctx.fillText(priceText, posX + badgeW / 2, posY + badgeH / 2 + (1 * scale));
-                ctx.restore();
-
-                const finalUrl = canvas.toDataURL('image/jpeg', 0.95);
-                const safeTitle = (title || 'ITEM').trim().replace(/[/\\?%*:|"<>]/g, '');
-                const filename = `${safeTitle}.jpg`;
-
-                const link = document.createElement('a');
-                link.href = finalUrl;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                showToast(`Đã tải ảnh ${filename} thành công!`);
-            };
-
-            img.onerror = function() {
-                showToast('Không thể xử lý ảnh để tải về!', true);
-            };
-
-            img.src = imageUrl;
-        };
-
-        // --- CĂN CHỈNH & GHÉP ẢNH CANVAS ---
-        function getSlotAtCoords(clientX, clientY, targetEl) {
-            if (currentCollageMode === 1) return 0;
-            const rect = targetEl.getBoundingClientRect();
-            const relX = (clientX - rect.left) / rect.width;
-            const relY = (clientY - rect.top) / rect.height;
-
-            if (currentCollageMode === 2) {
-                return relY < 0.5 ? 0 : 1;
-            } else {
-                if (relY < 0.52) return 0;
-                return relX < 0.5 ? 1 : 2;
-            }
-        }
-
-        function handleDragStart(clientX, clientY, targetEl) {
-            const targetSlot = getSlotAtCoords(clientX, clientY, targetEl);
-            if (targetSlot !== undefined) {
-                dragSlotIndex = targetSlot;
-                switchExpandedSlot(dragSlotIndex);
-                isDragging = true;
-                dragStartX = clientX;
-                dragStartY = clientY;
-                initialPanX = collageConfig.slots[dragSlotIndex].panX;
-                initialPanY = collageConfig.slots[dragSlotIndex].panY;
-            }
-        }
-
-        function handleDragMove(clientX, clientY) {
-            if (!isDragging) return;
-            const deltaX = (clientX - dragStartX) * 1.5;
-            const deltaY = (clientY - dragStartY) * 1.5;
-
-            collageConfig.slots[dragSlotIndex].panX = Math.round(initialPanX + deltaX);
-            collageConfig.slots[dragSlotIndex].panY = Math.round(initialPanY + deltaY);
-            processMergedCanvas();
-        }
-
-        function handleDragEnd() { isDragging = false; }
-
-        window.openExpandedTouchEditor = function() {
-            let activeSlots = [];
-            if (currentCollageMode === 1) activeSlots = [collageSlots[0]];
-            else if (currentCollageMode === 2) activeSlots = [collageSlots[0], collageSlots[1]];
-            else activeSlots = collageSlots;
-
-            if (!activeSlots.some(img => img !== null) && !currentUploadedImage) {
-                showToast('Vui lòng chọn ít nhất 1 ảnh trước khi căn chỉnh!', true);
-                return;
-            }
-
-            playCyberSound('click');
-            const modal = document.getElementById('expandedTouchModal');
-            if (modal) modal.classList.remove('hidden');
-            switchExpandedSlot(currentTweakSlot || 0);
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.closeExpandedTouchEditor = function() {
-            playCyberSound('click');
-            const modal = document.getElementById('expandedTouchModal');
-            if (modal) modal.classList.add('hidden');
-            document.body.style.overflow = '';
-        };
-
-        window.switchExpandedSlot = function(index) {
-            currentTweakSlot = index;
-            const slotNames = [
-                currentCollageMode === 1 ? "Ảnh Đơn" : "Ảnh 1 (Phía Trên)",
-                currentCollageMode === 2 ? "Ảnh 2 (Phía Dưới)" : "Ảnh 2 (Dưới Trái)",
-                "Ảnh 3 (Dưới Phải)"
-            ];
-
-            const titleEl = document.getElementById('expandedSlotTitle');
-            if (titleEl) titleEl.textContent = slotNames[index] || `Ảnh ${index + 1}`;
-
-            const zoomVal = (collageConfig.slots[index]?.zoom || 1).toFixed(1);
-            const zoomEl = document.getElementById('expandedZoomIndicator');
-            if (zoomEl) zoomEl.textContent = zoomVal + 'x';
-
-            for (let i = 0; i < 3; i++) {
-                const b = document.getElementById(`expSlotBtn${i}`);
-                if (!b) continue;
-
-                if (i >= currentCollageMode) {
-                    b.classList.add('hidden');
-                } else {
-                    b.classList.remove('hidden');
-                    if (i === index) {
-                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]";
-                    } else {
-                        b.className = "px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800";
-                    }
-                }
-            }
-        };
-
-        window.adjustActiveZoom = function(delta) {
-            playCyberSound('click');
-            const currentZoom = collageConfig.slots[currentTweakSlot].zoom;
-            let newZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3.0);
-            newZoom = parseFloat(newZoom.toFixed(2));
-            collageConfig.slots[currentTweakSlot].zoom = newZoom;
-
-            const zoomEl = document.getElementById('expandedZoomIndicator');
-            if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
-            processMergedCanvas();
-        };
-
-        window.resetSlotAdjustments = function() {
-            playCyberSound('click');
-            collageConfig.slots = [
-                { zoom: 1, panX: 0, panY: 0 },
-                { zoom: 1, panX: 0, panY: 0 },
-                { zoom: 1, panX: 0, panY: 0 }
-            ];
-            switchExpandedSlot(currentTweakSlot);
-            processMergedCanvas();
-            showToast('Đã đặt lại căn chỉnh ảnh!');
-        };
-
-        const expCanvasWrapper = document.getElementById('expandedCanvasWrapper');
-        if (expCanvasWrapper) {
-            expCanvasWrapper.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                handleDragStart(e.clientX, e.clientY, expCanvasWrapper);
-            });
-            window.addEventListener('mousemove', (e) => {
-                if (isDragging) handleDragMove(e.clientX, e.clientY);
-            });
-            window.addEventListener('mouseup', () => { if (isDragging) handleDragEnd(); });
-
-            expCanvasWrapper.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    isPinching = false;
-                    handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
-                } else if (e.touches.length === 2) {
-                    isDragging = false;
-                    isPinching = true;
-                    initialPinchDistance = getTouchDistance(e.touches[0], e.touches[1]);
-                    initialPinchZoom = collageConfig.slots[currentTweakSlot].zoom;
-                }
-            }, { passive: false });
-
-            expCanvasWrapper.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                if (e.touches.length === 1 && isDragging && !isPinching) {
-                    handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
-                } else if (e.touches.length === 2 && isPinching) {
-                    const currentDist = getTouchDistance(e.touches[0], e.touches[1]);
-                    if (initialPinchDistance > 0) {
-                        const ratio = currentDist / initialPinchDistance;
-                        let newZoom = initialPinchZoom * ratio;
-                        newZoom = Math.min(Math.max(newZoom, 0.5), 3.0);
-                        newZoom = parseFloat(newZoom.toFixed(2));
-                        collageConfig.slots[currentTweakSlot].zoom = newZoom;
-                        const zoomEl = document.getElementById('expandedZoomIndicator');
-                        if (zoomEl) zoomEl.textContent = newZoom.toFixed(1) + 'x';
-                        processMergedCanvas();
-                    }
-                }
-            }, { passive: false });
-
-            expCanvasWrapper.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) isPinching = false;
-                if (e.touches.length === 0) handleDragEnd();
-                else if (e.touches.length === 1) handleDragStart(e.touches[0].clientX, e.touches[0].clientY, expCanvasWrapper);
-            });
-
-            expCanvasWrapper.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const slotToZoom = getSlotAtCoords(e.clientX, e.clientY, expCanvasWrapper);
-                switchExpandedSlot(slotToZoom);
-                const zoomFactor = e.deltaY < 0 ? 0.08 : -0.08;
-                adjustActiveZoom(zoomFactor);
-            }, { passive: false });
-        }
-
         window.setCollageMode = function(mode) {
             currentCollageMode = mode;
             const btn1 = document.getElementById('modeBtn1');
             const btn2 = document.getElementById('modeBtn2');
             const btn3 = document.getElementById('modeBtn3');
             
-            if (btn1) btn1.className = mode === 1 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            if (btn2) btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
-            if (btn3) btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn1.className = mode === 1 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn2.className = mode === 2 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
+            btn3.className = mode === 3 ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white";
 
-            const sm1 = document.getElementById('slotsMode1');
-            const sm2 = document.getElementById('slotsMode2');
-            const sm3 = document.getElementById('slotsMode3');
-
-            if (sm1) sm1.classList.toggle('hidden', mode !== 1);
-            if (sm2) sm2.classList.toggle('hidden', mode !== 2);
-            if (sm3) sm3.classList.toggle('hidden', mode !== 3);
+            document.getElementById('slotsMode1').classList.toggle('hidden', mode !== 1);
+            document.getElementById('slotsMode2').classList.toggle('hidden', mode !== 2);
+            document.getElementById('slotsMode3').classList.toggle('hidden', mode !== 3);
 
             if (currentTweakSlot >= mode) switchExpandedSlot(0);
             updateSlotButtonLabels();
@@ -1962,20 +1404,20 @@
 
             if (!hasImg) {
                 if (currentUploadedImage) {
-                    if (emptyState) emptyState.classList.add('hidden');
-                    if (tweakPanel) tweakPanel.classList.remove('hidden');
+                    emptyState.classList.add('hidden');
+                    tweakPanel.classList.remove('hidden');
                     if (previewImg) previewImg.src = currentUploadedImage;
                     if (expandedImg) expandedImg.src = currentUploadedImage;
                     return;
                 }
-                if (emptyState) emptyState.classList.remove('hidden');
-                if (tweakPanel) tweakPanel.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                tweakPanel.classList.add('hidden');
                 currentUploadedImage = "";
                 return;
             }
 
-            if (emptyState) emptyState.classList.add('hidden');
-            if (tweakPanel) tweakPanel.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            tweakPanel.classList.remove('hidden');
 
             const canvas = document.getElementById('collageCanvas');
             const ctx = canvas.getContext('2d');
@@ -2028,6 +1470,7 @@
             if (expandedImg) expandedImg.src = currentUploadedImage;
         }
 
+        // RESET MẬT KHẨU VỀ MẶC ĐỊNH CHE DẤU
         function resetPasswordInputsState() {
             const pass = document.getElementById('accPassword');
             const passIcon = document.getElementById('formPassEyeIcon');
@@ -2040,12 +1483,9 @@
             if (hotmailIcon) hotmailIcon.className = 'fa-solid fa-eye-slash text-xs';
         }
 
-        // --- OPEN MODAL ---
         window.openAddModal = function() {
             editingAccountId = null;
-            const form = document.getElementById('addAccForm');
-            if (form) form.reset();
-            
+            document.getElementById('addAccForm').reset();
             resetPasswordInputsState();
 
             collageSlots = [null, null, null];
@@ -2056,31 +1496,16 @@
                 { zoom: 1, panX: 0, panY: 0 }
             ];
 
-            const heading = document.getElementById('modalMainHeading');
-            if (heading) heading.innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
-            
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) submitBtn.disabled = false;
-            
-            const btnText = document.getElementById('submitBtnText');
-            if (btnText) btnText.textContent = "LƯU LÊN SUPABASE";
-
-            const dot = document.getElementById('modalPulseDot');
-            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
-            
-            const btnGen = document.getElementById('btnGenCode');
-            if (btnGen) btnGen.classList.remove('hidden');
+            document.getElementById('modalMainHeading').innerHTML = `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SUPABASE</span>`;
+            document.getElementById('submitBtnText').textContent = "LƯU LÊN SUPABASE";
+            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse";
+            document.getElementById('btnGenCode').classList.remove('hidden');
 
             setCollageMode(1);
             updateSlotButtonLabels();
             processMergedCanvas();
             generateUniqueAccCode();
-
-            const modal = document.getElementById('addAccModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
+            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
         };
 
@@ -2131,22 +1556,13 @@
             document.getElementById('accPassword').value = acc.password || '';
             document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
 
+            // Đặt lại luôn ở trạng thái ẩn mật khẩu
             resetPasswordInputsState();
 
-            const heading = document.getElementById('modalMainHeading');
-            if (heading) heading.innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
-            
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) submitBtn.disabled = false;
-
-            const btnText = document.getElementById('submitBtnText');
-            if (btnText) btnText.textContent = "CẬP NHẬT TÀI KHOẢN";
-
-            const dot = document.getElementById('modalPulseDot');
-            if (dot) dot.className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
-            
-            const btnGen = document.getElementById('btnGenCode');
-            if (btnGen) btnGen.classList.add('hidden');
+            document.getElementById('modalMainHeading').innerHTML = `CHỈNH SỬA // <span class="text-cyan-300">${escapeHtml(acc.title)}</span>`;
+            document.getElementById('submitBtnText').textContent = "CẬP NHẬT TÀI KHOẢN";
+            document.getElementById('modalPulseDot').className = "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse";
+            document.getElementById('btnGenCode').classList.add('hidden');
 
             currentUploadedImage = acc.image || "";
             collageSlots = [null, null, null];
@@ -2184,21 +1600,13 @@
             updateSlotButtonLabels();
             processMergedCanvas();
 
-            const modal = document.getElementById('addAccModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
+            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
             document.body.style.overflow = 'hidden';
         };
 
         window.closeAddModal = function() {
             editingAccountId = null;
-            const modal = document.getElementById('addAccModal');
-            if (modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
+            document.getElementById('addAccModal').classList.replace('flex', 'hidden');
             document.body.style.overflow = '';
         };
 
@@ -2234,6 +1642,17 @@
 
         window.closeImgViewer = function() { document.getElementById('imgModal').classList.add('hidden'); };
 
+        window.promptDeleteAccount = function(id, title) {
+            pendingDeleteId = id;
+            document.getElementById('deleteAccCodeDisplay').textContent = title;
+            document.getElementById('deleteConfirmModal').classList.replace('hidden', 'flex');
+        };
+
+        window.closeDeleteConfirmModal = function() {
+            pendingDeleteId = null;
+            document.getElementById('deleteConfirmModal').classList.replace('flex', 'hidden');
+        };
+
         window.toggleCardPassword = function(textId, iconId, raw) {
             const el = document.getElementById(textId);
             const icon = document.getElementById(iconId);
@@ -2248,6 +1667,7 @@
             }
         };
 
+        // BẤM VÀO CON MẮT TRONG FORM ĐỂ ẨN / HIỆN MẬT KHẨU
         window.toggleFormPassVisibility = function(inputId, iconId) {
             const pass = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -2293,22 +1713,48 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        // --- KHỞI TẠO REALTIME SUPABASE ---
+        // PWA App Install Logic
+        let deferredPrompt = null;
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW failed', err));
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        window.installPWAApp = async function() {
+            playCyberSound('click');
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showToast("Đang cài đặt Kho acc của Chía thành App...");
+                }
+                deferredPrompt = null;
+            } else {
+                showToast("Nhấn vào biểu tượng Cài Đặt trên thanh địa chỉ URL hoặc chọn Menu 3 chấm -> 'Cài đặt ứng dụng'!");
+            }
+        };
+
+        window.addEventListener('appinstalled', () => {
+            showToast("Đã cài đặt App thành công! Bạn có thể ghim vào Taskbar.");
+        });
+
         function initSupabaseRealtime() {
             _supabase
-                .channel('public:all_data')
+                .channel('public:accounts')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'accounts' }, () => {
                     fetchAccountsFromSupabase();
-                })
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'wuwa_packages' }, () => {
-                    fetchWuwaPackagesFromSupabase();
                 })
                 .subscribe();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchAccountsFromSupabase();
-            fetchWuwaPackagesFromSupabase();
             initSupabaseRealtime();
         });
     </script>
