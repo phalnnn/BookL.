@@ -6,6 +6,10 @@
     <title>Hệ Thống Quản Lý Của Chía</title>
     
     <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="icon.jpg">
+    <link rel="apple-touch-icon" href="icon.jpg">
+    <meta name="theme-color" content="#00f0ff" id="themeColorMeta">
+
     <!-- Tailwind CSS & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -15,6 +19,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
     
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            void: '#030305', black: '#07070b', dark: '#0d0d14', panel: '#12121c', card: '#161624',
+                            cyan: '#00f0ff', neonYellow: '#fcee0a', red: '#ff003c', neonRed: '#ff2a4b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
         body {
             font-family: 'Inter', system-ui, sans-serif;
@@ -23,23 +43,31 @@
             font-size: 15px;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            transition: background-image 0.5s ease;
         }
         .cyber-font { font-family: 'Orbitron', monospace; letter-spacing: 0.06em; }
         .mono-font { font-family: 'JetBrains Mono', monospace; }
         
-        /* Background dùng chung */
-        .cyber-ambient-bg {
-            background-color: #040407;
+        /* Background Topup (Cyan) */
+        .bg-topup {
             background-image: 
-                radial-gradient(circle at 20% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 100%, rgba(255, 0, 60, 0.08) 0%, transparent 50%),
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.12) 0%, transparent 60%),
+                linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+        /* Background Kho Acc (Red) */
+        .bg-acc {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 0, 60, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 90% 100%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+                linear-gradient(rgba(255, 0, 60, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.06) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
         }
+
         .cyber-cut-btn { clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); }
         
-        /* Hiệu ứng Wuwa (Topup) */
         .wuwa-panel-glow {
             border: 1px solid rgba(0, 240, 255, 0.4);
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.12), inset 0 0 15px rgba(0, 240, 255, 0.04);
@@ -50,7 +78,6 @@
             box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 20px rgba(0, 240, 255, 0.08);
         }
 
-        /* Hiệu ứng Kho Acc */
         .acc-panel-glow {
             border: 1px solid rgba(255, 0, 60, 0.4);
             box-shadow: 0 0 25px rgba(255, 0, 60, 0.12), inset 0 0 15px rgba(255, 0, 60, 0.04);
@@ -65,38 +92,52 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
         }
+        .sold-panel-glow:hover {
+            border-color: rgba(234, 179, 8, 0.7);
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
+        }
 
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: #040407; }
         ::-webkit-scrollbar-thumb { background: #555; border-radius: 2px; }
     </style>
 </head>
-<body class="cyber-ambient-bg min-h-screen flex flex-col selection:bg-white selection:text-black">
+<body id="mainBody" class="bg-topup min-h-screen flex flex-col selection:bg-white selection:text-black">
 
     <!-- Global Header Menu -->
-    <header class="sticky top-0 z-40 bg-[#06060a]/95 backdrop-blur-xl border-b border-zinc-800 px-3 sm:px-6 lg:px-8 py-3">
+    <header class="sticky top-0 z-40 bg-[#06060a]/95 backdrop-blur-xl border-b border-zinc-800 px-3 sm:px-6 lg:px-8 py-3 transition-colors duration-500" id="headerContainer">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <!-- Brand -->
+            
             <div class="flex items-center space-x-3.5 w-full md:w-auto justify-center md:justify-start">
-                <div class="relative w-10 h-10 bg-zinc-900 border border-zinc-700 rounded-xl flex items-center justify-center">
-                    <img src="icon.jpg" onerror="this.style.display='none'" class="w-full h-full object-cover rounded-xl absolute">
-                    <i class="fa-solid fa-layer-group text-zinc-400"></i>
+                <div class="relative w-12 h-12 bg-zinc-900 border border-zinc-700 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-500" id="logoContainer">
+                    <img src="icon.jpg" id="logoImg" onerror="this.style.display='none'" class="w-full h-full object-cover">
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_#fcee0a]" id="logoDot"></span>
                 </div>
                 <div>
-                    <h1 class="cyber-font text-lg font-black tracking-wider text-white uppercase">
-                        HỆ THỐNG <span id="brandHighlight" class="text-cyan-400">WUWA</span>
+                    <h1 class="cyber-font text-lg sm:text-xl font-black tracking-wider text-white uppercase transition-colors" id="brandTitle">
+                        HỆ THỐNG <span class="text-cyan-400">WUWA</span>
                     </h1>
                 </div>
             </div>
 
             <!-- Tab Switcher -->
-            <div class="flex bg-black p-1 rounded-xl border border-zinc-800 w-full md:w-auto justify-center">
+            <div class="flex bg-black p-1 rounded-xl border border-zinc-800 w-full md:w-auto justify-center shadow-lg">
                 <button onclick="switchMainApp('topup')" id="navTopup" class="px-6 py-2 text-xs font-black rounded-lg transition-all bg-cyan-500 text-black shadow-[0_0_15px_#00f0ff] flex items-center gap-2">
                     <i class="fa-solid fa-gem"></i> NẠP GAME
                 </button>
                 <button onclick="switchMainApp('account')" id="navAccount" class="px-6 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white transition-all flex items-center gap-2">
                     <i class="fa-solid fa-shield-virus"></i> KHO ACC
                 </button>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-3">
+                <button type="button" id="soundToggleBtn" onclick="toggleAudioFx()" class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95">
+                    <i id="soundIcon" class="fa-solid fa-volume-high text-sm"></i>
+                </button>
+                <div class="px-3 py-1.5 rounded-lg bg-[#0e0e18] border border-zinc-700/80 text-xs mono-font text-zinc-300 flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping" id="clockDot"></span>
+                    <span id="cyberClock">00:00:00 ICT</span>
+                </div>
             </div>
         </div>
     </header>
@@ -105,62 +146,68 @@
         
         <!-- ==================== VIEW: WUWA TOPUP (SHEET 1) ==================== -->
         <div id="viewTopup" class="block animate-fade-in">
-            <!-- Controls -->
-            <div class="mb-6 p-4 rounded-xl bg-cyan-950/20 border border-cyan-900/50 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-cyan-950/90 shadow-[0_0_25px_rgba(0,240,255,0.08)] flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="relative w-full md:w-2/3">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400"></i>
-                    <input type="text" id="topupSearch" oninput="handleTopupSearch()" placeholder="Tìm gói nạp, Lunites..."
-                        class="w-full pl-12 pr-4 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-cyan-400 rounded-xl text-sm text-white focus:outline-none transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-base"></i>
+                    <input type="text" id="topupSearch" oninput="handleTopupSearch()" placeholder="TÌM KIẾM TÊN GÓI NẠP, LUNITES..."
+                        class="w-full pl-12 pr-12 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-cyan-400 rounded-xl text-sm sm:text-base text-zinc-100 font-semibold focus:outline-none transition">
                 </div>
-                <div class="flex items-center gap-3 w-full md:w-auto">
-                    <div class="flex-1 text-center px-4 py-2 bg-zinc-900 border border-cyan-900 rounded-lg text-xs font-bold text-cyan-400">
-                        SỐ GÓI: <span id="topupCount" class="text-white ml-1">0</span>
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between">
+                    <div class="flex items-center px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-cyan-500/50 text-xs font-semibold">
+                        <span class="text-zinc-400 mr-1.5">TỔNG GÓI:</span>
+                        <span id="topupCount" class="text-cyan-400 font-black cyber-font text-sm sm:text-base">0</span>
                     </div>
-                    <button onclick="openTopupModal()" class="flex-1 md:flex-none cyber-cut-btn px-6 py-2 bg-gradient-to-r from-cyan-500 to-teal-400 text-black font-black cyber-font text-xs uppercase shadow-[0_0_15px_#00f0ff] active:scale-95">
+                    <button type="button" onclick="openTopupModal()" class="cyber-cut-btn items-center justify-center px-4 py-2 text-xs cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 hover:from-cyan-300 transition shadow-[0_0_20px_rgba(0,240,255,0.7)] active:scale-95">
                         <i class="fa-solid fa-plus mr-1"></i> THÊM GÓI
                     </button>
                 </div>
             </div>
 
-            <!-- Grid -->
             <div id="topupGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             
-            <div id="topupEmpty" class="hidden text-center py-20">
-                <i class="fa-solid fa-gem text-5xl text-cyan-500/30 mb-4"></i>
-                <h3 class="cyber-font text-lg text-white">CHƯA CÓ GÓI NẠP (SHEET 1)</h3>
+            <div id="topupEmpty" class="hidden text-center py-20 px-4">
+                <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-cyan-400/40 flex items-center justify-center text-cyan-400 text-4xl shadow-[0_0_30px_rgba(0,240,255,0.25)]">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <h3 class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2">CHƯA CÓ GÓI NẠP NÀO</h3>
+                <p class="text-sm text-zinc-400">Hãy bấm nút "THÊM GÓI" để tạo bảng giá nạp lên Google Sheets.</p>
             </div>
         </div>
 
         <!-- ==================== VIEW: KHO ACC (SHEET 2) ==================== -->
         <div id="viewAccount" class="hidden animate-fade-in">
-            <!-- Controls -->
-            <div class="mb-6 p-4 rounded-xl bg-red-950/20 border border-red-900/50 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="relative w-full md:w-1/2">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500"></i>
-                    <input type="text" id="accSearch" oninput="handleAccSearch()" placeholder="Tìm theo mã, tài khoản..."
-                        class="w-full pl-12 pr-4 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-red-500 rounded-xl text-sm text-white focus:outline-none transition">
-                </div>
-                
-                <div class="flex bg-black p-1 rounded-xl border border-zinc-800">
-                    <button id="tabAccAvail" onclick="switchAccTab('available')" class="px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_10px_#ff003c]">SẴN KHO (<span id="accAvailCount">0</span>)</button>
-                    <button id="tabAccSold" onclick="switchAccTab('sold')" class="px-4 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white">ĐÃ BÁN (<span id="accSoldCount">0</span>)</button>
+            <div class="mb-6 p-4 rounded-xl bg-[#090910]/95 border border-red-950/90 shadow-[0_0_25px_rgba(255,0,60,0.08)] flex flex-col md:flex-row gap-3 items-center justify-between">
+                <div class="relative w-full md:w-2/3 flex items-center">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-red-500 text-base"></i>
+                    <input type="text" id="accSearch" oninput="handleAccSearch()" placeholder="TÌM KIẾM THEO MÃ (#xxxxx), TÀI KHOẢN, USERNAME..."
+                        class="w-full pl-12 pr-12 py-2.5 bg-black/80 border border-zinc-700/80 focus:border-red-500 rounded-xl text-sm sm:text-base text-zinc-100 font-semibold focus:outline-none transition">
                 </div>
 
-                <button onclick="openAccModal()" class="w-full md:w-auto cyber-cut-btn px-6 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-black font-black cyber-font text-xs uppercase shadow-[0_0_15px_#ff003c] active:scale-95">
+                <div class="flex items-center space-x-1.5 w-full md:w-auto bg-black p-1 rounded-xl border border-zinc-800 flex-shrink-0">
+                    <button type="button" id="tabAccAvail" onclick="switchAccTab('available')" class="flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-box-archive"></i> <span>KHO SẴN: <span id="accAvailCount">0</span></span>
+                    </button>
+                    <button type="button" id="tabAccSold" onclick="switchAccTab('sold')" class="flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-clock-rotate-left"></i> <span>ĐÃ BÁN: <span id="accSoldCount">0</span></span>
+                    </button>
+                </div>
+                
+                <button type="button" onclick="openAccAddModal()" class="w-full md:w-auto cyber-cut-btn items-center justify-center px-5 py-2 text-sm cyber-font font-black uppercase tracking-wider text-black bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 transition shadow-[0_0_20px_rgba(255,0,60,0.7)] active:scale-95">
                     <i class="fa-solid fa-plus mr-1"></i> THÊM ACC
                 </button>
             </div>
 
-            <!-- Grid -->
             <div id="accGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             
-            <div id="accEmpty" class="hidden text-center py-20">
-                <i class="fa-solid fa-shield-virus text-5xl text-red-500/30 mb-4"></i>
-                <h3 class="cyber-font text-lg text-white">KHO ĐANG TRỐNG (SHEET 2)</h3>
+            <div id="accEmpty" class="hidden text-center py-20 px-4">
+                <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl bg-zinc-950 border-2 border-red-600/40 flex items-center justify-center text-red-500 text-4xl shadow-[0_0_30px_rgba(255,0,60,0.25)]">
+                    <i id="emptyIcon" class="fa-solid fa-shield-virus"></i>
+                </div>
+                <h3 id="emptyTitle" class="cyber-font text-lg sm:text-xl text-zinc-100 font-black mb-2 tracking-wider">KHO DỮ LIỆU ĐANG TRỐNG</h3>
+                <p id="emptyDesc" class="text-sm text-zinc-400">Chưa có tài khoản nào được lưu trên Google Sheets.</p>
             </div>
         </div>
 
-        <!-- Global Loader -->
         <div id="globalLoader" class="text-center py-20 hidden">
             <i class="fa-solid fa-spinner fa-spin text-4xl text-zinc-500 mb-4"></i>
             <h3 class="cyber-font text-lg text-zinc-400">ĐANG ĐỒNG BỘ DỮ LIỆU...</h3>
@@ -168,283 +215,477 @@
 
     </main>
 
-    <!-- ==================== MODALS ==================== -->
-
-    <!-- 1. Modal Topup -->
-    <div id="modalTopup" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="relative w-full max-w-lg bg-[#080b12] border-2 border-cyan-400 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,240,255,0.2)] flex flex-col">
-            <div class="flex items-center justify-between p-4 border-b border-cyan-900 bg-zinc-950">
-                <h2 class="cyber-font font-black text-cyan-400" id="topupModalTitle">THÊM GÓI NẠP (SHEET 1)</h2>
-                <button onclick="closeModal('modalTopup')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <!-- ==================== MODALS TOPUP (SHEET 1) ==================== -->
+    <div id="modalTopup" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="relative w-full max-w-lg bg-[#080b12] border-2 border-cyan-400 rounded-2xl shadow-[0_0_50px_rgba(0,240,255,0.35)] overflow-hidden flex flex-col my-auto">
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-cyan-950 bg-zinc-950">
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f0ff] animate-pulse"></span>
+                    <h2 id="topupModalTitle" class="cyber-font text-xs sm:text-base font-black text-cyan-400 tracking-wider">THÊM GÓI NẠP // <span class="text-zinc-100">SHEET 1</span></h2>
+                </div>
+                <button type="button" onclick="closeModal('modalTopup')" class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-400 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form onsubmit="saveTopup(event)" class="p-5 space-y-4">
-                <input type="text" id="topupName" required placeholder="Tên gói (VD: Thẻ tháng)" class="w-full p-3 bg-black border border-zinc-700 rounded-xl text-white">
-                <input type="number" id="topupPrice" required placeholder="Giá tiền (VNĐ)" class="w-full p-3 bg-black border border-zinc-700 rounded-xl text-yellow-400 font-bold">
-                <label class="block w-full p-4 border-2 border-dashed border-zinc-700 text-center text-zinc-400 rounded-xl cursor-pointer hover:border-cyan-400">
-                    <i class="fa-solid fa-upload block mb-2"></i> Tải ảnh gói lên
-                    <input type="file" accept="image/*" class="hidden" onchange="handleSingleImgUpload(event, 'topupImgPreview')">
-                </label>
-                <img id="topupImgPreview" src="" class="hidden w-full h-32 object-contain bg-black rounded-xl border border-cyan-900">
-                <button type="submit" id="btnSaveTopup" class="w-full py-3 cyber-cut-btn bg-cyan-500 text-black font-black">LƯU GÓI NẠP</button>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-gem text-cyan-400 mr-1"></i> TÊN GÓI NẠP:</label>
+                    <input type="text" id="topupName" required placeholder="Ví dụ: Lunite Subscription..." class="w-full px-3.5 py-2.5 bg-black/80 border-2 border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-bold focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-tag text-yellow-400 mr-1"></i> GIÁ BÁN (VNĐ):</label>
+                    <input type="number" id="topupPrice" min="0" step="1000" required placeholder="Ví dụ: 109000" class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-yellow-400 rounded-xl text-base text-yellow-300 font-black focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-200 mb-1.5"><i class="fa-solid fa-image text-cyan-400 mr-1"></i> ẢNH MINH HOẠ:</label>
+                    <label class="w-full p-4 border-2 border-dashed border-zinc-700 hover:border-cyan-400 rounded-xl bg-black/60 flex flex-col items-center justify-center cursor-pointer transition">
+                        <i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-2xl mb-1.5"></i>
+                        <span class="text-xs font-bold text-zinc-300">Nhấn để tải ảnh gói nạp lên</span>
+                        <input type="file" accept="image/*" class="hidden" onchange="handleSingleImgUpload(event, 'topupImgPreview')">
+                    </label>
+                    <div id="topupImgContainer" class="hidden mt-2 relative w-full h-36 bg-black rounded-xl border border-cyan-500/40 overflow-hidden">
+                        <img id="topupImgPreview" src="" class="w-full h-full object-contain">
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" id="btnSaveTopup" class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-cyan-400 via-teal-300 to-cyan-400 text-black font-black cyber-font text-xs uppercase tracking-widest shadow flex items-center justify-center gap-2 active:scale-95 transition-all">
+                        <i class="fa-solid fa-cloud-arrow-up text-sm"></i> <span>LƯU VÀO GOOGLE SHEETS</span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- 2. Modal Account -->
-    <div id="modalAccount" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-        <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden flex flex-col my-auto max-h-[96vh]">
-            <div class="flex items-center justify-between px-5 py-4 border-b border-red-900 bg-zinc-950">
-                <h2 class="cyber-font font-black text-red-500" id="accModalTitle">THÊM TÀI KHOẢN (SHEET 2)</h2>
-                <button onclick="closeModal('modalAccount')" class="text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <!-- ==================== MODALS KHO ACC ĐẦY ĐỦ (SHEET 2) ==================== -->
+    <div id="addAccModal" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+        <div class="relative w-full max-w-5xl bg-[#0a0a12] border-2 border-red-600 rounded-2xl shadow-[0_0_50px_rgba(255,0,60,0.35)] overflow-hidden my-auto max-h-[96vh] flex flex-col">
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-red-950/80 bg-zinc-950/95 relative flex-shrink-0">
+                <div class="flex items-center space-x-2.5 truncate mr-2">
+                    <span id="modalPulseDot" class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_#ff003c] animate-pulse flex-shrink-0"></span>
+                    <h2 id="accModalTitle" class="cyber-font text-xs sm:text-base font-black text-red-500 tracking-wider truncate">KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SHEET 2</span></h2>
+                </div>
+                <button type="button" onclick="closeModal('addAccModal')" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-red-500 text-zinc-300 hover:text-white flex items-center justify-center transition active:scale-95 text-sm flex-shrink-0"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
-            <form onsubmit="saveAccount(event)" class="flex-1 overflow-y-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-5">
-                <div class="lg:col-span-5 space-y-3">
-                    <div class="flex gap-2">
-                        <input type="text" id="accIdVal" required placeholder="#Mã ACC" class="w-full p-2.5 bg-black border border-zinc-700 rounded-xl text-yellow-300 font-black">
-                        <button type="button" onclick="document.getElementById('accIdVal').value = '#'+Math.floor(10000+Math.random()*90000); processAccCanvas();" class="px-3 bg-red-900/50 text-red-300 text-xs rounded-xl font-bold whitespace-nowrap">Sinh Mã</button>
-                    </div>
-                    <input type="number" id="accPriceVal" placeholder="Giá bán (VNĐ)" class="w-full p-2.5 bg-black border border-zinc-700 rounded-xl text-yellow-400">
-                    <input type="text" id="accUserVal" required placeholder="Tài khoản / Email" class="w-full p-2.5 bg-black border border-zinc-700 rounded-xl text-white">
-                    <input type="text" id="accPassVal" required placeholder="Mật khẩu game" class="w-full p-2.5 bg-black border border-zinc-700 rounded-xl text-white">
-                    <input type="text" id="accHotmailVal" placeholder="Mật khẩu hotmail (nếu có)" class="w-full p-2.5 bg-black border border-zinc-700 rounded-xl text-white">
-                    
-                    <div class="border-t border-zinc-800 pt-3">
-                        <label class="text-xs text-zinc-400 font-bold mb-2 block">CẤU HÌNH GHÉP ẢNH TỰ ĐỘNG:</label>
-                        <div class="flex gap-2 mb-3">
-                            <button type="button" onclick="setMode(1)" id="btnM1" class="px-2 py-1 text-xs bg-red-600 text-black font-bold rounded">1 Ảnh</button>
-                            <button type="button" onclick="setMode(2)" id="btnM2" class="px-2 py-1 text-xs bg-zinc-800 text-zinc-400 font-bold rounded">2 Ảnh</button>
-                            <button type="button" onclick="setMode(3)" id="btnM3" class="px-2 py-1 text-xs bg-zinc-800 text-zinc-400 font-bold rounded">3 Ảnh</button>
+
+            <form id="addAccForm" onsubmit="saveAccSubmit(event)" class="flex-1 overflow-y-auto p-3.5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <div class="lg:col-span-5 flex flex-col space-y-3">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label for="accTitle" class="text-xs font-bold text-zinc-200 flex items-center"><i class="fa-solid fa-fingerprint text-red-500 mr-1.5 text-sm"></i> MÃ TÀI KHOẢN:</label>
+                            <button type="button" id="btnGenCode" onclick="generateUniqueAccCode()" class="text-[11px] mono-font font-bold text-cyan-300 hover:text-cyan-200 bg-cyan-950/60 border border-cyan-500/50 px-2 py-0.5 rounded flex items-center gap-1 active:scale-95 transition">
+                                <i class="fa-solid fa-dice text-xs"></i> Sinh Mã (#xxxxx)
+                            </button>
                         </div>
-                        <div class="space-y-2">
-                            <input type="file" accept="image/*" onchange="handleAccImg(event, 0)" class="block w-full text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-red-900 file:text-red-200">
-                            <input type="file" accept="image/*" onchange="handleAccImg(event, 1)" id="file2" class="hidden w-full text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-red-900 file:text-red-200">
-                            <input type="file" accept="image/*" onchange="handleAccImg(event, 2)" id="file3" class="hidden w-full text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-red-900 file:text-red-200">
+                        <div class="relative">
+                            <input type="text" id="accTitle" required placeholder="#12345" oninput="syncWatermarkFromCode(this.value)" class="w-full px-3.5 py-2.5 bg-black/80 border-2 border-zinc-700 focus:border-red-500 rounded-xl text-base text-yellow-300 cyber-font font-black focus:outline-none transition">
+                            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">TAG</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="accPrice" class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-tag text-yellow-400 mr-1.5 text-sm"></i> GIÁ TIỀN (VNĐ):</label>
+                        <div class="relative">
+                            <input type="number" id="accPrice" min="0" step="1000" placeholder="Ví dụ: 150000 (để trống = Liên hệ)" class="w-full px-3.5 py-2.5 pr-12 bg-black/80 border border-zinc-700 focus:border-yellow-400 rounded-xl text-sm text-yellow-300 font-bold focus:outline-none transition">
+                            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="accUsername" class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-user-astronaut text-red-500 mr-1.5 text-sm"></i> TÀI KHOẢN / EMAIL:</label>
+                        <input type="text" id="accUsername" required placeholder="Nhập tên đăng nhập hoặc email..." class="w-full px-3.5 py-2.5 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label for="accPassword" class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-key text-red-500 mr-1.5 text-sm"></i> MẬT KHẨU TÀI KHOẢN:</label>
+                        <div class="relative">
+                            <input type="password" id="accPassword" required placeholder="Nhập mật khẩu..." class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-red-500 rounded-xl text-sm text-zinc-100 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accPassword', 'formPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
+                                <i id="formPassEyeIcon" class="fa-solid fa-eye-slash text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="accHotmailPassword" class="block text-xs font-bold text-zinc-200 mb-1"><i class="fa-solid fa-envelope-circle-check text-cyan-400 mr-1.5 text-sm"></i> MẬT KHẨU HOTMAIL:</label>
+                        <div class="relative">
+                            <input type="password" id="accHotmailPassword" placeholder="Nhập pass hotmail (nếu có)..." class="w-full px-3.5 py-2.5 pr-10 bg-black/80 border border-zinc-700 focus:border-cyan-400 rounded-xl text-sm text-cyan-200 font-semibold focus:outline-none transition">
+                            <button type="button" onclick="toggleFormPassVisibility('accHotmailPassword', 'formHotmailPassEyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-100 p-1.5">
+                                <i id="formHotmailPassEyeIcon" class="fa-solid fa-eye-slash text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-zinc-800 space-y-2">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-xs font-bold text-zinc-200 flex items-center"><i class="fa-solid fa-layer-group text-red-500 mr-1.5 text-sm"></i> KHUNG ẢNH:</label>
+                            <div class="flex items-center space-x-1 bg-black p-0.5 rounded-lg border border-zinc-800">
+                                <button type="button" id="modeBtn1" onclick="setCollageMode(1)" class="px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">1 Ảnh</button>
+                                <button type="button" id="modeBtn2" onclick="setCollageMode(2)" class="px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black transition-colors shadow-[0_0_10px_#ff003c]">2 Ảnh</button>
+                                <button type="button" id="modeBtn3" onclick="setCollageMode(3)" class="px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors">3 Ảnh</button>
+                            </div>
+                        </div>
+
+                        <!-- Mode 1 Ảnh -->
+                        <div id="slotsMode1" class="hidden space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh Đơn Toàn Cảnh</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m1">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Mode 2 Ảnh -->
+                        <div id="slotsMode2" class="space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Phía Trên)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m2">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Phía Dưới)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText1_m2">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Mode 3 Ảnh -->
+                        <div id="slotsMode3" class="hidden space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 1 (Banner Trên)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText0_m3">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 0)">
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 2 (Dưới Trái)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText1_m3">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 1)">
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between bg-black/70 border border-zinc-800 p-2.5 rounded-xl">
+                                <span class="text-xs font-semibold text-zinc-200">Ảnh 3 (Dưới Phải)</span>
+                                <label class="px-3.5 py-1.5 text-xs font-bold bg-red-950 hover:bg-red-900 border border-red-600 text-red-200 rounded-lg cursor-pointer flex items-center gap-1 active:scale-95 transition">
+                                    <i class="fa-solid fa-upload"></i> <span id="slotBtnText2_m3">Đổi ảnh</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleSlotUpload(event, 2)">
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 flex flex-col justify-center border-2 border-dashed border-red-900/50 rounded-xl bg-black/50 p-2 min-h-[250px]">
-                    <img id="accCanvasPreview" src="" class="w-full object-contain rounded pointer-events-none" style="display:none;">
-                    <div id="accNoImgText" class="text-center text-zinc-500 text-sm font-bold">Chưa có ảnh</div>
+                <!-- Cột phải: Live Canvas -->
+                <div class="lg:col-span-7 flex flex-col space-y-3">
+                    <div id="collageEmptyRightState" class="h-48 lg:h-full min-h-[220px] border-2 border-dashed border-red-950 rounded-2xl bg-black/50 flex flex-col items-center justify-center text-center p-4">
+                        <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-3xl mb-2"></i>
+                        <h4 class="cyber-font text-sm text-zinc-100 font-black">CHƯA CÓ DỮ LIỆU ẢNH</h4>
+                        <p class="text-xs text-zinc-400 mt-1">Chọn ảnh ở các ô phía trên để bắt đầu ghép ảnh.</p>
+                    </div>
+
+                    <div id="collageTweakPanel" class="hidden flex flex-col space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-cyan-300 font-bold text-xs truncate"><i class="fa-solid fa-hand-pointer mr-1 text-red-500 animate-pulse"></i> Chạm ảnh để căn chỉnh:</span>
+                            <button type="button" onclick="openExpandedTouchEditor()" class="text-xs font-bold bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-black border border-red-500/60 px-3 py-1 rounded-lg transition flex items-center gap-1 active:scale-95">
+                                <i class="fa-solid fa-expand"></i> Phóng to
+                            </button>
+                        </div>
+
+                        <div onclick="openExpandedTouchEditor()" class="relative w-full h-56 sm:h-72 bg-black rounded-xl border-2 border-red-600/80 overflow-hidden shadow-[0_0_25px_rgba(255,0,60,0.3)] cursor-pointer select-none">
+                            <img id="mergedPreviewImg" src="" class="w-full h-full object-contain pointer-events-none">
+                            <div class="absolute inset-0 bg-black/40 opacity-0 active:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                                <span class="text-xs cyber-font font-black bg-black/95 text-red-400 border border-red-500 px-3 py-1.5 rounded-xl"><i class="fa-solid fa-up-right-and-down-left-from-center mr-1 text-cyan-400"></i>CĂN CHỈNH</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
-            
-            <div class="p-4 border-t border-zinc-800 bg-zinc-950">
-                <button type="button" onclick="document.querySelector('#modalAccount form').requestSubmit()" id="btnSaveAcc" class="w-full py-3 cyber-cut-btn bg-red-600 text-black font-black uppercase">LƯU TÀI KHOẢN</button>
+
+            <div class="p-3 sm:p-4 bg-zinc-950 border-t border-zinc-800 flex-shrink-0">
+                <button type="button" onclick="document.getElementById('addAccForm').requestSubmit()" id="btnSaveAcc" class="w-full py-3 cyber-cut-btn bg-gradient-to-r from-red-600 via-rose-500 to-red-600 hover:from-red-500 text-black font-black cyber-font text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(255,0,60,0.6)] flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-cloud-arrow-up text-sm"></i> <span id="btnSaveAccText">LƯU VÀO GOOGLE SHEETS</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 3. Modal Confirm Delete (Dùng chung) -->
-    <div id="modalDelete" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="relative w-full max-w-sm bg-[#0a0a10] border-2 border-red-600 rounded-2xl p-6 text-center">
-            <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-3"></i>
-            <h3 class="cyber-font text-lg font-black text-white mb-4">XÁC NHẬN XÓA?</h3>
-            <div class="flex gap-3">
-                <button onclick="closeModal('modalDelete')" class="flex-1 py-2 rounded-lg bg-zinc-800 text-white font-bold">HỦY</button>
-                <button onclick="executeDelete()" class="flex-1 py-2 bg-red-600 text-black font-black rounded-lg">XÓA</button>
+    <!-- Modal Phóng To Căn Chỉnh Mobile/PC (KHO ACC) -->
+    <div id="expandedTouchModal" class="fixed inset-0 bg-black/95 z-[70] flex flex-col p-2.5 sm:p-4 backdrop-blur-xl hidden select-none">
+        <div class="flex items-center justify-between pb-2 border-b border-red-900/60 mb-1.5">
+            <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shadow-[0_0_8px_#00f0ff]"></span>
+                <h3 class="cyber-font text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-400 truncate">
+                    CĂN CHỈNH // <span id="expandedSlotTitle" class="text-white">ẢNH 1</span>
+                </h3>
+            </div>
+            <button type="button" onclick="closeExpandedTouchEditor()" class="cyber-cut-btn px-4 py-1.5 bg-red-600 hover:bg-red-500 text-black font-black cyber-font text-xs rounded transition uppercase tracking-wider shadow-[0_0_20px_rgba(255,0,60,0.8)] active:scale-95">
+                <i class="fa-solid fa-check mr-1"></i> XONG
+            </button>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-zinc-300 px-1 py-1 font-semibold">
+            <span class="text-cyan-300 truncate mr-2 flex items-center text-[11px] sm:text-xs">
+                <i class="fa-solid fa-up-down-left-right mr-1.5 text-red-500 text-sm"></i> 1 ngón kéo • 2 ngón zoom
+            </span>
+            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                <button type="button" onclick="adjustActiveZoom(-0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold"><i class="fa-solid fa-minus"></i></button>
+                <span id="expandedZoomIndicator" class="text-xs text-yellow-300 px-1 cyber-font font-bold">1.0x</span>
+                <button type="button" onclick="adjustActiveZoom(0.1)" class="w-8 h-8 bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-lg text-white flex items-center justify-center active:scale-95 text-xs font-bold"><i class="fa-solid fa-plus"></i></button>
+                <button type="button" onclick="resetSlotAdjustments()" class="ml-1 px-2.5 h-8 bg-zinc-900 border border-zinc-700 text-xs rounded-lg text-zinc-300 hover:text-red-400 active:scale-95 flex items-center gap-1 font-bold"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>
+            </div>
+        </div>
+
+        <div class="flex-1 w-full relative flex items-center justify-center overflow-hidden my-2 bg-[#050508] rounded-xl border border-red-900/60 shadow-inner">
+            <div id="expandedCanvasWrapper" class="relative w-full h-full max-h-[85vh] flex items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none">
+                <img id="expandedPreviewImg" src="" alt="Căn chỉnh lớn" class="max-w-full max-h-full object-contain pointer-events-none rounded-xl border border-red-500/50 shadow-[0_0_40px_rgba(255,0,60,0.3)]">
+            </div>
+        </div>
+
+        <div id="expSlotButtonsContainer" class="flex items-center justify-center space-x-2 pt-1 border-red-950 font-bold">
+            <span class="text-[11px] uppercase text-zinc-500 mr-1">CHỌN Ô:</span>
+            <button type="button" id="expSlotBtn0" onclick="switchExpandedSlot(0)" class="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow-[0_0_10px_#ff003c]">ẢNH 1</button>
+            <button type="button" id="expSlotBtn1" onclick="switchExpandedSlot(1)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 2</button>
+            <button type="button" id="expSlotBtn2" onclick="switchExpandedSlot(2)" class="px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800">ẢNH 3</button>
+        </div>
+    </div>
+
+    <!-- ==================== MODALS DÙNG CHUNG ==================== -->
+    <div id="modalDelete" class="fixed inset-0 z-[80] bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="relative w-full max-w-sm bg-[#0a0a10] border-2 border-red-600 rounded-2xl p-6 shadow-[0_0_50px_rgba(255,0,60,0.6)] text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-950/70 border-2 border-red-500 flex items-center justify-center text-red-500 text-3xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="cyber-font text-base sm:text-lg font-black text-red-500 uppercase tracking-widest mb-1.5">CẢNH BÁO XÓA DỮ LIỆU</h3>
+            <p class="text-xs sm:text-sm text-zinc-300 mono-font mb-2">Hệ thống chuẩn bị xóa vĩnh viễn khỏi Google Sheets:</p>
+            <div id="deleteCodeDisplay" class="cyber-font text-base font-bold text-yellow-400 bg-black/80 py-1.5 px-4 rounded-lg border border-yellow-500/50 inline-block mb-4">#00000</div>
+            <div class="flex items-center justify-center space-x-3">
+                <button type="button" onclick="closeModal('modalDelete')" class="flex-1 py-2.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 mono-font text-xs uppercase">HỦY BỎ</button>
+                <button type="button" id="btnConfirmDelete" onclick="executeDelete()" class="flex-1 py-2.5 cyber-cut-btn bg-gradient-to-r from-red-600 to-rose-600 text-black font-black cyber-font text-xs uppercase shadow-[0_0_20px_rgba(255,0,60,0.8)]">XÁC NHẬN XÓA</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. Modal Image Viewer (Dùng chung) -->
-    <div id="modalImg" class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4" onclick="closeModal('modalImg')">
-        <img id="bigViewer" src="" class="max-w-full max-h-[90vh] object-contain rounded border border-zinc-700">
+    <div id="modalImg" class="fixed inset-0 z-[80] bg-black/95 hidden items-center justify-center p-3 sm:p-4" onclick="closeModal('modalImg')">
+        <div class="relative max-w-4xl max-h-[92vh] bg-black p-2 rounded-xl border-2 border-cyan-400 shadow-[0_0_40px_rgba(0,240,255,0.6)]" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeModal('modalImg')" class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-600 text-black font-black flex items-center justify-center hover:scale-110 transition shadow-[0_0_15px_#ff003c]"><i class="fa-solid fa-xmark"></i></button>
+            <img id="bigViewer" src="" class="max-w-full max-h-[86vh] object-contain rounded">
+        </div>
     </div>
 
-    <!-- 5. Toast -->
-    <div id="toast" class="fixed bottom-5 right-5 z-[100] translate-y-24 opacity-0 transition-all duration-300 px-5 py-3 rounded-xl border border-zinc-600 bg-black text-white font-bold text-sm shadow-2xl">
-        <span id="toastMsg">Ready</span>
+    <div id="toast" class="fixed bottom-5 right-5 z-[100] translate-y-24 opacity-0 transition-all duration-300 px-5 py-3 rounded-xl border mono-font text-xs flex items-center space-x-3 shadow-2xl backdrop-blur-md">
+        <i id="toastIcon" class="fa-solid fa-check text-sm"></i><span id="toastMsg" class="font-bold">Ready</span>
     </div>
 
-    <!-- Canvas ẩn dùng để xử lý ghép ảnh Acc -->
-    <canvas id="hiddenCanvas" class="hidden"></canvas>
+    <!-- Canvas ẩn xử lý ghép ảnh Acc -->
+    <canvas id="collageCanvas" class="hidden"></canvas>
 
     <script>
         // ==========================================
         // CẤU HÌNH API
         // ==========================================
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbz8jGm4J3SjzQmucG0Q1ovDDNR2lk4jfCjhVVBspgP23XmjP-Kz0nlQyP0Q4HtHRy0/exec'; 
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbz8jGm4J3SjzQmucG0Q1ovDDNR2lk4jfCjhVVBspgP23XmjP-Kz0nlQyP0Q4HtHRy0/exec';
 
         // ==========================================
         // STATE QUẢN LÝ APP
         // ==========================================
-        let currentApp = 'topup'; // 'topup' hoặc 'account'
-        let currentAccTab = 'available'; // 'available' hoặc 'sold'
-        
-        let dataTopup = [];
-        let dataAccount = [];
-        
+        let currentApp = 'topup'; // 'topup' | 'account'
+        let currentAccTab = 'available'; // 'available' | 'sold'
+        let dataTopup = [], dataAccount = [];
         let editingId = null;
-        let deleteInfo = { id: null, type: null }; // type: 'topup' | 'account'
+        let deleteInfo = { id: null, title: '', type: null };
+        let isAudioEnabled = true;
 
-        // Biến cấu hình ghép ảnh Acc
-        let accMode = 2;
-        let accImgs = [null, null, null];
-        let accFinalBase64 = "";
+        // Biến cấu hình cho Canvas ghép ảnh Acc
+        let currentCollageMode = 2;
+        let collageSlots = [null, null, null];
+        let currentUploadedImage = "";
+        let currentTweakSlot = 0;
+        let collageConfig = { slots: [{zoom:1, panX:0, panY:0}, {zoom:1, panX:0, panY:0}, {zoom:1, panX:0, panY:0}] };
+        
+        let isDragging=false, dragStartX=0, dragStartY=0, initialPanX=0, initialPanY=0, dragSlotIndex=0;
+        let isPinching=false, initialPinchDistance=0, initialPinchZoom=1;
 
         // ==========================================
-        // HÀM CHUYỂN ĐỔI GIAO DIỆN (TABS)
+        // SYSTEM CORE & AUDIO
         // ==========================================
-        function switchMainApp(app) {
+        setInterval(() => {
+            const clockEl = document.getElementById('cyberClock');
+            if (clockEl) clockEl.textContent = new Date().toTimeString().split(' ')[0] + ' ICT';
+        }, 1000);
+
+        let audioContext = null;
+        function initAudio() {
+            if (!audioContext) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) audioContext = new AudioCtx();
+            }
+            if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+        }
+
+        function playCyberSound(type) {
+            if (!isAudioEnabled) return;
+            try {
+                initAudio();
+                if (!audioContext) return;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain); gain.connect(audioContext.destination);
+                const now = audioContext.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(1400, now + 0.05);
+                    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now); osc.stop(now + 0.05);
+                } else if (type === 'save') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(440, now); osc.frequency.setValueAtTime(880, now + 0.1);
+                    gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now); osc.stop(now + 0.25);
+                } else if (type === 'warn') {
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(320, now); osc.frequency.exponentialRampToValueAtTime(160, now + 0.15);
+                    gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now); osc.stop(now + 0.15);
+                }
+            } catch (e) {}
+        }
+
+        window.toggleAudioFx = function() {
+            isAudioEnabled = !isAudioEnabled;
+            document.getElementById('soundIcon').className = isAudioEnabled ? "fa-solid fa-volume-high text-sm text-cyan-400" : "fa-solid fa-volume-xmark text-sm text-zinc-500";
+        };
+
+        function showToast(msg, isErr=false) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            t.className = `fixed bottom-5 right-5 z-[100] translate-y-0 opacity-100 transition-all duration-300 px-5 py-3 rounded-xl border-2 text-sm flex items-center space-x-3 ${isErr ? 'bg-black/95 border-yellow-500 text-yellow-300' : 'bg-[#0c0c16]/95 border-cyan-400 text-white'}`;
+            setTimeout(() => t.classList.replace('opacity-100','opacity-0'), 3000);
+        }
+
+        function escapeHtml(str) { return str ? str.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') : ''; }
+        function closeModal(id) { document.getElementById(id).classList.replace('flex', 'hidden'); document.body.style.overflow = ''; }
+        window.viewImg = function(src) { playCyberSound('click'); document.getElementById('bigViewer').src = src; document.getElementById('modalImg').classList.replace('hidden','flex'); }
+
+        // ==========================================
+        // TABS & NAVIGATION
+        // ==========================================
+        window.switchMainApp = function(app) {
+            playCyberSound('click');
             currentApp = app;
             const isTopup = app === 'topup';
             
-            // Đổi UI Header
-            document.getElementById('navTopup').className = isTopup 
-                ? "px-6 py-2 text-xs font-black rounded-lg transition-all bg-cyan-500 text-black shadow-[0_0_15px_#00f0ff] flex items-center gap-2" 
-                : "px-6 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white transition-all flex items-center gap-2";
+            // Toggle Body/Header styling
+            document.getElementById('mainBody').className = isTopup ? "bg-topup min-h-screen flex flex-col selection:bg-white selection:text-black" : "bg-acc min-h-screen flex flex-col selection:bg-red-600 selection:text-black";
+            document.getElementById('themeColorMeta').content = isTopup ? "#00f0ff" : "#ff003c";
             
-            document.getElementById('navAccount').className = !isTopup 
-                ? "px-6 py-2 text-xs font-black rounded-lg transition-all bg-red-600 text-black shadow-[0_0_15px_#ff003c] flex items-center gap-2" 
-                : "px-6 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white transition-all flex items-center gap-2";
+            document.getElementById('headerContainer').className = isTopup ? "sticky top-0 z-40 bg-[#06060a]/95 backdrop-blur-xl border-b border-cyan-500/30 px-3 sm:px-6 lg:px-8 py-3 transition-colors duration-500" : "sticky top-0 z-40 bg-[#06060a]/95 backdrop-blur-xl border-b border-red-500/30 px-3 sm:px-6 lg:px-8 py-3 transition-colors duration-500";
+            document.getElementById('logoContainer').className = isTopup ? "relative w-12 h-12 bg-cyan-950/50 border border-cyan-400/80 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-500 shadow-[0_0_20px_rgba(0,240,255,0.5)]" : "relative w-12 h-12 bg-red-950/50 border border-red-500/80 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-500 shadow-[0_0_20px_rgba(255,0,60,0.6)]";
+            document.getElementById('logoImg').src = isTopup ? "icon.jpg" : "icon1.jpg";
+            document.getElementById('logoDot').className = isTopup ? "absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_#fcee0a]" : "absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f0ff]";
+            
+            document.getElementById('brandTitle').innerHTML = isTopup ? `HỆ THỐNG <span class="text-cyan-400">WUWA</span>` : `Kho acc của Chía`;
+            document.getElementById('clockDot').className = isTopup ? "w-2 h-2 rounded-full bg-cyan-400 animate-ping" : "w-2 h-2 rounded-full bg-red-500 animate-ping";
 
-            document.getElementById('brandHighlight').textContent = isTopup ? "WUWA" : "KHO ACC";
-            document.getElementById('brandHighlight').className = isTopup ? "text-cyan-400" : "text-red-500";
+            // Nav Buttons
+            document.getElementById('navTopup').className = isTopup ? "px-6 py-2 text-xs font-black rounded-lg transition-all bg-cyan-500 text-black shadow-[0_0_15px_#00f0ff] flex items-center gap-2" : "px-6 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white transition-all flex items-center gap-2";
+            document.getElementById('navAccount').className = !isTopup ? "px-6 py-2 text-xs font-black rounded-lg transition-all bg-red-600 text-black shadow-[0_0_15px_#ff003c] flex items-center gap-2" : "px-6 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white transition-all flex items-center gap-2";
 
-            // Đổi View
+            // View switch
             document.getElementById('viewTopup').style.display = isTopup ? 'block' : 'none';
             document.getElementById('viewAccount').style.display = !isTopup ? 'block' : 'none';
 
-            // Load data nếu mảng trống
             if (isTopup && dataTopup.length === 0) fetchTopup();
             if (!isTopup && dataAccount.length === 0) fetchAccount();
-        }
+        };
 
-        function switchAccTab(tab) {
+        window.switchAccTab = function(tab) {
+            playCyberSound('click');
             currentAccTab = tab;
             const isAvail = tab === 'available';
-            
-            document.getElementById('tabAccAvail').className = isAvail ? "px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-4 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white";
-            document.getElementById('tabAccSold').className = !isAvail ? "px-4 py-2 text-xs font-black rounded-lg bg-yellow-500 text-black shadow-[0_0_10px_#eab308]" : "px-4 py-2 text-xs font-bold rounded-lg text-zinc-400 hover:text-white";
-            
+            document.getElementById('tabAccAvail').className = isAvail ? "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-red-600 text-black shadow-[0_0_12px_#ff003c] transition flex items-center justify-center gap-1.5" : "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
+            document.getElementById('tabAccSold').className = !isAvail ? "flex-1 md:flex-none px-4 py-2 text-xs font-black rounded-lg bg-yellow-400 text-black shadow-[0_0_12px_#fcee0a] transition flex items-center justify-center gap-1.5" : "flex-1 md:flex-none px-4 py-2 text-xs font-bold rounded-lg text-zinc-300 hover:text-white transition flex items-center justify-center gap-1.5";
             renderAccountGrid();
-        }
+        };
 
         // ==========================================
-        // API FETCH DATA
+        // FETCH DATA
         // ==========================================
         async function fetchTopup() {
-            showGlobalLoader(true);
+            document.getElementById('globalLoader').style.display = 'block';
+            document.getElementById('topupGrid').classList.add('hidden');
+            document.getElementById('topupEmpty').classList.add('hidden');
             try {
                 const res = await fetch(GAS_URL + "?sheet=Sheet1");
                 const data = await res.json();
                 dataTopup = Array.isArray(data) ? data.filter(d => d.id).sort((a,b) => (Number(a.price)||0) - (Number(b.price)||0)) : [];
                 renderTopupGrid();
             } catch(e) { showToast("Lỗi tải Bảng Giá Nạp!", true); }
-            showGlobalLoader(false);
+            document.getElementById('globalLoader').style.display = 'none';
         }
 
         async function fetchAccount() {
-            showGlobalLoader(true);
+            document.getElementById('globalLoader').style.display = 'block';
+            document.getElementById('accGrid').classList.add('hidden');
+            document.getElementById('accEmpty').classList.add('hidden');
+            const cached = localStorage.getItem('chia_acc_cache');
+            if (cached) {
+                try { dataAccount = JSON.parse(cached); renderAccountGrid(); } catch(e){}
+            }
             try {
                 const res = await fetch(GAS_URL + "?sheet=Sheet2");
                 const data = await res.json();
-                dataAccount = Array.isArray(data) ? data.filter(d => d.id).map(r => ({
-                    ...r, is_sold: String(r.is_sold) === 'true' || r.is_sold === true
-                })).sort((a,b) => new Date(b.created_at) - new Date(a.created_at)) : [];
-                renderAccountGrid();
-            } catch(e) { showToast("Lỗi tải Kho Acc!", true); }
-            showGlobalLoader(false);
+                if (Array.isArray(data)) {
+                    dataAccount = data.filter(r => r.id).map(r => ({
+                        ...r, 
+                        is_sold: String(r.is_sold)==='true'||r.is_sold===true,
+                        collage_data: typeof r.collage_data === 'string' ? JSON.parse(r.collage_data||'null') : r.collage_data
+                    })).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                    localStorage.setItem('chia_acc_cache', JSON.stringify(dataAccount));
+                    renderAccountGrid();
+                }
+            } catch(e) { console.error(e); }
+            document.getElementById('globalLoader').style.display = 'none';
         }
 
         // ==========================================
-        // RENDER UI: WUWA TOPUP (SHEET 1)
+        // RENDER TOPUP (WUWA)
         // ==========================================
+        window.handleTopupSearch = renderTopupGrid;
         function renderTopupGrid() {
             const grid = document.getElementById('topupGrid');
             const empty = document.getElementById('topupEmpty');
             const q = document.getElementById('topupSearch').value.toLowerCase();
-            
             let filtered = dataTopup;
             if (q) filtered = filtered.filter(x => (x.title||'').toLowerCase().includes(q));
 
             document.getElementById('topupCount').textContent = dataTopup.length;
             grid.innerHTML = '';
             
-            if (filtered.length === 0) {
-                grid.classList.add('hidden'); empty.classList.remove('hidden'); return;
-            }
+            if (filtered.length === 0) { grid.classList.add('hidden'); empty.classList.remove('hidden'); return; }
             grid.classList.remove('hidden'); empty.classList.add('hidden');
 
             filtered.forEach(item => {
-                const priceFmt = (Number(item.price)||0).toLocaleString('vi-VN') + 'đ';
+                const priceFmt = (Number(item.price)||0) > 0 ? (Number(item.price)||0).toLocaleString('vi-VN') + 'đ' : 'Liên hệ';
                 const div = document.createElement('div');
-                div.className = "relative bg-[#0d0d16] rounded-2xl flex flex-col justify-between wuwa-panel-glow overflow-hidden group";
+                div.className = "relative bg-[#080d16] rounded-2xl flex flex-col justify-between transition-all duration-300 group wuwa-panel-glow border-cyan-950/90 hover:border-cyan-400";
                 
                 div.innerHTML = `
-                    <div class="absolute top-2 right-2 z-10 flex gap-1 bg-black/80 p-1 rounded-lg">
-                        <button onclick="openTopupModal('${item.id}')" class="w-8 h-8 rounded bg-zinc-800 text-cyan-400 hover:bg-cyan-500 hover:text-black"><i class="fa-solid fa-pen text-xs"></i></button>
-                        <button onclick="confirmDelete('${item.id}', 'topup')" class="w-8 h-8 rounded bg-zinc-800 text-red-400 hover:bg-red-500 hover:text-black"><i class="fa-solid fa-trash text-xs"></i></button>
+                    <div class="absolute top-2.5 right-2.5 z-30 flex items-center space-x-1.5 bg-black/85 p-1 rounded-xl border border-zinc-800 shadow">
+                        <button onclick="openTopupModal('${item.id}')" class="w-7 h-7 rounded-lg bg-zinc-900 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-400 hover:text-black flex items-center justify-center"><i class="fa-solid fa-pen text-[11px]"></i></button>
+                        <button onclick="confirmDelete('${item.id}', '${escapeHtml(item.title)}', 'topup')" class="w-7 h-7 rounded-lg bg-zinc-900 border border-red-500/60 text-red-400 hover:bg-red-500 hover:text-black flex items-center justify-center"><i class="fa-solid fa-xmark text-xs font-black"></i></button>
                     </div>
-                    ${item.image ? `<img src="${item.image}" onclick="viewImg('${item.image}')" class="w-full h-48 object-cover cursor-pointer hover:scale-105 transition duration-500">` : `<div class="w-full h-40 bg-zinc-900 flex items-center justify-center text-cyan-900"><i class="fa-solid fa-gem text-4xl"></i></div>`}
-                    <div class="p-4 flex flex-col justify-between flex-1">
-                        <h3 class="cyber-font text-lg text-cyan-300 font-bold mb-2">${escapeHtml(item.title)}</h3>
-                        <div class="flex justify-between items-end mt-auto pt-3 border-t border-zinc-800">
-                            <span class="text-sm font-black text-yellow-400 bg-yellow-900/30 px-2 py-1 rounded">${priceFmt}</span>
-                            <button onclick="copyQuoteTopup('${item.id}')" class="text-xs text-black bg-cyan-500 px-3 py-1.5 rounded font-bold hover:bg-white transition"><i class="fa-solid fa-share-nodes mr-1"></i> Báo giá</button>
+                    ${item.image ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="viewImg('${item.image}')"><img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"><div class="absolute top-2.5 left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">${priceFmt}</div></div>` 
+                                 : `<div class="relative w-full h-40 bg-[#05070c] flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl"><i class="fa-solid fa-gem text-4xl mb-2 text-cyan-400/30"></i><div class="absolute top-2.5 right-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80">${priceFmt}</div></div>`}
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
+                        <div class="pb-2 border-b border-zinc-800">
+                            <h3 class="cyber-font text-base sm:text-lg font-black text-cyan-300 tracking-wide">${escapeHtml(item.title)}</h3>
+                            <div class="mt-1 flex items-center justify-between"><span class="text-xs text-zinc-400">Giá bán:</span><span class="text-sm font-black text-yellow-400 bg-yellow-950/40 border border-yellow-500/50 px-2 py-0.5 rounded">${priceFmt}</span></div>
                         </div>
-                    </div>
-                `;
-                grid.appendChild(div);
-            });
-        }
-
-        // ==========================================
-        // RENDER UI: KHO ACC (SHEET 2)
-        // ==========================================
-        function renderAccountGrid() {
-            const grid = document.getElementById('accGrid');
-            const empty = document.getElementById('accEmpty');
-            const q = document.getElementById('accSearch').value.toLowerCase();
-            
-            const isSoldTab = currentAccTab === 'sold';
-            let filtered = dataAccount.filter(a => isSoldTab ? a.is_sold : !a.is_sold);
-            if (q) filtered = filtered.filter(a => (a.title||'').toLowerCase().includes(q) || (a.username||'').toLowerCase().includes(q));
-
-            document.getElementById('accAvailCount').textContent = dataAccount.filter(a => !a.is_sold).length;
-            document.getElementById('accSoldCount').textContent = dataAccount.filter(a => a.is_sold).length;
-
-            grid.innerHTML = '';
-            if (filtered.length === 0) {
-                grid.classList.add('hidden'); empty.classList.remove('hidden'); return;
-            }
-            grid.classList.remove('hidden'); empty.classList.add('hidden');
-
-            filtered.forEach(acc => {
-                const priceFmt = (Number(acc.price)||0).toLocaleString('vi-VN') + 'đ';
-                const div = document.createElement('div');
-                div.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col overflow-hidden ${isSoldTab ? 'sold-panel-glow opacity-90' : 'acc-panel-glow'} group`;
-
-                const hotmailHTML = acc.hotmail_password ? `<div class="flex justify-between items-center bg-black p-2 rounded text-xs border border-zinc-800 mt-1"><span class="text-cyan-400 font-bold">Hotmail:</span> <span class="text-zinc-300 select-all">${escapeHtml(acc.hotmail_password)}</span></div>` : '';
-
-                div.innerHTML = `
-                    <div class="absolute top-2 right-2 z-10 flex gap-1 bg-black/80 p-1 rounded-lg">
-                        <button onclick="openAccModal('${acc.id}')" class="w-8 h-8 rounded bg-zinc-800 text-cyan-400 hover:bg-cyan-500 hover:text-black"><i class="fa-solid fa-pen text-xs"></i></button>
-                        ${isSoldTab ? `
-                            <button onclick="confirmDelete('${acc.id}', 'account')" class="w-8 h-8 rounded bg-zinc-800 text-red-500 hover:bg-red-600 hover:text-black"><i class="fa-solid fa-trash text-xs"></i></button>
-                            <button onclick="toggleSoldState('${acc.id}')" class="w-8 h-8 rounded bg-zinc-800 text-green-400 hover:bg-green-500 hover:text-black" title="Hoàn về Kho"><i class="fa-solid fa-rotate-left text-xs"></i></button>
-                        ` : `
-                            <button onclick="toggleSoldState('${acc.id}')" class="w-8 h-8 rounded bg-zinc-800 text-yellow-400 hover:bg-yellow-500 hover:text-black" title="Đã bán"><i class="fa-solid fa-check text-xs"></i></button>
-                        `}
-                    </div>
-                    ${acc.image ? `<img src="${acc.image}" onclick="viewImg('${acc.image}')" class="w-full h-48 object-cover cursor-pointer ${isSoldTab?'grayscale':''}">` : `<div class="w-full h-40 bg-zinc-900 flex items-center justify-center text-red-900"><i class="fa-solid fa-shield text-4xl"></i></div>`}
-                    <div class="p-4 flex flex-col gap-2 flex-1">
-                        <div class="flex justify-between items-start">
-                            <h3 class="cyber-font text-lg ${isSoldTab?'text-yellow-500 line-through':'text-red-500'} font-bold">${escapeHtml(acc.title)}</h3>
-                            <span class="text-sm font-black text-yellow-400 bg-yellow-900/30 px-2 py-0.5 rounded">${priceFmt}</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-black p-2 rounded text-xs border border-zinc-800 mt-2">
-                            <span class="text-zinc-400">TK:</span> <span class="text-white font-bold select-all">${escapeHtml(acc.username)}</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-black p-2 rounded text-xs border border-zinc-800">
-                            <span class="text-zinc-400">Pass:</span> <span class="text-white font-bold select-all">${escapeHtml(acc.password)}</span>
-                        </div>
-                        ${hotmailHTML}
-                        <div class="mt-auto pt-3 flex gap-2">
-                            ${acc.image ? `<button onclick="dlImg('${acc.image}', '${escapeHtml(acc.title)}',${acc.price})" class="flex-1 py-1.5 bg-zinc-800 text-xs text-white rounded font-bold hover:bg-cyan-600"><i class="fa-solid fa-download"></i> Tải ảnh</button>` : ''}
-                            <button onclick="copyQuoteAcc('${acc.id}')" class="flex-1 py-1.5 bg-red-900/50 text-red-300 text-xs rounded font-bold border border-red-500 hover:bg-red-600 hover:text-white"><i class="fa-solid fa-copy"></i> Copy Data</button>
+                        <div class="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                            <div>${item.image ? `<button onclick="dlTopupImg('${item.image}', '${escapeHtml(item.title)}', ${item.price}, event)" class="px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 font-bold hover:text-cyan-400 transition flex items-center gap-1.5 shadow"><i class="fa-solid fa-download text-xs text-cyan-400"></i><span>Tải ảnh</span></button>` : ''}</div>
+                            <button onclick="copyQuoteTopup('${item.id}')" class="px-3.5 py-1.5 rounded-lg bg-cyan-950/50 border border-cyan-400 text-cyan-300 font-bold hover:bg-cyan-500 hover:text-black transition flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,240,255,0.25)]"><i class="fa-solid fa-share-nodes text-xs"></i> Gửi khách</button>
                         </div>
                     </div>
                 `;
@@ -452,338 +693,402 @@
             });
         }
 
-        // ==========================================
-        // ACTION TÀI KHOẢN (BÁN / KHÔI PHỤC)
-        // ==========================================
-        async function toggleSoldState(id) {
-            const acc = dataAccount.find(a => a.id === id);
-            if(!acc) return;
-            acc.is_sold = !acc.is_sold;
-            acc.sold_at = acc.is_sold ? new Date().toISOString() : null;
-            
-            // Update local
-            renderAccountGrid();
-            showToast(acc.is_sold ? "Đã chuyển vào lịch sử bán!" : "Đã hoàn về kho!");
-
-            // Gọi API lưu
-            try {
-                await fetch(GAS_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'save', sheetName: 'Sheet2', ...acc })
-                });
-            } catch(e) {
-                showToast("Lỗi đồng bộ trạng thái!", true);
-            }
-        }
-
-        // ==========================================
-        // LOGIC LƯU DATA (CHUNG CHUẨN)
-        // ==========================================
-        // WUWA TOPUP
         window.openTopupModal = function(id = null) {
-            editingId = id;
-            document.getElementById('topupModalTitle').textContent = id ? "SỬA GÓI NẠP" : "THÊM GÓI NẠP (SHEET 1)";
-            
+            editingId = id; playCyberSound('click');
+            document.getElementById('topupModalTitle').innerHTML = id ? `CHỈNH SỬA // <span class="text-white">${id}</span>` : `THÊM GÓI NẠP // <span class="text-zinc-100">SHEET 1</span>`;
             if(id) {
                 const pkg = dataTopup.find(x => x.id === id);
-                document.getElementById('topupName').value = pkg.title || '';
-                document.getElementById('topupPrice').value = pkg.price || '';
-                document.getElementById('topupImgPreview').src = pkg.image || '';
-                document.getElementById('topupImgPreview').style.display = pkg.image ? 'block' : 'none';
+                document.getElementById('topupName').value = pkg.title || ''; document.getElementById('topupPrice').value = pkg.price || '';
+                document.getElementById('topupImgPreview').src = pkg.image || ''; 
+                document.getElementById('topupImgContainer').classList.toggle('hidden', !pkg.image);
             } else {
-                document.getElementById('topupName').value = '';
-                document.getElementById('topupPrice').value = '';
-                document.getElementById('topupImgPreview').src = '';
-                document.getElementById('topupImgPreview').style.display = 'none';
+                document.getElementById('topupName').value = ''; document.getElementById('topupPrice').value = '';
+                document.getElementById('topupImgPreview').src = ''; document.getElementById('topupImgContainer').classList.add('hidden');
             }
             document.getElementById('modalTopup').classList.replace('hidden', 'flex');
+            document.body.style.overflow = 'hidden';
         };
 
-        window.saveTopup = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSaveTopup');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
-            btn.disabled = true;
-
-            const payload = {
-                action: 'save',
-                sheetName: 'Sheet1',
-                id: editingId || ('pkg_' + Date.now()),
-                title: document.getElementById('topupName').value.trim(),
-                price: parseFloat(document.getElementById('topupPrice').value) || 0,
-                image: document.getElementById('topupImgPreview').src
-            };
-
-            try {
-                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const json = await res.json();
-                if(json.success) {
-                    showToast("Đã lưu gói nạp thành công!");
-                    closeModal('modalTopup');
-                    fetchTopup();
-                } else throw new Error(json.error);
-            } catch(err) {
-                showToast("Lỗi lưu dữ liệu!", true);
-            } finally {
-                btn.innerHTML = 'LƯU GÓI NẠP'; btn.disabled = false;
-            }
-        };
-
-        // KHO ACC
-        window.openAccModal = function(id = null) {
-            editingId = id;
-            document.getElementById('accModalTitle').textContent = id ? "SỬA TÀI KHOẢN" : "THÊM TÀI KHOẢN (SHEET 2)";
-            
-            if(id) {
-                const acc = dataAccount.find(x => x.id === id);
-                document.getElementById('accIdVal').value = acc.title || '';
-                document.getElementById('accPriceVal').value = acc.price || '';
-                document.getElementById('accUserVal').value = acc.username || '';
-                document.getElementById('accPassVal').value = acc.password || '';
-                document.getElementById('accHotmailVal').value = acc.hotmail_password || '';
-                
-                accFinalBase64 = acc.image || '';
-                document.getElementById('accCanvasPreview').src = accFinalBase64;
-                document.getElementById('accCanvasPreview').style.display = accFinalBase64 ? 'block' : 'none';
-                document.getElementById('accNoImgText').style.display = accFinalBase64 ? 'none' : 'block';
-            } else {
-                document.getElementById('accIdVal').value = '#'+Math.floor(10000+Math.random()*90000);
-                document.getElementById('accPriceVal').value = '';
-                document.getElementById('accUserVal').value = '';
-                document.getElementById('accPassVal').value = '';
-                document.getElementById('accHotmailVal').value = '';
-                accImgs = [null, null, null];
-                accFinalBase64 = "";
-                document.getElementById('accCanvasPreview').src = '';
-                document.getElementById('accCanvasPreview').style.display = 'none';
-                document.getElementById('accNoImgText').style.display = 'block';
-            }
-            document.getElementById('modalAccount').classList.replace('hidden', 'flex');
-        };
-
-        window.saveAccount = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSaveAcc');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...';
-            btn.disabled = true;
-
-            let existing = editingId ? dataAccount.find(a => a.id === editingId) : {};
-
-            const payload = {
-                action: 'save',
-                sheetName: 'Sheet2',
-                id: editingId || ('acc_' + Date.now()),
-                title: document.getElementById('accIdVal').value.trim(),
-                price: parseFloat(document.getElementById('accPriceVal').value) || 0,
-                username: document.getElementById('accUserVal').value.trim(),
-                password: document.getElementById('accPassVal').value.trim(),
-                hotmail_password: document.getElementById('accHotmailVal').value.trim(),
-                image: accFinalBase64,
-                is_sold: existing.is_sold || false,
-                sold_at: existing.sold_at || null,
-                created_at: existing.created_at || new Date().toISOString()
-            };
-
-            try {
-                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const json = await res.json();
-                if(json.success) {
-                    showToast("Đã lưu Account thành công!");
-                    closeModal('modalAccount');
-                    fetchAccount();
-                } else throw new Error(json.error);
-            } catch(err) {
-                showToast("Lỗi lưu dữ liệu!", true);
-            } finally {
-                btn.innerHTML = 'LƯU TÀI KHOẢN'; btn.disabled = false;
-            }
-        };
-
-        // ==========================================
-        // XÓA DỮ LIỆU
-        // ==========================================
-        window.confirmDelete = function(id, type) {
-            deleteInfo = { id, type };
-            document.getElementById('modalDelete').classList.replace('hidden', 'flex');
-        };
-
-        window.executeDelete = async function() {
-            const { id, type } = deleteInfo;
-            if(!id) return;
-            
-            closeModal('modalDelete');
-            showGlobalLoader(true);
-
-            const sName = type === 'topup' ? 'Sheet1' : 'Sheet2';
-            try {
-                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id, sheetName: sName }) });
-                const json = await res.json();
-                if(json.success) {
-                    showToast("Đã xóa vĩnh viễn!");
-                    if(type === 'topup') fetchTopup(); else fetchAccount();
-                }
-            } catch(e) {
-                showToast("Lỗi khi xóa!", true);
-            }
-        };
-
-        // ==========================================
-        // XỬ LÝ ẢNH (SINGLE VÀ COLLAGE)
-        // ==========================================
-        // Xử lý up ảnh đơn cho Topup
         window.handleSingleImgUpload = function(e, previewId) {
-            const file = e.target.files[0];
-            if(!file) return;
+            const file = e.target.files[0]; if(!file) return;
             const r = new FileReader();
             r.onload = ev => {
                 const img = new Image();
                 img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 400; const scale = Math.min(1, maxW/img.width);
+                    const canvas = document.createElement('canvas'); const maxW = 400; const scale = Math.min(1, maxW/img.width);
                     canvas.width = img.width * scale; canvas.height = img.height * scale;
                     canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const b64 = canvas.toDataURL('image/jpeg', 0.8);
-                    const pv = document.getElementById(previewId);
-                    pv.src = b64; pv.style.display = 'block';
+                    document.getElementById(previewId).src = canvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('topupImgContainer').classList.remove('hidden');
                 };
                 img.src = ev.target.result;
             };
             r.readAsDataURL(file);
         };
 
-        // Xử lý ghép ảnh (Collage) cho Account
-        window.setMode = function(m) {
-            accMode = m;
-            document.getElementById('btnM1').className = m===1 ? "px-2 py-1 text-xs bg-red-600 text-black font-bold rounded" : "px-2 py-1 text-xs bg-zinc-800 text-zinc-400 font-bold rounded";
-            document.getElementById('btnM2').className = m===2 ? "px-2 py-1 text-xs bg-red-600 text-black font-bold rounded" : "px-2 py-1 text-xs bg-zinc-800 text-zinc-400 font-bold rounded";
-            document.getElementById('btnM3').className = m===3 ? "px-2 py-1 text-xs bg-red-600 text-black font-bold rounded" : "px-2 py-1 text-xs bg-zinc-800 text-zinc-400 font-bold rounded";
-            
-            document.getElementById('file2').style.display = m >= 2 ? 'block' : 'none';
-            document.getElementById('file3').style.display = m === 3 ? 'block' : 'none';
-            processAccCanvas();
-        }
+        window.saveTopup = async function(e) {
+            e.preventDefault(); const btn = document.getElementById('btnSaveTopup');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...'; btn.disabled = true;
+            const payload = { action: 'save', sheetName: 'Sheet1', id: editingId || ('pkg_' + Date.now()), title: document.getElementById('topupName').value.trim(), price: parseFloat(document.getElementById('topupPrice').value) || 0, image: document.getElementById('topupImgPreview').src };
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const json = await res.json();
+                if(json.success) { showToast("Đã lưu gói nạp thành công!"); closeModal('modalTopup'); fetchTopup(); } else throw new Error();
+            } catch(err) { showToast("Lỗi lưu dữ liệu!", true); } finally { btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> LƯU VÀO GOOGLE SHEETS'; btn.disabled = false; }
+        };
 
-        window.handleAccImg = function(e, idx) {
-            const file = e.target.files[0];
-            if(!file) return;
-            const r = new FileReader();
-            r.onload = ev => {
-                const img = new Image();
-                img.onload = () => { accImgs[idx] = img; processAccCanvas(); };
-                img.src = ev.target.result;
-            };
-            r.readAsDataURL(file);
-        }
-
-        window.processAccCanvas = function() {
-            if(!accImgs.some(i => i)) return;
-            
-            const cvs = document.getElementById('hiddenCanvas');
-            const ctx = cvs.getContext('2d');
-            const W = 800, H = 500;
-            cvs.width = W; cvs.height = H;
-            ctx.fillStyle = '#040407'; ctx.fillRect(0,0,W,H);
-
-            function drawCrop(img, x,y,w,h) {
-                if(!img) return;
-                const scale = Math.max(w/img.width, h/img.height);
-                const dw = img.width*scale, dh = img.height*scale;
-                const dx = x + (w-dw)/2, dy = y + (h-dh)/2;
-                ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip();
-                ctx.drawImage(img, dx, dy, dw, dh);
-                ctx.restore();
-            }
-
-            if(accMode === 1) drawCrop(accImgs[0], 0,0,W,H);
-            else if(accMode === 2) {
-                drawCrop(accImgs[0], 0,0,W,H/2);
-                drawCrop(accImgs[1], 0,H/2,W,H/2);
-                ctx.strokeStyle = '#ff003c'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
-            } else {
-                const topH = H*0.55;
-                drawCrop(accImgs[0], 0,0,W,topH);
-                drawCrop(accImgs[1], 0,topH,W/2,H-topH);
-                drawCrop(accImgs[2], W/2,topH,W/2,H-topH);
-                ctx.strokeStyle = '#ff003c'; ctx.lineWidth=3; ctx.beginPath(); 
-                ctx.moveTo(0,topH); ctx.lineTo(W,topH); ctx.moveTo(W/2,topH); ctx.lineTo(W/2,H); ctx.stroke();
-            }
-
-            // Vẽ Watermark mã Acc
-            const code = document.getElementById('accIdVal').value.trim() || '#XXX';
-            ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(10, H-40, 120, 30);
-            ctx.strokeStyle = '#ff003c'; ctx.strokeRect(10, H-40, 120, 30);
-            ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif'; ctx.fillText(code, 20, H-20);
-
-            accFinalBase64 = cvs.toDataURL('image/jpeg', 0.7);
-            document.getElementById('accCanvasPreview').src = accFinalBase64;
-            document.getElementById('accCanvasPreview').style.display = 'block';
-            document.getElementById('accNoImgText').style.display = 'none';
-        }
-
-        // ==========================================
-        // TIỆN ÍCH KHÁC
-        // ==========================================
-        window.closeModal = function(id) { document.getElementById(id).classList.replace('flex', 'hidden'); }
-        window.viewImg = function(src) { document.getElementById('bigViewer').src = src; document.getElementById('modalImg').classList.replace('hidden','flex'); }
-        
-        window.showToast = function(msg, isErr=false) {
-            const t = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            t.className = `fixed bottom-5 right-5 z-[100] translate-y-0 opacity-100 transition-all duration-300 px-5 py-3 rounded-xl border ${isErr?'border-yellow-500 text-yellow-400 bg-black':'border-cyan-400 text-white bg-[#0c0c16]'} shadow-2xl`;
-            setTimeout(() => t.classList.replace('opacity-100','opacity-0'), 3000);
-        }
-
-        function showGlobalLoader(show) {
-            document.getElementById('globalLoader').style.display = show ? 'block' : 'none';
-        }
-
-        function escapeHtml(str) { return str ? str.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;') : ''; }
-
-        // Báo giá
         window.copyQuoteTopup = function(id) {
-            const p = dataTopup.find(x=>x.id===id);
-            if(!p) return;
+            const p = dataTopup.find(x=>x.id===id); if(!p) return; playCyberSound('click');
             const price = (Number(p.price)||0)>0 ? (Number(p.price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
             navigator.clipboard.writeText(`⚡ BẢNG GIÁ NẠP WUWA\n📦 Gói: ${p.title}\n💰 Giá: ${price}\n------------------\nNhắn ngay để lên đơn nhé ❤️`);
-            showToast("Đã copy báo giá!");
+            showToast("Đã sao chép báo giá!");
         };
 
-        window.copyQuoteAcc = function(id) {
-            const a = dataAccount.find(x=>x.id===id);
-            if(!a) return;
-            const price = (Number(a.price)||0)>0 ? (Number(a.price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
-            navigator.clipboard.writeText(`📦 MÃ: ${a.title}\n💰 Giá: ${price}\n👤 TK: ${a.username}\n🔑 Pass: ${a.password}\n${a.hotmail_password?`📧 Hotmail: ${a.hotmail_password}\n`:''}------------------\nCảm ơn bạn đã ủng hộ!`);
-            showToast("Đã copy data tài khoản!");
-        };
-
-        // Tải ảnh đóng dấu giá
-        window.dlImg = function(src, title, price) {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
+        window.dlTopupImg = function(src, title, price, e) {
+            if(e) e.stopPropagation(); playCyberSound('click'); showToast('Đang tải ảnh...');
+            const img = new Image(); img.crossOrigin = 'anonymous';
             img.onload = () => {
-                const cvs = document.createElement('canvas');
-                cvs.width = img.width; cvs.height = img.height;
-                const ctx = cvs.getContext('2d');
-                ctx.drawImage(img,0,0);
-                
-                const pr = (Number(price)||0)>0 ? (Number(price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
-                ctx.font = 'bold 30px sans-serif';
-                ctx.fillStyle = '#000'; ctx.fillRect(img.width-180, 20, 160, 40);
-                ctx.fillStyle = '#fcee0a'; ctx.fillText(pr, img.width-170, 50);
-                
-                const a = document.createElement('a');
-                a.href = cvs.toDataURL('image/jpeg', 0.9);
-                a.download = (title||'image')+'.jpg';
-                a.click();
-            };
-            img.src = src;
+                const a = document.createElement('a'); a.href = img.src; a.download = `${title}.jpg`; a.click();
+            }; img.src = src;
         };
 
-        // Search
-        window.handleTopupSearch = renderTopupGrid;
+        // ==========================================
+        // RENDER KHO ACC (SHEET 2)
+        // ==========================================
         window.handleAccSearch = renderAccountGrid;
+        function renderAccountGrid() {
+            const grid = document.getElementById('accGrid'); const empty = document.getElementById('accEmpty');
+            const q = document.getElementById('accSearch').value.toLowerCase();
+            const isSoldTab = currentAccTab === 'sold';
+            let filtered = dataAccount.filter(a => isSoldTab ? a.is_sold : !a.is_sold);
+            if (q) filtered = filtered.filter(a => (a.title||'').toLowerCase().includes(q) || (a.username||'').toLowerCase().includes(q));
 
-        // Init
+            document.getElementById('accAvailCount').textContent = dataAccount.filter(a => !a.is_sold).length;
+            document.getElementById('accSoldCount').textContent = dataAccount.filter(a => a.is_sold).length;
+            grid.innerHTML = '';
+            if (filtered.length === 0) { grid.classList.add('hidden'); empty.classList.remove('hidden'); return; }
+            grid.classList.remove('hidden'); empty.classList.add('hidden');
+
+            filtered.forEach(acc => {
+                const priceFmt = (Number(acc.price)||0)>0 ? (Number(acc.price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
+                const div = document.createElement('div');
+                div.className = `relative bg-[#0d0d16] rounded-2xl flex flex-col overflow-hidden group transition-all duration-300 ${isSoldTab ? 'sold-panel-glow border-zinc-700/80 opacity-90' : 'acc-panel-glow border-red-950/90 hover:border-red-500'}`;
+
+                const hotmailHTML = acc.hotmail_password ? `
+                    <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
+                        <div class="flex items-center space-x-2 truncate mr-2"><i class="fa-solid fa-envelope text-cyan-400 text-xs"></i><span class="text-[11px] text-zinc-400 font-bold uppercase">Hotmail:</span><span id="hm_${acc.id}" class="text-cyan-200 font-bold mono-font text-sm">••••••••</span></div>
+                        <div class="flex items-center space-x-2"><button onclick="toggleCardPassword('hm_${acc.id}', 'hmi_${acc.id}', '${escapeHtml(acc.hotmail_password)}')" class="text-zinc-400 hover:text-cyan-300 p-1.5"><i id="hmi_${acc.id}" class="fa-solid fa-eye text-sm"></i></button><button onclick="copyToClipboard('${escapeHtml(acc.hotmail_password)}', 'Hotmail')" class="text-zinc-400 hover:text-cyan-300 p-1.5"><i class="fa-regular fa-copy text-sm"></i></button></div>
+                    </div>` : '';
+
+                div.innerHTML = `
+                    <button onclick="openAccAddModal('${acc.id}')" class="lg:hidden absolute -top-3.5 -left-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-cyan-400 text-cyan-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.8)]"><i class="fa-solid fa-pen text-xs"></i></button>
+                    <button onclick="${isSoldTab ? `confirmDelete('${acc.id}','${escapeHtml(acc.title)}','account')` : `toggleSoldState('${acc.id}')`}" class="lg:hidden absolute -top-3.5 -right-3.5 z-30 w-8 h-8 rounded-full bg-black border-2 border-red-500 text-red-400 flex items-center justify-center shadow-[0_0_15px_rgba(255,0,60,0.9)]"><i class="fa-solid fa-xmark text-sm"></i></button>
+
+                    <div class="hidden lg:flex absolute top-2.5 right-2.5 z-30 items-center space-x-1.5 bg-black/85 backdrop-blur-md p-1 rounded-xl border border-zinc-800 shadow">
+                        <button onclick="openAccAddModal('${acc.id}')" class="w-7 h-7 rounded-lg bg-zinc-900 border border-cyan-500/50 hover:bg-cyan-400 hover:text-black text-cyan-300 flex items-center justify-center"><i class="fa-solid fa-pen text-[11px]"></i></button>
+                        ${isSoldTab ? `<button onclick="confirmDelete('${acc.id}', '${escapeHtml(acc.title)}', 'account')" class="w-7 h-7 rounded-lg bg-zinc-900 border border-red-500/60 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center"><i class="fa-solid fa-trash text-xs font-black"></i></button>`
+                                    : `<button onclick="toggleSoldState('${acc.id}')" class="w-7 h-7 rounded-lg bg-zinc-900 border border-red-500/60 hover:bg-red-600 hover:text-black text-red-400 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs font-black"></i></button>`}
+                    </div>
+
+                    ${acc.image ? `<div class="relative w-full h-48 bg-black overflow-hidden rounded-t-2xl cursor-pointer" onclick="viewImg('${acc.image}')"><img src="${acc.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${isSoldTab?'grayscale-[50%]':''}"><div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center"><span class="text-xs cyber-font font-bold bg-black/95 text-white px-3.5 py-1.5 rounded-xl border border-red-500 shadow"><i class="fa-solid fa-magnifying-glass-plus mr-1.5 text-cyan-400"></i> XEM ẢNH</span></div><div class="absolute top-2.5 left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">${priceFmt}</div><div class="absolute bottom-2.5 left-2.5 bg-black/90 text-[10px] font-bold ${isSoldTab?'text-yellow-400 border-yellow-500/50':'text-cyan-300 border-cyan-500/50'} px-2 py-0.5 rounded border shadow">${isSoldTab?'ĐÃ BÁN':'SẴN SÀNG'}</div></div>` 
+                                : `<div class="relative w-full h-40 bg-zinc-950 border-b border-zinc-900 flex flex-col items-center justify-center text-zinc-500 rounded-t-2xl"><i class="fa-solid fa-microchip text-4xl mb-2 text-red-500/30"></i><span class="text-xs font-semibold text-zinc-400">KHÔNG CÓ ẢNH</span><div class="absolute top-2.5 left-2.5 bg-black/90 text-xs font-black text-yellow-400 px-2.5 py-1 rounded-md border border-yellow-500/80 shadow">${priceFmt}</div></div>`}
+                    
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3.5">
+                        <div class="flex items-center justify-between pb-2.5 border-b border-zinc-800">
+                            <div><span class="cyber-font text-base sm:text-lg font-black ${isSoldTab?'text-yellow-400 line-through':'text-red-400'} tracking-wider">${escapeHtml(acc.title)}</span><span class="ml-2 text-xs font-black text-yellow-400 bg-yellow-950/40 border border-yellow-500/50 px-2 py-0.5 rounded">${priceFmt}</span></div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800"><span class="text-zinc-100 font-semibold text-sm truncate mr-2">${escapeHtml(acc.username)}</span><button onclick="copyToClipboard('${escapeHtml(acc.username)}', 'Tài khoản')" class="text-zinc-400 hover:text-cyan-300 p-1.5"><i class="fa-regular fa-copy text-sm"></i></button></div>
+                            <div class="flex items-center justify-between bg-black/70 px-3.5 py-2 rounded-xl border border-zinc-800">
+                                <div class="flex items-center space-x-2 truncate mr-2"><i class="fa-solid fa-lock text-red-500 text-xs"></i><span id="pw_${acc.id}" class="text-zinc-100 font-bold mono-font text-sm">••••••••</span></div>
+                                <div class="flex items-center space-x-2"><button onclick="toggleCardPassword('pw_${acc.id}', 'pwi_${acc.id}', '${escapeHtml(acc.password)}')" class="text-zinc-400 hover:text-yellow-400 p-1.5"><i id="pwi_${acc.id}" class="fa-solid fa-eye text-sm"></i></button><button onclick="copyToClipboard('${escapeHtml(acc.password)}', 'Mật khẩu')" class="text-zinc-400 hover:text-cyan-300 p-1.5"><i class="fa-regular fa-copy text-sm"></i></button></div>
+                            </div>
+                            ${hotmailHTML}
+                        </div>
+                        <div class="pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                            <div>${acc.image ? `<button onclick="downloadAccImg('${acc.image}', '${escapeHtml(acc.title)}',${acc.price}, event)" class="px-3.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-cyan-300 font-bold transition flex items-center gap-1.5 shadow"><i class="fa-solid fa-download text-xs text-cyan-400"></i><span>Tải ảnh</span></button>` : ''}</div>
+                            <div class="flex items-center space-x-2">
+                                ${isSoldTab ? `<button onclick="copyCustomerInfo('${acc.id}')" class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center transition" title="Gửi khách"><i class="fa-solid fa-share-nodes text-xs"></i></button> <button onclick="toggleSoldState('${acc.id}')" class="px-3.5 py-1.5 rounded-lg bg-emerald-950/50 border border-emerald-500/70 text-emerald-300 font-black flex items-center gap-1.5 shadow"><i class="fa-solid fa-rotate-left text-xs"></i><span>KHÔI PHỤC</span></button>` 
+                                            : `<button onclick="copyCustomerInfo('${acc.id}')" class="px-3.5 py-1.5 rounded-lg bg-red-950/40 hover:bg-red-900 border border-red-500/60 text-red-200 font-bold flex items-center gap-1.5 shadow"><i class="fa-solid fa-share-nodes text-xs text-red-400"></i><span>Gửi khách</span></button>`}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        window.toggleSoldState = async function(id) {
+            playCyberSound('click'); const acc = dataAccount.find(a => a.id === id); if(!acc) return;
+            acc.is_sold = !acc.is_sold; acc.sold_at = acc.is_sold ? new Date().toISOString() : null;
+            localStorage.setItem('chia_acc_cache', JSON.stringify(dataAccount)); renderAccountGrid();
+            showToast(acc.is_sold ? "Đã chuyển vào lịch sử bán!" : "Đã hoàn về kho!");
+            try { await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'save', sheetName: 'Sheet2', ...acc }) }); } catch(e) {}
+        };
+
+        // ==========================================
+        // KHỞI TẠO & CHỈNH SỬA KHO ACC (COMPLEX CANVAS LOGIC)
+        // ==========================================
+        window.openAccAddModal = async function(id = null) {
+            editingId = id; playCyberSound('click');
+            document.getElementById('accModalTitle').innerHTML = id ? `CHỈNH SỬA TÀI KHOẢN // <span class="text-white">${id}</span>` : `KHỞI TẠO TÀI KHOẢN // <span class="text-zinc-100">SHEET 2</span>`;
+            document.getElementById('modalPulseDot').className = id ? "w-2.5 h-2.5 rounded-full bg-cyan-400 shadow animate-pulse" : "w-2.5 h-2.5 rounded-full bg-red-500 shadow animate-pulse";
+            document.getElementById('btnGenCode').classList.toggle('hidden', !!id);
+
+            const form = document.getElementById('addAccForm'); form.reset();
+            ['accPassword', 'accHotmailPassword'].forEach(id => { document.getElementById(id).type='password'; });
+            document.getElementById('formPassEyeIcon').className = 'fa-solid fa-eye-slash text-xs';
+            document.getElementById('formHotmailPassEyeIcon').className = 'fa-solid fa-eye-slash text-xs';
+
+            collageSlots = [null, null, null]; currentUploadedImage = "";
+            collageConfig = { slots: [{zoom:1,panX:0,panY:0}, {zoom:1,panX:0,panY:0}, {zoom:1,panX:0,panY:0}] };
+            
+            if(id) {
+                const acc = dataAccount.find(x => x.id === id);
+                document.getElementById('accTitle').value = acc.title || ''; document.getElementById('accPrice').value = acc.price || '';
+                document.getElementById('accUsername').value = acc.username || ''; document.getElementById('accPassword').value = acc.password || '';
+                document.getElementById('accHotmailPassword').value = acc.hotmail_password || '';
+                
+                if (acc.collage_data && acc.collage_data.slots && acc.collage_data.slots.some(s => s !== null)) {
+                    currentCollageMode = acc.collage_data.mode || 3;
+                    if (acc.collage_data.config) collageConfig = acc.collage_data.config;
+                    await Promise.all(acc.collage_data.slots.map((src, idx) => new Promise(res => {
+                        if (!src) return res(); const img = new Image(); img.onload = () => { collageSlots[idx] = img; res(); }; img.onerror = res; img.src = src;
+                    })));
+                } else if (acc.image) {
+                    currentUploadedImage = acc.image; currentCollageMode = 3;
+                    const img = new Image(); img.crossOrigin = 'anonymous';
+                    await new Promise(res => { img.onload=res; img.onerror=res; img.src=acc.image; });
+                    collageSlots = await sliceImageToSlots(img, 3);
+                }
+            } else {
+                generateUniqueAccCode(); currentCollageMode = 1;
+            }
+
+            setCollageMode(currentCollageMode);
+            updateSlotButtonLabels(); processMergedCanvas();
+            document.getElementById('addAccModal').classList.replace('hidden', 'flex');
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.generateUniqueAccCode = function() {
+            playCyberSound('click'); const existing = new Set(dataAccount.map(a => (a.title||'').trim().toUpperCase()));
+            let code = "", dup = true;
+            while(dup) { code = `#${Math.floor(10000+Math.random()*90000)}`; if(!existing.has(code)) dup = false; }
+            document.getElementById('accTitle').value = code; syncWatermarkFromCode(code);
+        };
+
+        window.toggleFormPassVisibility = function(inputId, iconId) {
+            const pass = document.getElementById(inputId); const icon = document.getElementById(iconId);
+            if (pass.type === 'password') { pass.type = 'text'; icon.className = 'fa-solid fa-eye text-xs text-cyan-400'; } 
+            else { pass.type = 'password'; icon.className = 'fa-solid fa-eye-slash text-xs text-zinc-400'; }
+        };
+
+        window.setCollageMode = function(mode) {
+            currentCollageMode = mode;
+            [1,2,3].forEach(m => {
+                const btn = document.getElementById(`modeBtn${m}`);
+                btn.className = mode === m ? "px-2.5 py-1 text-xs font-black rounded bg-red-600 text-black shadow-[0_0_10px_#ff003c]" : "px-2.5 py-1 text-xs font-bold rounded text-zinc-300 hover:text-white transition-colors";
+                document.getElementById(`slotsMode${m}`).classList.toggle('hidden', mode !== m);
+            });
+            if (currentTweakSlot >= mode) switchExpandedSlot(0);
+            updateSlotButtonLabels(); processMergedCanvas();
+        };
+
+        window.handleSlotUpload = function(e, idx) {
+            const file = e.target.files[0]; if(!file) return;
+            const r = new FileReader();
+            r.onload = ev => { const img = new Image(); img.onload = () => { collageSlots[idx] = img; updateSlotButtonLabels(); processMergedCanvas(); }; img.src = ev.target.result; };
+            r.readAsDataURL(file);
+        };
+
+        function updateSlotButtonLabels() {
+            [0,1,2].forEach(idx => {
+                const has = !!collageSlots[idx];
+                document.querySelectorAll(`[id^='slotBtnText${idx}_']`).forEach(el => el.textContent = has ? "Đổi ảnh" : "Chọn");
+            });
+        }
+
+        window.syncWatermarkFromCode = function() { processMergedCanvas(); };
+
+        function drawImageToSlot(ctx, img, x, y, w, h, idx) {
+            ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+            if (!img) { ctx.fillStyle = '#0a0a10'; ctx.fillRect(x, y, w, h); ctx.restore(); return; }
+
+            const cfg = collageConfig.slots[idx] || {zoom:1, panX:0, panY:0};
+            ctx.save(); ctx.filter = 'blur(16px) brightness(0.35)'; ctx.drawImage(img, x-10, y-10, w+20, h+20); ctx.restore();
+
+            const scale = Math.min(w/img.width, h/img.height) * cfg.zoom;
+            const dw = img.width*scale, dh = img.height*scale;
+            ctx.drawImage(img, x+(w-dw)/2+cfg.panX, y+(h-dh)/2+cfg.panY, dw, dh);
+            ctx.restore();
+        }
+
+        function processMergedCanvas() {
+            const hasImg = currentCollageMode === 1 ? !!collageSlots[0] : (currentCollageMode === 2 ? (collageSlots[0]||collageSlots[1]) : (collageSlots[0]||collageSlots[1]||collageSlots[2]));
+            const emptyState = document.getElementById('collageEmptyRightState'), tweakPanel = document.getElementById('collageTweakPanel');
+            
+            if (!hasImg && !currentUploadedImage) {
+                emptyState.classList.remove('hidden'); tweakPanel.classList.add('hidden'); return;
+            }
+            emptyState.classList.add('hidden'); tweakPanel.classList.remove('hidden');
+
+            const canvas = document.getElementById('collageCanvas'); const ctx = canvas.getContext('2d');
+            const W = 1000, H = 620; canvas.width = W; canvas.height = H;
+            ctx.fillStyle = '#040407'; ctx.fillRect(0, 0, W, H);
+
+            if (currentCollageMode === 1) { drawImageToSlot(ctx, collageSlots[0], 0, 0, W, H, 0); } 
+            else if (currentCollageMode === 2) {
+                drawImageToSlot(ctx, collageSlots[0], 0, 0, W, H/2, 0); drawImageToSlot(ctx, collageSlots[1], 0, H/2, W, H/2, 1);
+                ctx.strokeStyle = '#ff003c'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(0, H/2); ctx.lineTo(W, H/2); ctx.stroke();
+            } else {
+                const topH = H * 0.52; drawImageToSlot(ctx, collageSlots[0], 0, 0, W, topH, 0);
+                drawImageToSlot(ctx, collageSlots[1], 0, topH, W/2, H-topH, 1); drawImageToSlot(ctx, collageSlots[2], W/2, topH, W/2, H-topH, 2);
+                ctx.strokeStyle = '#ff003c'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(0, topH); ctx.lineTo(W, topH); ctx.moveTo(W/2, topH); ctx.lineTo(W/2, H); ctx.stroke();
+            }
+
+            const code = document.getElementById('accTitle').value.trim() || '#XXX';
+            ctx.fillStyle = 'rgba(4, 4, 7, 0.9)'; ctx.fillRect(16, H-46, 180, 32);
+            ctx.strokeStyle = '#ff003c'; ctx.strokeRect(16, H-46, 180, 32);
+            ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Orbitron, sans-serif'; ctx.fillText(code, 30, H-24);
+
+            currentUploadedImage = canvas.toDataURL('image/jpeg', 0.6); // Giữ 0.6 cho Sheets
+            document.getElementById('mergedPreviewImg').src = currentUploadedImage;
+            document.getElementById('expandedPreviewImg').src = currentUploadedImage;
+        }
+
+        window.saveAccSubmit = async function(e) {
+            e.preventDefault(); const btn = document.getElementById('btnSaveAcc');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG LƯU...'; btn.disabled = true;
+
+            const code = document.getElementById('accTitle').value.trim();
+            const formattedTitle = code.startsWith('#') ? code : '#' + code;
+            
+            const payload = {
+                action: 'save', sheetName: 'Sheet2',
+                id: editingId || ('acc_' + Date.now()),
+                title: formattedTitle, price: parseFloat(document.getElementById('accPrice').value)||0,
+                username: document.getElementById('accUsername').value.trim(), password: document.getElementById('accPassword').value.trim(),
+                hotmail_password: document.getElementById('accHotmailPassword').value.trim(),
+                image: currentUploadedImage,
+                collage_data: { mode: currentCollageMode, slots: collageSlots.map(i => i ? i.src : null), config: collageConfig },
+                is_sold: editingId ? dataAccount.find(a=>a.id===editingId).is_sold : false,
+                sold_at: editingId ? dataAccount.find(a=>a.id===editingId).sold_at : null,
+                created_at: editingId ? dataAccount.find(a=>a.id===editingId).created_at : new Date().toISOString()
+            };
+
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const json = await res.json();
+                if(json.success) { showToast("Đã lưu tài khoản thành công!"); closeModal('addAccModal'); fetchAccount(); } else throw new Error();
+            } catch(err) { showToast("Lỗi lưu dữ liệu!", true); } finally { btn.innerHTML = 'LƯU VÀO GOOGLE SHEETS'; btn.disabled = false; }
+        };
+
+        // --- EXPANDED TOUCH EDITOR CHO KHO ACC ---
+        window.openExpandedTouchEditor = function() { playCyberSound('click'); document.getElementById('expandedTouchModal').classList.remove('hidden'); switchExpandedSlot(currentTweakSlot||0); document.body.style.overflow='hidden'; };
+        window.closeExpandedTouchEditor = function() { playCyberSound('click'); document.getElementById('expandedTouchModal').classList.add('hidden'); document.body.style.overflow=''; };
+
+        window.switchExpandedSlot = function(idx) {
+            currentTweakSlot = idx;
+            document.getElementById('expandedSlotTitle').textContent = ["Ảnh Đơn/Trên", "Ảnh Dưới Trái", "Ảnh Dưới Phải"][idx];
+            document.getElementById('expandedZoomIndicator').textContent = (collageConfig.slots[idx].zoom).toFixed(1) + 'x';
+            [0,1,2].forEach(i => {
+                const b = document.getElementById(`expSlotBtn${i}`);
+                if(i >= currentCollageMode) b.classList.add('hidden');
+                else { b.classList.remove('hidden'); b.className = i===idx ? "px-3 py-1.5 text-xs rounded-lg bg-red-600 text-black font-black cyber-font shadow" : "px-3 py-1.5 text-xs rounded-lg bg-zinc-900 text-zinc-300 hover:text-white border border-zinc-800"; }
+            });
+        };
+
+        window.adjustActiveZoom = function(delta) {
+            playCyberSound('click'); let z = collageConfig.slots[currentTweakSlot].zoom + delta;
+            z = Math.min(Math.max(z, 0.5), 3.0); collageConfig.slots[currentTweakSlot].zoom = parseFloat(z.toFixed(2));
+            document.getElementById('expandedZoomIndicator').textContent = z.toFixed(1) + 'x'; processMergedCanvas();
+        };
+
+        window.resetSlotAdjustments = function() {
+            playCyberSound('click'); collageConfig.slots = [{zoom:1,panX:0,panY:0}, {zoom:1,panX:0,panY:0}, {zoom:1,panX:0,panY:0}];
+            switchExpandedSlot(currentTweakSlot); processMergedCanvas(); showToast('Đã đặt lại căn chỉnh!');
+        };
+
+        const wrap = document.getElementById('expandedCanvasWrapper');
+        if (wrap) {
+            wrap.addEventListener('mousedown', e => { e.preventDefault(); handleDragStart(e.clientX, e.clientY, wrap); });
+            window.addEventListener('mousemove', e => { if(isDragging) { const dx=(e.clientX-dragStartX)*1.5, dy=(e.clientY-dragStartY)*1.5; collageConfig.slots[dragSlotIndex].panX=Math.round(initialPanX+dx); collageConfig.slots[dragSlotIndex].panY=Math.round(initialPanY+dy); processMergedCanvas(); }});
+            window.addEventListener('mouseup', () => isDragging=false);
+
+            wrap.addEventListener('touchstart', e => {
+                if(e.touches.length===1) { isPinching=false; handleDragStart(e.touches[0].clientX, e.touches[0].clientY, wrap); }
+                else if(e.touches.length===2) { isDragging=false; isPinching=true; const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; initialPinchDistance=Math.sqrt(dx*dx+dy*dy); initialPinchZoom=collageConfig.slots[currentTweakSlot].zoom; }
+            }, {passive:false});
+            wrap.addEventListener('touchmove', e => {
+                e.preventDefault();
+                if(e.touches.length===1 && isDragging && !isPinching) { const dx=(e.touches[0].clientX-dragStartX)*1.5, dy=(e.touches[0].clientY-dragStartY)*1.5; collageConfig.slots[dragSlotIndex].panX=Math.round(initialPanX+dx); collageConfig.slots[dragSlotIndex].panY=Math.round(initialPanY+dy); processMergedCanvas(); }
+                else if(e.touches.length===2 && isPinching) { const dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY; const dist=Math.sqrt(dx*dx+dy*dy); if(initialPinchDistance>0){ let z=initialPinchZoom*(dist/initialPinchDistance); z=Math.min(Math.max(z,0.5),3.0); collageConfig.slots[currentTweakSlot].zoom=parseFloat(z.toFixed(2)); document.getElementById('expandedZoomIndicator').textContent=z.toFixed(1)+'x'; processMergedCanvas(); } }
+            }, {passive:false});
+            wrap.addEventListener('touchend', e => { if(e.touches.length<2) isPinching=false; if(e.touches.length===0) isDragging=false; else if(e.touches.length===1) handleDragStart(e.touches[0].clientX, e.touches[0].clientY, wrap); });
+            wrap.addEventListener('wheel', e => { e.preventDefault(); switchExpandedSlot(currentCollageMode===1?0:(currentCollageMode===2?(e.clientY-wrap.getBoundingClientRect().top)/wrap.getBoundingClientRect().height<0.5?0:1:((e.clientY-wrap.getBoundingClientRect().top)/wrap.getBoundingClientRect().height<0.52?0:((e.clientX-wrap.getBoundingClientRect().left)/wrap.getBoundingClientRect().width<0.5?1:2)))); adjustActiveZoom(e.deltaY<0?0.08:-0.08); }, {passive:false});
+        }
+        function handleDragStart(cx, cy, el) {
+            const rect = el.getBoundingClientRect(); const relX=(cx-rect.left)/rect.width, relY=(cy-rect.top)/rect.height;
+            const slot = currentCollageMode===1?0:(currentCollageMode===2?(relY<0.5?0:1):(relY<0.52?0:(relX<0.5?1:2)));
+            dragSlotIndex = slot; switchExpandedSlot(slot); isDragging=true; dragStartX=cx; dragStartY=cy; initialPanX=collageConfig.slots[slot].panX; initialPanY=collageConfig.slots[slot].panY;
+        }
+
+        // ==========================================
+        // TIỆN ÍCH COPY & DOWNLOAD
+        // ==========================================
+        window.toggleCardPassword = function(textId, iconId, raw) { const el=document.getElementById(textId), icon=document.getElementById(iconId); if(el.textContent==='••••••••') { el.textContent=raw; icon.className='fa-solid fa-eye-slash text-sm text-yellow-400'; } else { el.textContent='••••••••'; icon.className='fa-solid fa-eye text-sm'; } };
+        window.copyToClipboard = function(txt, label) { navigator.clipboard.writeText(txt); playCyberSound('click'); showToast(`Đã sao chép ${label}!`); };
+        
+        window.copyCustomerInfo = function(id) {
+            const a = dataAccount.find(x=>x.id===id); if(!a) return;
+            const price = (Number(a.price)||0)>0 ? (Number(a.price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
+            navigator.clipboard.writeText(`📦 THÔNG TIN MÃ: ${a.title}\n💰 Giá: ${price}\n👤 TK: ${a.username}\n🔑 Pass: ${a.password}\n${a.hotmail_password?`📧 Hotmail: ${a.hotmail_password}\n`:''}------------------\nCảm ơn bạn đã ủng hộ ❤️`);
+            playCyberSound('click'); showToast("Đã copy dữ liệu gửi khách!");
+        };
+
+        window.downloadAccImg = function(src, title, price, e) {
+            if(e) e.stopPropagation(); playCyberSound('click'); showToast('Đang tải ảnh...');
+            const img = new Image(); img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                const cvs = document.createElement('canvas'); cvs.width = img.width; cvs.height = img.height; const ctx = cvs.getContext('2d');
+                ctx.drawImage(img,0,0); const pr = (Number(price)||0)>0 ? (Number(price)||0).toLocaleString('vi-VN')+'đ' : 'Liên hệ';
+                const s = Math.max(img.width/1000, 0.8), fZ = Math.round(26*s); ctx.font = `900 ${fZ}px 'Orbitron', sans-serif`;
+                const mW = ctx.measureText(pr).width, bW = mW+36*s, bH = fZ+20*s, px = img.width-bW-20*s, py = 20*s, r = 8*s;
+                ctx.save(); ctx.beginPath(); ctx.moveTo(px+r,py); ctx.lineTo(px+bW-r,py); ctx.quadraticCurveTo(px+bW,py,px+bW,py+r); ctx.lineTo(px+bW,py+bH-r); ctx.quadraticCurveTo(px+bW,py+bH,px+bW-r,py+bH); ctx.lineTo(px+r,py+bH); ctx.quadraticCurveTo(px,py+bH,px,py+bH-r); ctx.lineTo(px,py+r); ctx.quadraticCurveTo(px,py,px+r,py); ctx.closePath();
+                ctx.fillStyle = 'rgba(7,7,11,0.92)'; ctx.fill(); ctx.lineWidth = 2.5*s; ctx.strokeStyle = '#fcee0a'; ctx.stroke();
+                ctx.fillStyle = '#fcee0a'; ctx.textBaseline='middle'; ctx.textAlign='center'; ctx.fillText(pr, px+bW/2, py+bH/2+s); ctx.restore();
+                const a = document.createElement('a'); a.href = cvs.toDataURL('image/jpeg', 0.95); a.download = `${title}.jpg`; a.click(); showToast("Tải xong!");
+            }; img.src = src;
+        };
+
+        // ==========================================
+        // XÓA (DÙNG CHUNG)
+        // ==========================================
+        window.confirmDelete = function(id, title, type) {
+            playCyberSound('click'); deleteInfo = { id, title, type };
+            document.getElementById('deleteCodeDisplay').textContent = title;
+            document.getElementById('modalDelete').classList.replace('hidden', 'flex');
+        };
+
+        window.executeDelete = async function() {
+            const { id, type } = deleteInfo; if(!id) return;
+            document.getElementById('btnConfirmDelete').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id, sheetName: type === 'topup' ? 'Sheet1' : 'Sheet2' }) });
+                if((await res.json()).success) { showToast("Đã xóa vĩnh viễn!"); if(type === 'topup') fetchTopup(); else fetchAccount(); }
+            } catch(e) { showToast("Lỗi xóa!", true); }
+            closeModal('modalDelete'); document.getElementById('btnConfirmDelete').innerHTML = 'XÁC NHẬN XÓA';
+        };
+
+        function sliceImageToSlots(srcImg, mode) {
+            return new Promise(res => {
+                const w = srcImg.width, h = srcImg.height; const make = (x,y,cw,ch) => { const c=document.createElement('canvas'); c.width=cw; c.height=ch; c.getContext('2d').drawImage(srcImg,x,y,cw,ch,0,0,cw,ch); const i=new Image(); i.src=c.toDataURL('image/jpeg',0.9); return i; };
+                if(mode===3) res([make(0,0,w,h*0.52), make(0,h*0.52,w/2,h-h*0.52), make(w/2,h*0.52,w/2,h-h*0.52)]);
+                else if(mode===2) res([make(0,0,w,h/2), make(0,h/2,w,h/2), null]); else res([srcImg,null,null]);
+            });
+        }
+
         window.onload = () => { switchMainApp('topup'); };
     </script>
 </body>
